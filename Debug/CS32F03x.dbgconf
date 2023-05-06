@@ -1,0 +1,16 @@
+// File: CS32F03x.dbgconf
+// Version: 1.0.0
+// Note: refer to CS32F03x Reference manual
+//                CS32F030xx CS32F031xx datasheets
+
+// <<< Use Configuration Wizard in Context Menu >>>
+
+// <h> Debug MCU configuration register (DBGMCU_CR)
+//                                   <i> Reserved bits must be kept at reset value
+//   <o.2>  DBG_STANDBY              <i> Debug standby mode
+//   <o.1>  DBG_STOP                 <i> Debug stop mode
+//   <o.0>  Reserved                 <i> Reserved
+// </h>
+DBG_LPWCFG = 0x00000007;
+
+// <<< end of configuration section >>>

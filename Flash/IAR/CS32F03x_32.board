@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flash_board>
+  <pass>
+    <loader>.\CS32F0xx_32.flash</loader>
+    <range>CODE 0x08000000 0x08008000</range>
+  </pass>
+</flash_board>

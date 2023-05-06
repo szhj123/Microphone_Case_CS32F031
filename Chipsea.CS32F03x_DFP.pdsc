@@ -1,0 +1,968 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<package schemaVersion="1.0.3" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="PACK.xsd">
+  
+  <vendor>Chipsea</vendor>
+  <url>http://www.keil.com/pack/</url>
+  <name>CS32F03x_DFP</name>
+  <description>Chipsea Technologies(ShenZhen) CS32F0 Series Device Support, Drivers and Examples</description>
+  
+  <releases>
+    <release version="2.0.5">
+       Fix issue of KEY port assignment for CS32F03x-RA devices in cs32f03x_eval.h.
+       Add the missed USART6_8_IRQHandler for CS32F030-RA devices in startup_cs32f030.S.	
+	   Fix issue in Example ADC/ADC_DMA_Regular_channel.	   
+    </release>   
+    <release version="2.0.4">
+       Add workaround for intention FWDT reset issues of CS32F03X-RA devices.
+    </release>    
+    <release version="2.0.3">
+       Fix issues in CS32A039.
+       Fix issues in examples. 
+    </release>    
+    <release version="2.0.2">
+       Fix and add some examples 
+    </release>    
+    <release version="2.0.1">
+       Added new devices:
+		- CS32F030F6P6-RA
+        - CS32F030C8T6-RA 
+        - CS32F031K8U6-RA
+        - CS32F031G8U6-RA
+        - CS32F031K8S6-RA
+        - CS32F031K8V6-RA
+	   Re-construct APIs
+    </release>  
+    <release version="1.0.5">
+       Added new devices:
+        - CS32F036F6P7-TSSOP20
+        - CS32F036K6T7-LQFP32
+		- CS32F036K6U7-QFN32
+		- CS32F035K6U6-QFN32
+	   Added CS32F036 START Board and Demo Program 
+    </release>
+    <release version="1.0.4">
+       Support IAR compiler
+    </release>    
+    <release version="1.0.3">
+       Update DEMO program
+    </release>
+    <release version="1.0.2">
+       Added new devices:
+        - CS32F031E6Y6
+    </release>	
+    <release version="1.0.1">
+       Added new devices:
+        - CS32A039R8T6
+       CMSIS Driver:
+        - Added ADC2 driver
+    </release>	
+    <release version="1.0.0">
+      First Release version of CS32F0 Device Family Pack.
+    </release>
+  </releases>
+  
+  <keywords>
+    <!-- keywords for indexing -->
+    <keyword>Chipsea</keyword>
+    <keyword>Device Support</keyword>
+    <keyword>Device Family Package Chipsea Technologies(ShenZhen)</keyword>
+    <keyword>CS32F0</keyword>
+    <keyword>CS32</keyword>
+  </keywords>
+  
+  <devices>
+    <family Dfamily="CS32F0 Series" Dvendor="Chipsea">
+      <processor Dcore="Cortex-M0" DcoreVersion="r0p0" Dfpu="0" Dmpu="0" Dendian="Little-endian" />
+      <book name="Documents/dui0497a_cortex_m0_r0p0_generic_ug.pdf" title="Cortex-M0 Generic User Guide" />
+      <book name="Documents/cs32f0xx_HAL_lib_um.chm" title="CS32F03x Peripheral Drivers User Guide" />	  
+	  
+      <description>
+        The CS32F03x is a series of 32-bit ARM Cortex-M0 based microcontroller:
+        - ranging from 28 to 48 pins.
+        - maximum operating frequency is 48MHz.
+        - operate in the temperaqture range of -40 to 85℃ (or 105℃) .
+        - power supply range of 2.0 to 5.5V.
+        - offer a set of low-power modes.
+        - standard communication inerfaces (SPI, USART, I2C, I2S),
+        - one 12-bit SAR ADC,
+        - seven 16-bit timers,
+        - one 32-bit timer and one advanced-PWM timer.
+      </description>
+      <algorithm name="Flash/ARM/CS32F03x_BOOT.FLM" start="0x1FFFEC00" size="0x0C00" condition="Compiler ARMCC" default="0" />
+	  
+      <!-- ************************  Subfamily 'CS32F030'  **************************** -->
+      <subFamily DsubFamily="CS32F030">
+        <processor Dclock="48000000" />
+        <compile header="Device/Include/cs32f0xx.h" define="CS32F030" />
+        <compile header="Device/Include/cs32f0xx_conf.h" define="CS32F030" />
+        <compile header="Device/Include/system_cs32f0xx.h" define="CS32F030" />
+        
+        <debug svd="SVD/CS32F030x.svd" />
+
+        <book name="Documents/CS32F03x_userguide_chinese.pdf" title="CS32F03x_userguide_chinese" />
+        <book name="Documents/CS32F030_datasheet_chinese.pdf" title="CS32F030_datasheet_chinese" />
+        
+        <feature type="VCC" n="2.0" m="5.5"/>
+        <feature type="WDT" n="2" name="Watchdog timer" />
+        <feature type="RTC" n="40000" name="RTC with 40 kHz calibrated Oscillator and Battery Backup" />
+        <feature type="Timer" n="5" m="16" name="16-bit General Purpose Timer" />
+        <feature type="Timer" n="1" m="32" name="32-bit General Purpose Timer" />
+        <feature type="SPI" n="1" m="18000000" name="SPI Interface" />
+        <feature type="I2S" n="1" name="Low-Power I2S" />
+        <feature type="I2C" n="1" name="Low-Power I2C" />
+        <feature type="Temp" n="-40" m="105" name="Extended Operating Temperature Range" />
+        <feature type="VCC" n="2.00" m="3.60" name="Voltage" />
+        <feature type="USART" n="1" m="6000000" name="High-Speed USART Interface" />
+        <feature type="ADC" n="10" m="12" name="High-Performance ADC" />
+
+        <!-- *************************  Device 'CS32F030F6P6-RA'  ***************************** -->
+        <device Dname="CS32F030F6P6-RA">
+          <memory id="IROM1" start="0x08000000" size="0x8000" startup="1" default="1" />
+          <memory id="IRAM1" start="0x20000000" size="0x1000" init="0" default="1" />  
+          <algorithm name="Flash/ARM/CS32F03x_32.FLM" start="0x08000000" size="0x8000" condition="Compiler ARMCC" default="1" />
+          <algorithm name="Flash/ARM/CS32F03x_OPTION.FLM" start="0x1FFFF800" size="0x0010" condition="Compiler ARMCC" default="0" />
+          <algorithm name="Flash/IAR/CS32F03x_32.flash" start="0x08000000"  size="0x8000"    condition="Compiler IARCC"    default="1"/>
+          <feature type="IOs" n="15" name="IO pins" />
+          <feature type="TSSOP" n="20" name="20-lead TSSOP package" />
+	  <compile define="CS32F03X_RA" />          
+          <description>
+            The CS32F030F6P6-RA microcontroller offers:
+            - 32 KBytes FLASH
+            - 4 KBytes SRAM
+          </description>
+        </device>
+
+	<!-- *************************  Device 'CS32F030C8T6-RA'  ***************************** -->
+        <device Dname="CS32F030C8T6-RA">
+          <memory id="IROM1" start="0x08000000" size="0x10000" startup="1" default="1" />
+          <memory id="IRAM1" start="0x20000000" size="0x2000" init="0" default="1" />
+          
+          <algorithm name="Flash/ARM/CS32F03x_64.FLM" start="0x08000000" size="0x10000" condition="Compiler ARMCC" default="1" />
+          <algorithm name="Flash/ARM/CS32F03x_OPTION.FLM" start="0x1FFFF800" size="0x0010" condition="Compiler ARMCC" default="0" />
+          <algorithm name="Flash/IAR/CS32F03x_64.flash"   start="0x08000000"  size="0x10000"  condition="Compiler IARCC" default="1"/>         
+          <feature type="IOs" n="39" name="IO pins" />
+          <feature type="LQFP" n="48" name="48-pad LQFP package" />
+	  <compile define="CS32F03X_RA" />       
+          <description>
+            The CS32F030C8T6-RA microcontroller offers:
+            - 64 KBytes FLASH
+            - 8 KBytes SRAM
+          </description>
+        </device>
+        
+        <!-- *************************  Device 'CS32F030F6P6'  ***************************** -->
+        <device Dname="CS32F030F6P6">
+          <memory id="IROM1" start="0x08000000" size="0x8000" startup="1" default="1" />
+          <memory id="IRAM1" start="0x20000000" size="0x1000" init="0" default="1" />  
+          <algorithm name="Flash/ARM/CS32F03x_32.FLM" start="0x08000000" size="0x8000" condition="Compiler ARMCC" default="1" />
+          <algorithm name="Flash/ARM/CS32F03x_OPTION.FLM" start="0x1FFFF800" size="0x0010" condition="Compiler ARMCC" default="0" />
+          <algorithm name="Flash/IAR/CS32F03x_32.flash" start="0x08000000"  size="0x8000"    condition="Compiler IARCC"    default="1"/>
+          <feature type="IOs" n="15" name="IO pins" />
+          <feature type="TSSOP" n="20" name="20-lead TSSOP package" />
+          
+          <description>
+            The CS32F030F6P6 microcontroller offers:
+            - 32 KBytes FLASH
+            - 4 KBytes SRAM
+          </description>
+        </device>
+        
+        <!-- *************************  Device 'CS32F030K6T6'  ***************************** -->
+        <device Dname="CS32F030K6T6">
+          <memory id="IROM1" start="0x08000000" size="0x8000" startup="1" default="1" />
+          <memory id="IRAM1" start="0x20000000" size="0x1000" init="0" default="1" />
+          
+          <algorithm name="Flash/ARM/CS32F03x_32.FLM" start="0x08000000" size="0x8000" condition="Compiler ARMCC" default="1" />
+          <algorithm name="Flash/ARM/CS32F03x_OPTION.FLM" start="0x1FFFF800" size="0x0010" condition="Compiler ARMCC" default="0" />
+          <algorithm name="Flash/IAR/CS32F03x_32.flash" start="0x08000000"  size="0x8000"    condition="Compiler IARCC"    default="1"/>
+          <feature type="IOs" n="26" name="IO pins" />
+          <feature type="LQFP" n="32" name="32-pad LQFP package" />
+          
+          <description>
+            The CS32F030K6T6 microcontroller offers:
+            - 32 KBytes FLASH
+            - 4 KBytes SRAM
+          </description>
+        </device>
+   
+	<!-- *************************  Device 'CS32F030C8T6'  ***************************** -->
+        <device Dname="CS32F030C8T6">
+          <memory id="IROM1" start="0x08000000" size="0x10000" startup="1" default="1" />
+          <memory id="IRAM1" start="0x20000000" size="0x2000" init="0" default="1" />
+          
+          <algorithm name="Flash/ARM/CS32F03x_64.FLM" start="0x08000000" size="0x10000" condition="Compiler ARMCC" default="1" />
+          <algorithm name="Flash/ARM/CS32F03x_OPTION.FLM" start="0x1FFFF800" size="0x0010" condition="Compiler ARMCC" default="0" />
+          <algorithm name="Flash/IAR/CS32F03x_64.flash"   start="0x08000000"  size="0x10000"  condition="Compiler IARCC" default="1"/>         
+          <feature type="IOs" n="39" name="IO pins" />
+          <feature type="LQFP" n="48" name="48-pad LQFP package" />
+          
+          <description>
+            The CS32F030C8T6 microcontroller offers:
+            - 64 KBytes FLASH
+            - 8 KBytes SRAM
+          </description>
+        </device>
+        <!-- *************************  Device 'CS32F030K8U6'  ***************************** -->
+        <device Dname="CS32F030K8U6">
+          <memory id="IROM1" start="0x08000000" size="0x10000" startup="1" default="1" />
+          <memory id="IRAM1" start="0x20000000" size="0x2000" init="0" default="1" />
+          
+          <algorithm name="Flash/ARM/CS32F03x_64.FLM" start="0x08000000" size="0x10000" condition="Compiler ARMCC" default="1" />
+          <algorithm name="Flash/ARM/CS32F03x_OPTION.FLM" start="0x1FFFF800" size="0x0010" condition="Compiler ARMCC" default="0" />
+          <algorithm name="Flash/IAR/CS32F03x_64.flash"   start="0x08000000"  size="0x10000"  condition="Compiler IARCC" default="1"/>         
+          <feature type="IOs" n="27" name="IO pins" />
+          <feature type="QFN" n="32" name="32-pad QFN package" />
+          
+          <description>
+            The CS32F030C8T6 microcontroller offers:
+            - 64 KBytes FLASH
+            - 8 KBytes SRAM
+          </description>
+        </device>		
+      </subFamily>
+      
+      <!-- ************************  Subfamily 'CS32F031'  **************************** -->
+      <subFamily DsubFamily="CS32F031">
+        <processor Dclock="48000000" />
+        <compile header="Device/Include/cs32f0xx.h" define="CS32F031" />
+        <compile header="Device/Include/cs32f0xx_conf.h" define="CS32F031" />
+        <compile header="Device/Include/system_cs32f0xx.h" define="CS32F031" />
+        
+        <debug svd="SVD/CS32F031x.svd" />
+
+        <book name="Documents/CS32F03x_userguide_chinese.pdf" title="CS32F03x_userguide_chinese" />
+        <book name="Documents/CS32F031_datasheet_chinese.pdf" title="CS32F031_datasheet_chinese" />
+        
+        <feature type="WDT" n="2" name="Watchdog timer" />
+        <feature type="RTC" n="40000" name="RTC with 40 kHz calibrated Oscillator and Battery Backup" />
+        <feature type="Timer" n="5" m="16" name="16-bit General Purpose Timer" />
+        <feature type="Timer" n="1" m="32" name="32-bit General Purpose Timer" />
+        <feature type="SPI" n="1" m="18000000" name="SPI Interface" />
+        <feature type="I2S" n="1" name="Low-Power I2S" />
+        <feature type="I2C" n="1" name="Low-Power I2C" />
+        <feature type="Temp" n="-40" m="105" name="Extended Operating Temperature Range" />
+        <feature type="VCC" n="2.00" m="3.60" name="Voltage" />
+        <feature type="USART" n="1" m="6000000" name="High-Speed USART Interface" />
+        <feature type="ADC" n="10" m="12" name="High-Performance ADC" />
+        
+		
+	<!-- *************************  Device 'CS32F031K8U6-RA'  ***************************** -->
+        <device Dname="CS32F031K8U6-RA">
+          <memory id="IROM1" start="0x08000000" size="0x10000" startup="1" default="1" />
+          <memory id="IRAM1" start="0x20000000" size="0x2000" init="0" default="1" />
+          
+          <algorithm name="Flash/ARM/CS32F03x_64.FLM" start="0x08000000" size="0x10000" condition="Compiler ARMCC" default="1" />
+          <algorithm name="Flash/ARM/CS32F03x_OPTION.FLM" start="0x1FFFF800" size="0x0010" condition="Compiler ARMCC" default="0" />
+          <algorithm name="Flash/IAR/CS32F03x_64.flash"   start="0x08000000"  size="0x10000"  condition="Compiler IARCC" default="1"/>
+          <feature type="IOs" n="27" name="IO pins" />
+          <feature type="QFN" n="32" name="32-pad QFN package" />
+	  <compile define="CS32F03X_RA" />   
+          <description>
+            The CS32F031K8U6-RA microcontroller offers:
+            - 64 KBytes FLASH
+            - 8 KBytes SRAM
+          </description>
+        </device>
+		
+	<!-- *************************  Device 'CS32F031K8S6-RA'  ***************************** -->
+        <device Dname="CS32F031K8S6-RA">
+          <memory id="IROM1" start="0x08000000" size="0x10000" startup="1" default="1" />
+          <memory id="IRAM1" start="0x20000000" size="0x2000" init="0" default="1" />
+          
+          <algorithm name="Flash/ARM/CS32F03x_64.FLM" start="0x08000000" size="0x10000" condition="Compiler ARMCC" default="1" />
+          <algorithm name="Flash/ARM/CS32F03x_OPTION.FLM" start="0x1FFFF800" size="0x0010" condition="Compiler ARMCC" default="0" />
+          <algorithm name="Flash/IAR/CS32F03x_64.flash"   start="0x08000000"  size="0x10000"  condition="Compiler IARCC" default="1"/>
+          <feature type="IOs" n="25" name="IO pins" />
+          <feature type="LQFP" n="32" name="32-pad LQFP package" />
+	  <compile define="CS32F03X_RA" />  
+          <description>
+            The CS32F031K8S6-RA microcontroller offers:
+            - 64 KBytes FLASH
+            - 8 KBytes SRAM
+          </description>
+        </device>
+
+	<!-- *************************  Device 'CS32F031K8V6-RA'  ***************************** -->
+        <device Dname="CS32F031K8V6-RA">
+          <memory id="IROM1" start="0x08000000" size="0x10000" startup="1" default="1" />
+          <memory id="IRAM1" start="0x20000000" size="0x2000" init="0" default="1" />
+          
+          <algorithm name="Flash/ARM/CS32F03x_64.FLM" start="0x08000000" size="0x10000" condition="Compiler ARMCC" default="1" />
+          <algorithm name="Flash/ARM/CS32F03x_OPTION.FLM" start="0x1FFFF800" size="0x0010" condition="Compiler ARMCC" default="0" />
+          <algorithm name="Flash/IAR/CS32F03x_64.flash"   start="0x08000000"  size="0x10000"  condition="Compiler IARCC" default="1"/>
+          <feature type="IOs" n="27" name="IO pins" />
+          <feature type="QFN" n="32" name="32-pad QFN package" />
+	  <compile define="CS32F03X_RA" />     
+          <description>
+            The CS32F031K8V6-RA microcontroller offers:
+            - 64 KBytes FLASH
+            - 8 KBytes SRAM
+          </description>
+        </device>
+
+	<!-- *************************  Device 'CS32F031G8U6-RA'  ***************************** -->
+        <device Dname="CS32F031G8U6-RA">
+          <memory id="IROM1" start="0x08000000" size="0x10000" startup="1" default="1" />
+          <memory id="IRAM1" start="0x20000000" size="0x2000" init="0" default="1" />
+          
+          <algorithm name="Flash/ARM/CS32F03x_64.FLM" start="0x08000000" size="0x10000" condition="Compiler ARMCC" default="1" />
+          <algorithm name="Flash/ARM/CS32F03x_OPTION.FLM" start="0x1FFFF800" size="0x0010" condition="Compiler ARMCC" default="0" />
+          <algorithm name="Flash/IAR/CS32F03x_64.flash"   start="0x08000000"  size="0x10000"  condition="Compiler IARCC" default="1"/>
+          <feature type="IOs" n="23" name="IO pins" />
+          <feature type="QFN" n="28" name="32-pad QFN package" />
+          <compile define="CS32F03X_RA" />       
+          <description>
+            The CS32F031G8U6-RA microcontroller offers:
+            - 64 KBytes FLASH
+            - 8 KBytes SRAM
+          </description>
+        </device>
+		
+        <!-- *************************  Device 'CS32F031E6Y6'  ***************************** -->
+        <device Dname="CS32F031E6Y6">
+          <memory id="IROM1" start="0x08000000" size="0x8000" startup="1" default="1" />
+          <memory id="IRAM1" start="0x20000000" size="0x1000" init="0" default="1" />
+          <algorithm name="Flash/ARM/CS32F03x_32.FLM" start="0x08000000" size="0x8000" condition="Compiler ARMCC" default="1" />
+          <algorithm name="Flash/ARM/CS32F03x_OPTION.FLM" start="0x1FFFF800" size="0x0010" condition="Compiler ARMCC" default="0" />
+	  <algorithm name="Flash/IAR/CS32F03x_32.flash"   start="0x08000000"  size="0x8000"  condition="Compiler IARCC" default="1"/>
+	  <feature type="IOs" n="21" name="IO pins" />
+          <feature type="WLCSP" n="25" name="25-pad WLCSP package" />
+          <description>
+            The CS32F031E6Y6 microcontroller offers:
+            - 32 KBytes FLASH
+            - 4 KBytes SRAM
+          </description>
+        </device>
+		
+        <!-- *************************  Device 'CS32F031G6U6'  ***************************** -->
+        <device Dname="CS32F031G6U6">
+          <memory id="IROM1" start="0x08000000" size="0x8000" startup="1" default="1" />
+          <memory id="IRAM1" start="0x20000000" size="0x1000" init="0" default="1" />
+          
+          <algorithm name="Flash/ARM/CS32F03x_32.FLM" start="0x08000000" size="0x8000" condition="Compiler ARMCC" default="1" />
+          <algorithm name="Flash/ARM/CS32F03x_OPTION.FLM" start="0x1FFFF800" size="0x0010" condition="Compiler ARMCC" default="0" />
+          <algorithm name="Flash/IAR/CS32F03x_32.flash"   start="0x08000000"  size="0x8000"  condition="Compiler IARCC" default="1"/>
+          <feature type="IOs" n="23" name="IO pins" />
+          <feature type="QFN" n="28" name="28-pad QFN package" />
+          
+          <description>
+            The CS32F031G6U6 microcontroller offers:
+            - 32 KBytes FLASH
+            - 4 KBytes SRAM
+          </description>
+        </device>
+        
+        <!-- *************************  Device 'CS32F031K6U6'  ***************************** -->
+        <device Dname="CS32F031K6U6">
+          <memory id="IROM1" start="0x08000000" size="0x8000" startup="1" default="1" />
+          <memory id="IRAM1" start="0x20000000" size="0x1000" init="0" default="1" />
+          
+          <algorithm name="Flash/ARM/CS32F03x_32.FLM" start="0x08000000" size="0x8000" condition="Compiler ARMCC" default="1" />
+          <algorithm name="Flash/ARM/CS32F03x_OPTION.FLM" start="0x1FFFF800" size="0x0010" condition="Compiler ARMCC" default="0" />
+          <algorithm name="Flash/IAR/CS32F03x_32.flash"   start="0x08000000"  size="0x8000"  condition="Compiler IARCC" default="1"/>
+          <feature type="IOs" n="27" name="IO pins" />
+          <feature type="QFN" n="32" name="32-pad QFN package" />
+          
+          <description>
+            The CS32F031K6U6 microcontroller offers:
+            - 32 KBytes FLASH
+            - 4 KBytes SRAM
+          </description>
+        </device>
+        
+        <!-- *************************  Device 'CS32F031K8U6'  ***************************** -->
+        <device Dname="CS32F031K8U6">
+          <memory id="IROM1" start="0x08000000" size="0x10000" startup="1" default="1" />
+          <memory id="IRAM1" start="0x20000000" size="0x2000" init="0" default="1" />
+          
+          <algorithm name="Flash/ARM/CS32F03x_64.FLM" start="0x08000000" size="0x10000" condition="Compiler ARMCC" default="1" />
+          <algorithm name="Flash/ARM/CS32F03x_OPTION.FLM" start="0x1FFFF800" size="0x0010" condition="Compiler ARMCC" default="0" />
+          <algorithm name="Flash/IAR/CS32F03x_64.flash"   start="0x08000000"  size="0x10000"  condition="Compiler IARCC" default="1"/>
+          <feature type="IOs" n="27" name="IO pins" />
+          <feature type="QFN" n="32" name="32-pad QFN package" />
+          
+          <description>
+            The CS32F031K8U6 microcontroller offers:
+            - 64 KBytes FLASH
+            - 8 KBytes SRAM
+          </description>
+        </device>
+        
+        <!-- *************************  Device 'CS32F031C6T6'  ***************************** -->
+        <device Dname="CS32F031C6T6">
+          <memory id="IROM1" start="0x08000000" size="0x8000" startup="1" default="1" />
+          <memory id="IRAM1" start="0x20000000" size="0x1000" init="0" default="1" />
+          
+          <algorithm name="Flash/ARM/CS32F03x_32.FLM" start="0x08000000" size="0x8000" condition="Compiler ARMCC" default="1" />
+          <algorithm name="Flash/ARM/CS32F03x_OPTION.FLM" start="0x1FFFF800" size="0x0010" condition="Compiler ARMCC" default="0" />
+          <algorithm name="Flash/IAR/CS32F03x_32.flash"   start="0x08000000"  size="0x8000"  condition="Compiler IARCC" default="1"/>
+          <feature type="IOs" n="39" name="IO pins" />
+          <feature type="LQFP" n="48" name="48-pad LQFP package" />
+          
+          <description>
+            The CS32F031C6T6 microcontroller offers:
+            - 32 KBytes FLASH
+            - 4 KBytes SRAM
+          </description>
+        </device>
+        
+        <!-- *************************  Device 'CS32F031C8T6'  ***************************** -->
+        <device Dname="CS32F031C8T6">
+          <memory id="IROM1" start="0x08000000" size="0x10000" startup="1" default="1" />
+          <memory id="IRAM1" start="0x20000000" size="0x2000" init="0" default="1" />
+          
+          <algorithm name="Flash/ARM/CS32F03x_64.FLM" start="0x08000000" size="0x10000" condition="Compiler ARMCC" default="1" />
+          <algorithm name="Flash/ARM/CS32F03x_OPTION.FLM" start="0x1FFFF800" size="0x0010" condition="Compiler ARMCC" default="0" />
+          <algorithm name="Flash/IAR/CS32F03x_64.flash"   start="0x08000000"  size="0x10000"  condition="Compiler IARCC" default="1"/>
+          <feature type="IOs" n="39" name="IO pins" />
+          <feature type="LQFP" n="48" name="48-pad LQFP package" />
+          
+          <description>
+            The CS32F031C8T6 microcontroller offers:
+            - 64 KBytes FLASH
+            - 8 KBytes SRAM
+          </description>
+        </device>      
+      </subFamily>
+      
+      <!-- ************************  Subfamily 'CS32F036'  **************************** -->
+      <subFamily DsubFamily="CS32F036">
+        <processor Dclock="48000000" />
+        <compile header="Device/Include/cs32f0xx.h" define="CS32F036" />
+        <compile header="Device/Include/cs32f0xx_conf.h" define="CS32F036" />
+        <compile header="Device/Include/system_cs32f0xx.h" define="CS32F036" />
+        
+        <debug svd="SVD/CS32F036x.svd" />
+		
+        <book name="Documents/CS32F03x_userguide_chinese.pdf" title="CS32F03x_userguide_chinese" />
+        <book name="Documents/CS32F036_datasheet_chinese.pdf" title="CS32F036_datasheet_chinese" />
+		 
+        <feature type="VCC" n="2.0" m="5.5" name="Power Supply Voltage" />
+        <feature type="WDT" n="2" name="Watchdog timer" />
+        <feature type="Timer" n="5" m="16" name="16-bit General Purpose Timer" />
+        <feature type="SPI" n="1" m="18000000" name="SPI Interface" />
+        <feature type="I2C" n="1" name="Low-Power I2C" />
+        <feature type="Temp" n="-40" m="85" name="Extended Operating Temperature Range" />
+        <feature type="USART" n="2" m="6000000" name="High-Speed USART Interface" />
+        <feature type="ADC" n="10" m="12" name="High-Performance ADC" />
+
+        <!-- *************************  Device 'CS32F035K6U6'  ***************************** -->
+        <device Dname="CS32F035K6U6">
+          <memory id="IROM1" start="0x08000000" size="0x8000" startup="1" default="1" />
+          <memory id="IRAM1" start="0x20000000" size="0x1000" init="0" default="1" />
+          	  
+          <algorithm name="Flash/ARM/CS32F03x_32.FLM" start="0x08000000" size="0x8000" condition="Compiler ARMCC" default="1" />
+          <algorithm name="Flash/ARM/CS32F03x_OPTION.FLM" start="0x1FFFF800" size="0x0010" condition="Compiler ARMCC" default="0" />
+          <algorithm name="Flash/IAR/CS32F03x_32.flash"   start="0x08000000"  size="0x8000"  condition="Compiler IARCC" default="1"/>
+	            
+          <feature type="IOs" n="27" name="IO pins" />
+          <feature type="QFN" n="32" name="32-pad QFN package" />
+          
+          <description>
+            The CS32F035K6U6 microcontroller offers:
+            - 32 KBytes FLASH
+            - 4 KBytes SRAM
+          </description>
+        </device>
+	
+        <!-- *************************  Device 'CS32F036F6P7'  ***************************** -->
+        <device Dname="CS32F036F6P7">
+          <memory id="IROM1" start="0x08000000" size="0x8000" startup="1" default="1" />
+          <memory id="IRAM1" start="0x20000000" size="0x1000" init="0" default="1" />
+          	  
+          <algorithm name="Flash/ARM/CS32F03x_32.FLM" start="0x08000000" size="0x8000" condition="Compiler ARMCC" default="1" />
+          <algorithm name="Flash/ARM/CS32F03x_OPTION.FLM" start="0x1FFFF800" size="0x0010" condition="Compiler ARMCC" default="0" />
+          <algorithm name="Flash/IAR/CS32F03x_32.flash"   start="0x08000000"  size="0x8000"  condition="Compiler IARCC" default="1"/>
+	            
+          <feature type="IOs" n="15" name="IO pins" />
+          <feature type="TSSOP" n="20" name="20-lead TSSOP package" />
+          
+          <description>
+            The CS32F036F6P7 microcontroller offers:
+            - 32 KBytes FLASH
+            - 4 KBytes SRAM
+          </description>
+        </device>
+	
+        <!-- *************************  Device 'CS32F036G6U7'  ***************************** -->
+        <device Dname="CS32F036G6U7">
+          <memory id="IROM1" start="0x08000000" size="0x8000" startup="1" default="1" />
+          <memory id="IRAM1" start="0x20000000" size="0x1000" init="0" default="1" />
+          	  
+          <algorithm name="Flash/ARM/CS32F03x_32.FLM" start="0x08000000" size="0x8000" condition="Compiler ARMCC" default="1" />
+          <algorithm name="Flash/ARM/CS32F03x_OPTION.FLM" start="0x1FFFF800" size="0x0010" condition="Compiler ARMCC" default="0" />
+          <algorithm name="Flash/IAR/CS32F03x_32.flash"  start="0x08000000"  size="0x8000"  condition="Compiler IARCC" default="1"/>
+	            
+          <feature type="IOs" n="23" name="IO pins" />
+          <feature type="QFN" n="28" name="28-pad QFN package" />
+          
+          <description>
+            The CS32F036G6U7 microcontroller offers:
+            - 32 KBytes FLASH
+            - 4 KBytes SRAM
+          </description>
+        </device>
+		
+        <!-- *************************  Device 'CS32F036K6U7'  ***************************** -->
+        <device Dname="CS32F036K6U7">
+          <memory id="IROM1" start="0x08000000" size="0x8000" startup="1" default="1" />
+          <memory id="IRAM1" start="0x20000000" size="0x1000" init="0" default="1" />
+           
+          <algorithm name="Flash/ARM/CS32F03x_32.FLM"  start="0x08000000" size="0x8000" condition="Compiler ARMCC" default="1" />
+          <algorithm name="Flash/ARM/CS32F03x_OPTION.FLM" start="0x1FFFF800" size="0x0010" condition="Compiler ARMCC" default="0" />
+          <algorithm name="Flash/IAR/CS32F03x_32.flash"  start="0x08000000" size="0x8000" condition="Compiler IARCC" default="1"/>
+	            
+          <feature type="IOs" n="27" name="IO pins" />
+          <feature type="QFN" n="32" name="32-pad QFN package" />
+          
+          <description>
+            The CS32F036K6U7 microcontroller offers:
+            - 32 KBytes FLASH
+            - 4 KBytes SRAM
+          </description>
+        </device>
+	               
+        <!-- *************************  Device 'CS32F036K6T7'  ***************************** -->
+        <device Dname="CS32F036K6T7">
+          <memory id="IROM1" start="0x08000000" size="0x8000" startup="1" default="1" />
+          <memory id="IRAM1" start="0x20000000" size="0x1000" init="0" default="1" />
+          	  
+          <algorithm name="Flash/ARM/CS32F03x_32.FLM"  start="0x08000000" size="0x8000" condition="Compiler ARMCC" default="1" />
+          <algorithm name="Flash/ARM/CS32F03x_OPTION.FLM" start="0x1FFFF800" size="0x0010" condition="Compiler ARMCC" default="0" />
+          <algorithm name="Flash/IAR/CS32F03x_32.flash"  start="0x08000000" size="0x8000" condition="Compiler IARCC" default="1"/>
+	            
+          <feature type="IOs" n="25" name="IO pins" />
+          <feature type="LQFP" n="32" name="32-pad LQFP package" />
+          
+          <description>
+            The CS32F036K6T7 microcontroller offers:
+            - 32 KBytes FLASH
+            - 4 KBytes SRAM
+          </description>
+        </device>		
+      </subFamily>  
+	  
+      <!-- ************************  Subfamily 'CS32A039'  **************************** -->
+      <subFamily DsubFamily="CS32A039">
+        <processor Dclock="48000000" />
+        <compile header="Device/Include/cs32a0xx.h" define="CS32A039" />
+        <compile header="Device/Include/cs32a0xx_conf.h" define="CS32A039" />
+        <compile header="Device/Include/system_cs32f0xx.h" define="CS32A039" />
+        
+        <debug svd="SVD/CS32F030x.svd" />
+
+        <book name="Documents/CS32A039_userguide_chinese.pdf" title="CS32A039 Series Reference Manual" />
+        <book name="Documents/CS32A039_datasheet_chinese.pdf" title="CS32A039 Data Sheet" />
+        
+        <feature type="VCC" n="2.0" m="5.5"/>
+        <feature type="WDT" n="2" name="Watchdog timer" />
+        <feature type="RTC" n="40000" name="RTC with 40 kHz calibrated Oscillator and Battery Backup" />
+        <feature type="Timer" n="5" m="16" name="16-bit General Purpose Timer" />
+        <feature type="Timer" n="1" m="32" name="32-bit General Purpose Timer" />
+        <feature type="SPI" n="1" m="18000000" name="SPI Interface" />
+        <feature type="I2S" n="1" name="Low-Power I2S" />
+        <feature type="I2C" n="1" name="Low-Power I2C" />
+        <feature type="Temp" n="-40" m="105" name="Extended Operating Temperature Range" />
+        <feature type="VCC" n="2.00" m="3.60" name="Voltage" />
+        <feature type="USART" n="1" m="6000000" name="High-Speed USART Interface" />
+        <feature type="ADC" n="10" m="12" name="High-Performance ADC" />
+        
+        <!-- *************************  Device 'CS32A039R8T6'  ***************************** -->
+        <device Dname="CS32A039R8T6">
+          <memory id="IROM1" start="0x08000000" size="0x10000" startup="1" default="1" />
+          <memory id="IRAM1" start="0x20000000" size="0x2000" init="0" default="1" />
+          
+          <algorithm name="Flash/ARM/CS32A039_64.FLM" start="0x08000000" size="0x10000" condition="Compiler ARMCC" default="1" />
+          <algorithm name="Flash/ARM/CS32A039_OPTION.FLM" start="0x1FFFF800" size="0x0010" condition="Compiler ARMCC" default="0" />
+          <algorithm name="Flash/IAR/CS32A039_64.flash"   start="0x08000000"  size="0x10000"  condition="Compiler IARCC" default="1"/>
+          <feature type="IOs" n="64" name="IO pins" />
+          <feature type="QFP" n="64" name="64-pad package" />
+          
+          <description>
+            The CS32A039R8T6 microcontroller offers:
+            - 64 KBytes FLASH
+            - 8 KBytes SRAM
+          </description>
+        </device>
+      </subFamily>
+    </family>
+  </devices>
+  
+  <conditions>
+    <condition id="CS32F036">
+      <description>Chipsea Technologies(ShenZhen) CS32F036 Device</description>
+      <require Dvendor="Chipsea" Dname="CS32F03[56]*"/>
+    </condition> 
+    
+    <condition id="CS32F031">
+      <description>Chipsea Technologies(ShenZhen) CS32F031 Device</description>
+      <require Dvendor="Chipsea" Dname="CS32F031*"/>
+    </condition>
+    
+    <condition id="CS32F030">
+      <description>Chipsea Technologies(ShenZhen) CS32F030 Device</description>
+      <require Dvendor="Chipsea" Dname="CS32F030*"/>
+    </condition>
+    
+    <condition id="CS32A039">
+      <description>Chipsea Technologies(ShenZhen) CS32A039 Device</description>
+      <require Dvendor="Chipsea" Dname="CS32A039*"/>
+    </condition>
+    
+    <condition id="Compiler IARCC">
+      <require Tcompiler="IAR" />
+    </condition>
+    
+    <condition id="Compiler GCC">
+      <require Tcompiler="GCC" />
+    </condition>
+	
+    <!-- conditions selecting Compiler -->
+    <condition id="Compiler ARMCC">
+      <require Tcompiler="ARMCC" />
+    </condition>
+	
+    <condition id="CS32F036 ARMCC">
+      <require condition="CS32F036"/>
+      <require Tcompiler="ARMCC" />
+    </condition>
+        
+    <condition id="CS32F031 ARMCC">
+      <require condition="CS32F031"/>
+      <require Tcompiler="ARMCC" />
+    </condition>
+    
+    <condition id="CS32F030 ARMCC">
+      <require condition="CS32F030"/>
+      <require Tcompiler="ARMCC" />
+    </condition>
+    
+    <condition id="CS32A039 ARMCC">
+      <require condition="CS32A039"/>
+      <require Tcompiler="ARMCC" />
+    </condition>
+	
+    <condition id="CS32F036 IAR">
+      <require condition="CS32F036"/>
+      <require Tcompiler="IAR" />
+    </condition>
+	
+    <condition id="CS32F031 IAR">
+      <require condition="CS32F031"/>
+      <require Tcompiler="IAR" />
+    </condition>
+	
+    <condition id="CS32F030 IAR">
+      <require condition="CS32F030"/>
+      <require Tcompiler="IAR" />
+    </condition>
+	
+    <condition id="CS32A039 IAR">
+      <require condition="CS32A039"/>
+      <require Tcompiler="IAR" />
+    </condition>
+        
+    <condition id="CS32F03x">
+      <description>Chipsea Technologies(ShenZhen) CS32F03x Device</description>
+      <require Dvendor="Chipsea" Dname="CS32[FA]03*" />
+    </condition>
+        
+    <condition id="CS32F03x CMSIS">
+      <description>Chipsea Technologies(ShenZhen) CS32F03x Device with CMSIS</description>
+      <require condition="CS32F03x" />
+      <require Cclass="CMSIS" Cgroup="CORE" />
+    </condition>
+
+    <condition id="CS32F03x HAL">
+      <description>Chipsea Technologies(ShenZhen) CS32F03x with Hardware Abstract Layer Framework</description>
+      <require condition="CS32F03x CMSIS" />
+      <require Cclass="Device" Cgroup="HAL" Csub="Framework" />
+      <require Cclass="Device" Cgroup="Startup"/>
+    </condition>
+    
+    <condition id="CS32F03x HAL RCU">
+      <description>Chipsea Technologies(ShenZhen) CS32F03x with Hardware Abstract Layer Framework and RCU</description>
+      <require condition="CS32F03x CMSIS" />
+      <require Cclass="Device" Cgroup="HAL" Csub="Framework" />
+      <require Cclass="Device" Cgroup="HAL" Csub="RCU" />
+    </condition>
+	
+    <condition id="CS32F03x HAL RCU NO F036">
+      <description>Chipsea Technologies(ShenZhen) CS32F03x with Hardware Abstract Layer Framework and RCU</description>
+      <require condition="CS32F03x HAL RCU" />
+      <deny  condition="CS32F036" />
+    </condition>
+    
+    <condition id="CS32A03x">
+      <description>Chipsea Technologies(ShenZhen) CS32A03x Device</description>
+      <require Dvendor="Chipsea" Dname="CS32A03*" />
+    </condition>
+        
+    <condition id="CS32A03x CMSIS">
+      <description>Chipsea Technologies(ShenZhen) CS32A03x Device with CMSIS</description>
+      <require condition="CS32A03x" />
+      <require Cclass="CMSIS" Cgroup="CORE" />
+    </condition>
+
+    <condition id="CS32A03x HAL">
+      <description>Chipsea Technologies(ShenZhen) CS32A03x with Hardware Abstract Layer Framework</description>
+      <require condition="CS32A03x CMSIS" />
+      <require Cclass="Device" Cgroup="HAL" Csub="Framework" />
+      <require Cclass="Device" Cgroup="Startup"/>
+    </condition>
+    
+    <condition id="CS32A03x HAL RCU">
+      <description>Chipsea Technologies(ShenZhen) CS32A03x with Hardware Abstract Layer Framework and RCU</description>
+      <require condition="CS32A03x CMSIS" />
+      <require Cclass="Device" Cgroup="HAL" Csub="Framework" />
+      <require Cclass="Device" Cgroup="HAL" Csub="RCU" />
+      <require Cclass="Device" Cgroup="HAL" Csub="SPI" />
+    </condition>
+  </conditions>
+  
+  <components>
+    <component Cclass="Device" Cgroup="Startup" Cversion="1.0.0" condition="CS32F03x CMSIS">
+      <description>System Startup for Chipsea Technologies(ShenZhen) CS32F03x device series</description>
+      <files>
+        <!--  include folder -->
+        <file category="include" name="Device/Include/" />
+        
+        <!-- startup files -->   		
+        <file category="source" name="Device/Source/ARM/startup_cs32f036.S" attr="config" version="1.0.0" condition="CS32F036 ARMCC" />        
+        <file category="source" name="Device/Source/ARM/startup_cs32f031.S" attr="config" version="1.0.0" condition="CS32F031 ARMCC" />
+        <file category="source" name="Device/Source/ARM/startup_cs32f030.S" attr="config" version="1.0.0" condition="CS32F030 ARMCC" />
+        <file category="source" name="Device/Source/ARM/startup_cs32a039.S" attr="config" version="1.0.0" condition="CS32A039 ARMCC" />
+        	
+        <file category="source" name="Device/Source/IAR/startup_cs32f036.S" attr="config" version="1.0.0" condition="CS32F036 IAR" />	
+        <file category="source" name="Device/Source/IAR/startup_cs32f031.S" attr="config" version="1.0.0" condition="CS32F031 IAR" />
+        <file category="source" name="Device/Source/IAR/startup_cs32f030.S" attr="config" version="1.0.0" condition="CS32F030 IAR" />
+        <file category="source" name="Device/Source/IAR/startup_cs32a039.S" attr="config" version="1.0.0" condition="CS32A039 IAR" />
+        <!-- system file -->
+        <file category="source" name="Device/Source/system_cs32f0xx.c" attr="config" version="1.0.0" /> 
+
+       </files>
+    </component>
+    
+    <!-- START: Chipsea Technologies(ShenZhen) Hardware Abstract Layer -->
+    <component Cclass="Device" Cgroup="HAL" Csub="Framework" Cversion="1.0.0" condition="CS32F03x HAL">
+      <description>Hardware Abstract Layer Framework</description>
+      <RTE_Components_h>
+        #define RTE_DEVICE_HAL_FRAMEWORK
+      </RTE_Components_h>
+      <files>
+        <file category="doc" name="Documents/cs32f0xx_HAL_lib_um.chm" />
+        <file category="include" name="Device/HAL_Driver/inc/" />
+        <file category="header" name="Device/HAL_Driver/inc/cs32f0xx_misc.h" />
+        <file category="source" name="Device/HAL_Driver/src/cs32f0xx_misc.c" />		
+        <file category="source" name="Device/HAL_Driver/templates/Inc/cs32f0xx_conf.h" attr="config" version="1.0.0"  condition="CS32F036"/>        
+        <file category="source" name="Device/HAL_Driver/templates/Inc/cs32f0xx_conf.h" attr="config" version="1.0.0"  condition="CS32F031"/>
+        <file category="source" name="Device/HAL_Driver/templates/Inc/cs32f0xx_conf.h" attr="config" version="1.0.0"  condition="CS32F030"/>
+        <file category="source" name="Device/HAL_Driver/templates/Inc/cs32a0xx_conf.h" attr="config" version="1.0.0"  condition="CS32A039"/>
+        <file category="header" name="Device/HAL_Driver/templates/Inc/cs32f0xx_it.h" attr="template" select="Interrupt Service Routines" />
+        <file category="source" name="Device/HAL_Driver/templates/Src/cs32f0xx_it.c" attr="template" select="Interrupt Service Routines" />
+      </files>
+    </component>
+    
+    <component Cclass="Device" Cgroup="HAL" Csub="ADC" Cversion="1.0.0" condition="CS32F03x HAL RCU">
+      <description>Analog-to-digital converter (ADC) driver for CS32F03x</description>
+      <RTE_Components_h>
+        #define RTE_DEVICE_HAL_ADC
+      </RTE_Components_h>
+      <files>
+        <file category="header" name="Device/HAL_Driver/inc/cs32f0xx_adc.h" />
+        <file category="source" name="Device/HAL_Driver/src/cs32f0xx_adc.c" />
+      </files>
+    </component>
+    
+    <component Cclass="Device" Cgroup="HAL" Csub="CRC" Cversion="1.0.0" condition="CS32F03x HAL ">
+      <description>CRC calculation unit (CRC) driver for CS32F03x</description>
+      <RTE_Components_h>
+        #define RTE_DEVICE_HAL_CRC
+      </RTE_Components_h>
+      <files>
+        <file category="header" name="Device/HAL_Driver/inc/cs32f0xx_crc.h" />
+        <file category="source" name="Device/HAL_Driver/src/cs32f0xx_crc.c" />
+      </files>
+    </component>
+    
+    <component Cclass="Device" Cgroup="HAL" Csub="DEBUG" Cversion="1.0.0" condition="CS32F03x HAL">
+      <description>MCU debug component (DEBUG) driver for CS32F03x</description>
+      <RTE_Components_h>
+        #define RTE_DEVICE_HAL_DEBUG
+      </RTE_Components_h>
+      <files>
+        <file category="header" name="Device/HAL_Driver/inc/cs32f0xx_debug.h" />
+        <file category="source" name="Device/HAL_Driver/src/cs32f0xx_debug.c" />
+      </files>
+    </component>
+    
+    <component Cclass="Device" Cgroup="HAL" Csub="DMA" Cversion="1.0.0" condition="CS32F03x HAL RCU">
+      <description>DMA controller (DMA) driver for CS32F03x</description>
+      <RTE_Components_h>
+        #define RTE_DEVICE_HAL_DMA
+      </RTE_Components_h>
+      <files>
+        <file category="header" name="Device/HAL_Driver/inc/cs32f0xx_dma.h" />
+        <file category="source" name="Device/HAL_Driver/src/cs32f0xx_dma.c" />
+      </files>
+    </component>
+    
+    <component Cclass="Device" Cgroup="HAL" Csub="EXTI" Cversion="1.0.0" condition="CS32F03x HAL">
+      <description>External interrupt/event controller (EXTI) driver for CS32F03x</description>
+      <RTE_Components_h>
+        #define RTE_DEVICE_HAL_EXTI
+      </RTE_Components_h>
+      <files>
+        <file category="header" name="Device/HAL_Driver/inc/cs32f0xx_exti.h" />
+        <file category="source" name="Device/HAL_Driver/src/cs32f0xx_exti.c" />
+      </files>
+    </component>
+    
+    <component Cclass="Device" Cgroup="HAL" Csub="Flash" Cversion="1.0.0" condition="CS32F03x HAL">
+      <description>Embedded Flash memory driver for CS32F03x</description>
+      <RTE_Components_h>
+        #define RTE_DEVICE_HAL_FLASH
+      </RTE_Components_h>
+      <files>
+        <file category="header" name="Device/HAL_Driver/inc/cs32f0xx_flash.h" />
+        <file category="source" name="Device/HAL_Driver/src/cs32f0xx_flash.c" />
+      </files>
+    </component>
+    
+    <component Cclass="Device" Cgroup="HAL" Csub="FWDT" Cversion="1.0.0" condition="CS32F03x HAL RCU">
+      <description>Free Watchdog Timer driver for CS32F03x</description>
+      <RTE_Components_h>
+        #define RTE_DEVICE_HAL_FWDT
+      </RTE_Components_h>
+      <files>
+        <file category="header" name="Device/HAL_Driver/inc/cs32f0xx_fwdt.h" />
+        <file category="source" name="Device/HAL_Driver/src/cs32f0xx_fwdt.c" />
+      </files>
+    </component>
+    
+    <component Cclass="Device" Cgroup="HAL" Csub="GPIO" Cversion="1.0.0" condition="CS32F03x HAL RCU">
+      <description>General-purpose I/O (GPIO) driver for CS32F03x</description>
+      <RTE_Components_h>
+        #define RTE_DEVICE_HAL_GPIO
+      </RTE_Components_h>
+      <files>
+        <file category="header" name="Device/HAL_Driver/inc/cs32f0xx_gpio.h" />
+        <file category="source" name="Device/HAL_Driver/src/cs32f0xx_gpio.c" />
+      </files>
+    </component>
+    
+    <component Cclass="Device" Cgroup="HAL" Csub="I2C" Cversion="1.0.0" condition="CS32F03x HAL RCU">
+      <description>Inter-integrated circuit (I2C) interface driver for CS32F03x</description>
+      <RTE_Components_h>
+        #define RTE_DEVICE_HAL_I2C
+      </RTE_Components_h>
+      <files>
+        <file category="header" name="Device/HAL_Driver/inc/cs32f0xx_i2c.h" />
+        <file category="source" name="Device/HAL_Driver/src/cs32f0xx_i2c.c" />
+      </files>
+    </component>
+    
+    <component Cclass="Device" Cgroup="HAL" Csub="PMU" Cversion="1.0.0" condition="CS32F03x HAL RCU">
+      <description>Power management unit driver for CS32F03x</description>
+      <RTE_Components_h>
+        #define RTE_DEVICE_HAL_PMU
+      </RTE_Components_h>
+      <files>
+        <file category="header" name="Device/HAL_Driver/inc/cs32f0xx_pmu.h" />
+        <file category="source" name="Device/HAL_Driver/src/cs32f0xx_pmu.c" />
+      </files>
+    </component>
+    
+    <component Cclass="Device" Cgroup="HAL" Csub="RCU" Cversion="1.0.0" condition="CS32F03x HAL RCU">
+      <description>Reset and clock unit driver for CS32F03x</description>
+      <RTE_Components_h>
+        #define RTE_DEVICE_HAL_RCU
+      </RTE_Components_h>
+      <files>
+        <file category="header" name="Device/HAL_Driver/inc/cs32f0xx_rcu.h" />
+        <file category="source" name="Device/HAL_Driver/src/cs32f0xx_rcu.c" />
+      </files>
+    </component>
+    
+    <component Cclass="Device" Cgroup="HAL" Csub="RTC" Cversion="1.0.0" condition="CS32F03x HAL RCU NO F036">
+      <description>Real-time clock driver for CS32F03x</description>
+      <RTE_Components_h>
+        #define RTE_DEVICE_HAL_RTC
+      </RTE_Components_h>
+      <files>
+        <file category="header" name="Device/HAL_Driver/inc/cs32f0xx_rtc.h" />
+        <file category="source" name="Device/HAL_Driver/src/cs32f0xx_rtc.c" />
+      </files>
+    </component>
+    
+    
+    <component Cclass="Device" Cgroup="HAL" Csub="SPI" Cversion="1.0.0" condition="CS32F03x HAL RCU">
+      <description>Serial peripheral interface (SPI) driver for CS32F03x</description>
+      <RTE_Components_h>
+        #define RTE_DEVICE_HAL_SPI
+      </RTE_Components_h>
+      <files>
+        <file category="header" name="Device/HAL_Driver/inc/cs32f0xx_spi.h" />
+        <file category="source" name="Device/HAL_Driver/src/cs32f0xx_spi.c" />
+      </files>
+    </component>
+    
+    <component Cclass="Device" Cgroup="HAL" Csub="SYSCFG" Cversion="1.0.0" condition="CS32F03x HAL RCU">
+      <description>System configuration driver for CS32F03x</description>
+      <RTE_Components_h>
+        #define RTE_DEVICE_HAL_SYSCFG
+      </RTE_Components_h>
+      <files>
+        <file category="header" name="Device/HAL_Driver/inc/cs32f0xx_syscfg.h" />
+        <file category="source" name="Device/HAL_Driver/src/cs32f0xx_syscfg.c" />
+      </files>
+    </component>
+    
+    
+    <component Cclass="Device" Cgroup="HAL" Csub="TIM" Cversion="1.0.0" condition="CS32F03x HAL RCU">
+      <description>Timers (TIM) driver for CS32F03x</description>
+      <RTE_Components_h>
+        #define RTE_DEVICE_HAL_TIM
+      </RTE_Components_h>
+      <files>
+        <file category="header" name="Device/HAL_Driver/inc/cs32f0xx_tim.h" />
+        <file category="source" name="Device/HAL_Driver/src/cs32f0xx_tim.c" />
+      </files>
+    </component>
+    
+    <component Cclass="Device" Cgroup="HAL" Csub="USART" Cversion="1.0.0" condition="CS32F03x HAL RCU">
+      <description>Universal synchronous asynchronous receiver transmitter (USART) driver for CS32F03x</description>
+      <RTE_Components_h>
+        #define RTE_DEVICE_HAL_USART
+      </RTE_Components_h>
+      <files>
+        <file category="header" name="Device/HAL_Driver/inc/cs32f0xx_usart.h" />
+        <file category="source" name="Device/HAL_Driver/src/cs32f0xx_usart.c" />
+      </files>
+    </component>
+    
+    <component Cclass="Device" Cgroup="HAL" Csub="WWDT" Cversion="1.0.0" condition="CS32F03x HAL RCU">
+      <description>Window Watchdog Timer driver for CS32F03x</description>
+      <RTE_Components_h>
+        #define RTE_DEVICE_HAL_WWDT
+      </RTE_Components_h>
+      <files>
+        <file category="header" name="Device/HAL_Driver/inc/cs32f0xx_wwdt.h" />
+        <file category="source" name="Device/HAL_Driver/src/cs32f0xx_wwdt.c" />
+      </files>
+    </component>
+    
+    <component Cclass="Device" Cgroup="HAL" Csub="ADC2" Cversion="1.0.0" condition="CS32A03x HAL RCU">
+      <description>Analog-to-digital converter2 (ADC2) driver for CS32A03x</description>
+      <RTE_Components_h>
+        #define RTE_DEVICE_HAL_ADC2
+      </RTE_Components_h>
+      <files>
+        <file category="header" name="Device/HAL_Driver/inc/cs32a0xx_adc2.h" condition="CS32A039"/>
+        <file category="source" name="Device/HAL_Driver/src/cs32a0xx_adc2.c" condition="CS32A039"/>
+      </files>
+    </component>
+    <!-- END: Chipsea Technologies(ShenZhen) Hardware Abstract Layer -->
+  </components>
+</package>

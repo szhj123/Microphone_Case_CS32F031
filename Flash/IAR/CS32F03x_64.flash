@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<flash_device>
+  <exe>.\CS32F0xx_64.out</exe>
+  <page>1024</page>
+  <block>64 0x400</block>
+  <aggregate>1</aggregate>
+  <flash_base>0x08000000</flash_base>
+</flash_device>

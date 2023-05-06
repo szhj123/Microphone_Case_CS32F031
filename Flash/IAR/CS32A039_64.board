@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flash_board>
+  <pass>
+    <loader>.\CS32A039_64.flash</loader>
+    <range>CODE 0x08000000 0x08010000</range>
+  </pass>
+  <pass>
+    <loader>.\CS32A039_OPT.flash</loader>
+    <range>CODE 0x1FFFF800 0x1FFFF810</range>
+  </pass>
+</flash_board>
