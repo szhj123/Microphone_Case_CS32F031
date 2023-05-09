@@ -437,9 +437,28 @@
         </Group>
         <Group>
           <GroupName>drv</GroupName>
+          <Files>
+            <File>
+              <FileName>drv_task.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\drv\drv_task.c</FilePath>
+            </File>
+          </Files>
         </Group>
         <Group>
           <GroupName>hal</GroupName>
+          <Files>
+            <File>
+              <FileName>hal_interrupt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\hal\hal_interrupt.c</FilePath>
+            </File>
+            <File>
+              <FileName>hal_task.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\hal\hal_task.c</FilePath>
+            </File>
+          </Files>
         </Group>
       </Groups>
     </Target>
