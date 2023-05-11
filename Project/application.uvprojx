@@ -423,6 +423,16 @@
               <FileType>1</FileType>
               <FilePath>..\Device\HAL_Driver\src\cs32f0xx_debug.c</FilePath>
             </File>
+            <File>
+              <FileName>cs32f0xx_tim.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Device\HAL_Driver\src\cs32f0xx_tim.c</FilePath>
+            </File>
+            <File>
+              <FileName>cs32f0xx_misc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Device\HAL_Driver\src\cs32f0xx_misc.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -443,6 +453,11 @@
               <FileType>1</FileType>
               <FilePath>..\User\drv\drv_task.c</FilePath>
             </File>
+            <File>
+              <FileName>drv_timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\drv\drv_timer.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -457,6 +472,11 @@
               <FileName>hal_task.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\hal\hal_task.c</FilePath>
+            </File>
+            <File>
+              <FileName>hal_timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\hal\hal_timer.c</FilePath>
             </File>
           </Files>
         </Group>

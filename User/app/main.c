@@ -11,6 +11,7 @@
 
 /* Includes ---------------------------------------------*/
 #include "drv_task.h"
+#include "drv_timer.h"
 /* Private typedef --------------------------------------*/
 /* Private define ------------------ --------------------*/
 /* Private macro ----------------------------------------*/
@@ -20,6 +21,8 @@
 int main(void )
 {    
     Drv_Task_Init();
+
+    Drv_Timer_Init();
     
     while(1)
 	{

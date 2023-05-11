@@ -11,6 +11,7 @@
 
 /* Includes ---------------------------------------------*/
 #include "hal_task.h"
+#include "hal_timer.h"
 /* Private typedef --------------------------------------*/
 /* Private define ------------------ --------------------*/
 /* Private macro ----------------------------------------*/
@@ -27,5 +28,23 @@ void SysTick_Handler(void)
 {
     Hal_Task_Isr_Handler();
 }
+
+/**
+  * @fn void TIM3_IRQHandler(void)
+  * @brief  This function handles TIM3  interrupt request.
+  * @param  None
+  * @return None
+  */
+void TIM3_IRQHandler(void)
+{
+	if (__TIM_FLAG_STATUS_GET(TIM3, UPDATE) != RESET)
+	{
+		__TIM_FLAG_CLEAR(TIM3, TIM_FLAG_UPDATE);
+
+        Hal_Timer_Isr_Handler();
+
+	}
+}
+
 
 
