@@ -1,5 +1,5 @@
 /********************************************************
-* @file       main.c
+* @file       drv_led.c
 * @author     szhj13
 * @version    V1.0
 * @date       2023-05-06
@@ -10,31 +10,25 @@
 **********************************************************/
 
 /* Includes ---------------------------------------------*/
-#include "drv_task.h"
-#include "drv_timer.h"
-
-#include "app_led.h"
-#include "app_event.h"
+#include "drv_led.h"
 /* Private typedef --------------------------------------*/
 /* Private define ------------------ --------------------*/
 /* Private macro ----------------------------------------*/
 /* Private function -------------------------------------*/
 /* Private variables ------------------------------------*/
 
-int main(void )
-{    
-    Drv_Task_Init();
-
-    Drv_Timer_Init();
-
-    App_Led_Init();
-
-    App_Event_Init();
-    
-    while(1)
-	{
-        Drv_Task_Run();
-	}
+void Drv_Led_Init(void )
+{
+    Hal_Led_Init();
 }
 
+void Drv_Led_On(led_t *led )
+{
+    Hal_Led_Off(led->port, led->pin);
+}
+
+void Drv_Led_Off(led_t *led )
+{
+    Hal_Led_On(led->port, led->pin);
+}
 

@@ -1,5 +1,5 @@
 /********************************************************
-* @file       main.c
+* @file       drv_batt.c
 * @author     szhj13
 * @version    V1.0
 * @date       2023-05-06
@@ -10,31 +10,14 @@
 **********************************************************/
 
 /* Includes ---------------------------------------------*/
-#include "drv_task.h"
-#include "drv_timer.h"
-
-#include "app_led.h"
-#include "app_event.h"
+#include "drv_batt.h"
 /* Private typedef --------------------------------------*/
 /* Private define ------------------ --------------------*/
 /* Private macro ----------------------------------------*/
 /* Private function -------------------------------------*/
 /* Private variables ------------------------------------*/
 
-int main(void )
-{    
-    Drv_Task_Init();
-
-    Drv_Timer_Init();
-
-    App_Led_Init();
-
-    App_Event_Init();
-    
-    while(1)
-	{
-        Drv_Task_Run();
-	}
+void Drv_Batt_Init(void )
+{
+    Hal_Batt_Init();
 }
-
-

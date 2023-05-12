@@ -1,5 +1,5 @@
 /********************************************************
-* @file       main.c
+* @file       app_batt.c
 * @author     szhj13
 * @version    V1.0
 * @date       2023-05-06
@@ -10,31 +10,34 @@
 **********************************************************/
 
 /* Includes ---------------------------------------------*/
-#include "drv_task.h"
-#include "drv_timer.h"
-
-#include "app_led.h"
-#include "app_event.h"
+#include "app_batt.h"
 /* Private typedef --------------------------------------*/
 /* Private define ------------------ --------------------*/
 /* Private macro ----------------------------------------*/
 /* Private function -------------------------------------*/
+static void App_Batt_Handler(void *arg );
 /* Private variables ------------------------------------*/
+batt_ctrl_block_t battCtrl;
 
-int main(void )
-{    
-    Drv_Task_Init();
 
-    Drv_Timer_Init();
+void App_Batt_Init(void )
+{
+    Drv_Batt_Init();
 
-    App_Led_Init();
+    Drv_Task_Regist_Period(App_Batt_Handler, 0, 1, NULL);
+}
 
-    App_Event_Init();
-    
-    while(1)
-	{
-        Drv_Task_Run();
-	}
+static void App_Batt_Handler(void *arg )
+{
+    if(battCtrl.delayCnt < 0xffff)
+    {
+        battCtrl.delayCnt++;
+    }
+
+    if(battCtrl.handler != NULL)
+    {
+        battCtrl.handler();
+    }
 }
 
 
