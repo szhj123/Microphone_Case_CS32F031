@@ -12,6 +12,7 @@
 /* Includes ---------------------------------------------*/
 #include "hal_task.h"
 #include "hal_timer.h"
+#include "hal_charger.h"
 /* Private typedef --------------------------------------*/
 /* Private define ------------------ --------------------*/
 /* Private macro ----------------------------------------*/
@@ -44,6 +45,23 @@ void TIM3_IRQHandler(void)
         Hal_Timer_Isr_Handler();
 
 	}
+}
+
+/**
+  * @fn void EXTI0_1_IRQHandler(void)
+  * @brief  This function handles External lines 0 to 1 interrupt request.
+  * @param  None
+  * @return None
+  */
+void EXTI0_1_IRQHandler(void)
+{
+    if(__EXTI_FLAG_STATUS_GET(EXTI_LINE_1) != RESET)
+    {    
+        /* Clear the EXTI line 1  bit */
+        __EXTI_FLAG_CLEAR(EXTI_LINE_1);
+
+        Hal_Charger_Isr_Handler();
+    } 
 }
 
 

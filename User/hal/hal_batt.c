@@ -24,6 +24,8 @@ void Hal_Batt_Init(void )
     gpio_mode_set(GPIOB, GPIO_PIN_3, GPIO_MODE_OUT_PP(GPIO_SPEED_HIGH));
 
     __GPIO_PIN_RESET(GPIOB, GPIO_PIN_3);
+
+    
 }
 
 void Hal_Batt_Detect_Enable(void )

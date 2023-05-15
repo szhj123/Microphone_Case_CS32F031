@@ -15,6 +15,8 @@
 
 #include "app_led.h"
 #include "app_event.h"
+
+#include "drv_charger.h"
 /* Private typedef --------------------------------------*/
 /* Private define ------------------ --------------------*/
 /* Private macro ----------------------------------------*/
@@ -30,6 +32,8 @@ int main(void )
     App_Led_Init();
 
     App_Event_Init();
+
+    Drv_Charger_Init();
     
     while(1)
 	{

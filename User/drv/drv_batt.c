@@ -11,13 +11,21 @@
 
 /* Includes ---------------------------------------------*/
 #include "drv_batt.h"
+#include "drv_timer.h"
 /* Private typedef --------------------------------------*/
 /* Private define ------------------ --------------------*/
 /* Private macro ----------------------------------------*/
 /* Private function -------------------------------------*/
 /* Private variables ------------------------------------*/
+static void test(void *arg )
+{
+    
+}
 
 void Drv_Batt_Init(void )
 {
     Hal_Batt_Init();
+
+    Drv_Timer_Regist_Period(test, 0, 250, NULL);
 }
+

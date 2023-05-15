@@ -134,11 +134,11 @@
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
             <Capability>1</Capability>
-            <DriverSelection>-1</DriverSelection>
+            <DriverSelection>4096</DriverSelection>
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2CM3.DLL</Flash2>
-          <Flash3></Flash3>
+          <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -433,6 +433,11 @@
               <FileType>1</FileType>
               <FilePath>..\Device\HAL_Driver\src\cs32f0xx_misc.c</FilePath>
             </File>
+            <File>
+              <FileName>cs32f0xx_i2c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Device\HAL_Driver\src\cs32f0xx_i2c.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -478,6 +483,11 @@
               <FileType>1</FileType>
               <FilePath>..\User\drv\drv_led.c</FilePath>
             </File>
+            <File>
+              <FileName>drv_charger.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\drv\drv_charger.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -502,6 +512,11 @@
               <FileName>hal_led.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\hal\hal_led.c</FilePath>
+            </File>
+            <File>
+              <FileName>hal_charger.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\hal\hal_charger.c</FilePath>
             </File>
           </Files>
         </Group>
