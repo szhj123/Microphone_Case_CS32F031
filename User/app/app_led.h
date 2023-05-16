@@ -18,6 +18,7 @@ typedef struct _led_ctrl_block_t
 }led_ctrl_block_t;
 
 void App_Led_Init(void );
+void App_Led_All_Turn_Off(void );
 
 #endif 
 

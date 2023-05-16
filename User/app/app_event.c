@@ -11,6 +11,8 @@
 
 /* Includes ---------------------------------------------*/
 #include "app_event.h"
+#include "app_batt.h"
+#include "app_led.h"
 /* Private typedef --------------------------------------*/
 /* Private define ------------------ --------------------*/
 /* Private macro ----------------------------------------*/
@@ -32,13 +34,16 @@ static void App_Event_Handler(void *arg )
         return ;
     }
 
-    switch(msg.cmd)
+    switch((app_event_t )msg.cmd)
     {
-        case APP_EVENT_BATT:
+        case APP_EVENT_USB_PLUG_OUT:
         {
+            //todo: judge case state whether open or close
+            App_Led_All_Turn_Off();
+            
             break;
         }
-        case APP_EVENT_HALL:
+        case APP_EVENT_USB_PLUG_IN:
         {
             break;
         }

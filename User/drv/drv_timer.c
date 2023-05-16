@@ -57,7 +57,7 @@ uint8_t Drv_Timer_Regist_Period(void (*handler)(void *), uint16_t ticks, uint16_
     return Drv_Timer_Regist(handler, ticks, period, arg );
 }
 
-static void Drv_Timer_Delete(uint8_t timerId )
+void Drv_Timer_Delete(uint8_t timerId )
 {
     if(timerId >= TIMER_MAX_NUM)
     {

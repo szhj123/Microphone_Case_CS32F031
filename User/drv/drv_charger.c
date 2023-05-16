@@ -11,35 +11,81 @@
 
 /* Includes ---------------------------------------------*/
 #include "drv_charger.h"
+#include "drv_timer.h"
 /* Private typedef --------------------------------------*/
 /* Private define ------------------ --------------------*/
 #define CHARGER_DEV_ADDR                 (0x6a << 1)
 /* Private macro ----------------------------------------*/
 /* Private function -------------------------------------*/
-static void Drv_Charger_Write(uint8_t regAddr, uint8_t val );
-static uint8_t Drv_Charger_Read(uint8_t regAddr );
-
+static void Drv_Chrg_Write(uint8_t regAddr, uint8_t val );
+static uint8_t Drv_Chrg_Read(uint8_t regAddr );
+static void Drv_Chrg_Intp_Handler(void );
 /* Private variables ------------------------------------*/
+chrg_ctrl_block_t  chrgCtrl;
 
-void Drv_Charger_Init(void )
+
+void Drv_BATT_CHRG_INIT(void )
 {
-    Hal_Charger_Init();
+    Hal_BATT_CHRG_INIT();
 
-    Drv_Charger_Config();
+    Hal_Chrg_Regist_Isr_Callback(Drv_Chrg_Intp_Handler);
+
+    Drv_Chrg_Cfg();
 }
 
-void Drv_Charger_Config(void )
+void Drv_Chrg_Cfg(void )
 {
-    static uint8_t val;
+    chrg_status0_t chrgStatus0;
     
-    Drv_Charger_Write(0x00, 0x17);
+    Drv_Chrg_Write(0x00, 0x17);
 
     
-    
-    val = Drv_Charger_Read(0x00);
+    chrgStatus0.status = Drv_Chrg_Read(CHRG_REG_STATUS0);
+
+    chrgCtrl.chrgStat = (chrg_stat_t)chrgStatus0.bits.chrg_stat;
+    chrgCtrl.vbusStat = (vbus_stat_t)chrgStatus0.bits.vbus_stat;
 }
 
-static void Drv_Charger_Write(uint8_t regAddr, uint8_t val )
+static void Drv_Chrg_Read_Status(void *arg )
+{
+    chrg_status0_t chrgStatus0;
+    chrg_status1_t chrgStatus1;
+
+    chrgStatus0.status = Drv_Chrg_Read(CHRG_REG_STATUS0);
+    chrgStatus1.status = Drv_Chrg_Read(CHRG_REG_STATUS1);
+
+    chrgCtrl.chrgStat = (chrg_stat_t )chrgStatus0.bits.chrg_stat;
+    chrgCtrl.vbusStat = (vbus_stat_t )chrgStatus0.bits.vbus_stat;
+    chrgCtrl.chrgFault = (chrg_fault_t )chrgStatus1.bits.chrg_fault;
+    chrgCtrl.ntcFault = (ntc_fault_t )chrgStatus1.bits.ntc_fault;
+}
+
+static void Drv_Chrg_Intp_Handler(void )
+{
+    static uint8_t regRdTimer = TIMER_NULL;
+
+    Drv_Timer_Delete(regRdTimer);
+    
+    regRdTimer = Drv_Timer_Regist_Oneshot(Drv_Chrg_Read_Status, 25, NULL);
+}
+
+uint8_t Drv_Chrg_Get_Usb_State(void )
+{
+    uint8_t regVal;
+    
+    if((chrg_stat_t)chrgCtrl.chrgStat != NOT_CHRG)
+    {
+        regVal = USB_PLUG_IN;
+    }
+    else
+    {
+        regVal = USB_PLUG_OUT;
+    }
+
+    return regVal;
+}
+
+static void Drv_Chrg_Write(uint8_t regAddr, uint8_t val )
 {
     uint8_t buf[2] = {0};
     uint8_t i;
@@ -49,33 +95,26 @@ static void Drv_Charger_Write(uint8_t regAddr, uint8_t val )
     
     for(i=0;i<3;i++)
     {
-        if(Hal_Charger_Write(CHARGER_DEV_ADDR, buf, 2))
+        if(Hal_Chrg_Write(CHARGER_DEV_ADDR, buf, 2))
         {
             break;
         }
     }
 }
 
-static uint8_t Drv_Charger_Read(uint8_t regAddr )
+static uint8_t Drv_Chrg_Read(uint8_t regAddr )
 {
     uint8_t i;
     uint8_t val = 0;
 
     for(i=0;i<3;i++)
     {
-        if(Hal_Charger_Read(CHARGER_DEV_ADDR, 0, &val, 1))
+        if(Hal_Chrg_Read(CHARGER_DEV_ADDR, regAddr, &val, 1))
         {
             break;
         }
     }
 
     return val;
-}
-
-void Drv_Charger_Get_State(void )
-{
-    static uint8_t state;
-    
-    Hal_Charger_Read(CHARGER_DEV_ADDR, 0x08, &state, 1);
 }
 

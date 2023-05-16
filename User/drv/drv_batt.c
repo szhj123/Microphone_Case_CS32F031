@@ -14,18 +14,24 @@
 #include "drv_timer.h"
 /* Private typedef --------------------------------------*/
 /* Private define ------------------ --------------------*/
+#define ADC_REF_VOL                 2800//mv
 /* Private macro ----------------------------------------*/
 /* Private function -------------------------------------*/
 /* Private variables ------------------------------------*/
-static void test(void *arg )
-{
-    
-}
 
 void Drv_Batt_Init(void )
 {
     Hal_Batt_Init();
+}
 
-    Drv_Timer_Regist_Period(test, 0, 250, NULL);
+uint16_t Drv_Batt_Get_Vol(void )
+{
+    uint32_t adcVal = 0;
+    uint16_t battVol ;
+    adcVal = Hal_Batt_Adc_Get_SampleVal(ADC_CONV_CHANNEL_9);
+
+    battVol =  ((adcVal * ADC_REF_VOL * 2) >> 12);
+
+    return battVol;
 }
 

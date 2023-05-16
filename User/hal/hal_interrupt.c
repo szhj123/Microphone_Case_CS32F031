@@ -60,7 +60,7 @@ void EXTI0_1_IRQHandler(void)
         /* Clear the EXTI line 1  bit */
         __EXTI_FLAG_CLEAR(EXTI_LINE_1);
 
-        Hal_Charger_Isr_Handler();
+        Hal_Chrg_Isr_Handler();
     } 
 }
 

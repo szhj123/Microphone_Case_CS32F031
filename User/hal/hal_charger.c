@@ -17,21 +17,21 @@
 #define I2C_TIMING              0x10420F13
 /* Private macro ----------------------------------------*/
 /* Private function -------------------------------------*/
-static void Hal_Charger_Intp_Init(void );
-static void Hal_Charger_I2c_Init(void );
+static void Hal_Chrg_Intp_Init(void );
+static void Hal_Chrg_I2c_Init(void );
 /* Private variables ------------------------------------*/
 hal_isr_callback_t hal_intp1_isr_callback = NULL;
 static __IO uint32_t max_delay = I2C_LONG_TIMEOUT;
 
 
-void Hal_Charger_Init(void )
+void Hal_BATT_CHRG_INIT(void )
 {
-    Hal_Charger_Intp_Init();
+    Hal_Chrg_Intp_Init();
 
-    Hal_Charger_I2c_Init();
+    Hal_Chrg_I2c_Init();
 }
 
-static void Hal_Charger_Intp_Init(void )
+static void Hal_Chrg_Intp_Init(void )
 {
     nvic_config_t nvic_config_struct;
 
@@ -46,7 +46,6 @@ static void Hal_Charger_Intp_Init(void )
     // Configure EXTI8 line
     __EXTI_INTR_ENABLE(EXTI_LINE_1);
     __EXTI_EDGE_ENABLE(EXTI_EDGE_FALLING, EXTI_LINE_1);
-    __EXTI_EDGE_ENABLE(EXTI_EDGE_RISING, EXTI_LINE_1);
 
     // Enable and set EXTI4_15 Interrupt
     nvic_config_struct.IRQn = IRQn_EXTI0_1;
@@ -55,7 +54,7 @@ static void Hal_Charger_Intp_Init(void )
     nvic_init(&nvic_config_struct);
 }
 
-static void Hal_Charger_I2c_Init(void )
+static void Hal_Chrg_I2c_Init(void )
 {
     __RCU_AHB_CLK_ENABLE(RCU_AHB_PERI_GPIOA);
     __RCU_APB1_CLK_ENABLE(RCU_APB1_PERI_I2C1);
@@ -80,7 +79,7 @@ static void Hal_Charger_I2c_Init(void )
     __I2C_ENABLE(I2C1);
 }
 
-uint32_t Hal_Charger_Write(uint32_t devAddr, uint8_t *buf, uint8_t length )
+uint32_t Hal_Chrg_Write(uint32_t devAddr, uint8_t *buf, uint8_t length )
 {
     uint32_t data_num = 0;
 
@@ -125,7 +124,7 @@ uint32_t Hal_Charger_Write(uint32_t devAddr, uint8_t *buf, uint8_t length )
     return 1;
 }
 
-uint32_t Hal_Charger_Read(uint32_t devAddr, uint8_t regAddr, uint8_t *buf, uint16_t length )
+uint32_t Hal_Chrg_Read(uint32_t devAddr, uint8_t regAddr, uint8_t *buf, uint16_t length )
 {
     uint32_t data_num;
 
@@ -195,12 +194,12 @@ uint32_t Hal_Charger_Read(uint32_t devAddr, uint8_t regAddr, uint8_t *buf, uint1
 
 
 
-void Hal_Charger_Regist_Isr_Callback(hal_isr_callback_t callback )
+void Hal_Chrg_Regist_Isr_Callback(hal_isr_callback_t callback )
 {
     hal_intp1_isr_callback = callback;
 }
 
-void Hal_Charger_Isr_Handler(void )
+void Hal_Chrg_Isr_Handler(void )
 {
     if(hal_intp1_isr_callback != NULL)
     {

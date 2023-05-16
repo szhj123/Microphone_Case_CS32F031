@@ -15,8 +15,7 @@
 
 #include "app_led.h"
 #include "app_event.h"
-
-#include "drv_charger.h"
+#include "app_batt.h"
 /* Private typedef --------------------------------------*/
 /* Private define ------------------ --------------------*/
 /* Private macro ----------------------------------------*/
@@ -29,11 +28,11 @@ int main(void )
 
     Drv_Timer_Init();
 
+    App_Batt_Init();
+
     App_Led_Init();
 
     App_Event_Init();
-
-    Drv_Charger_Init();
     
     while(1)
 	{

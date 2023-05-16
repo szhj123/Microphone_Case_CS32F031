@@ -4,8 +4,9 @@
 #include "hal_cs32f031.h"
 
 void Hal_Batt_Init(void );
-void Hal_Batt_Detect_Enable(void );
-void Hal_Batt_Detect_Disable(void );
+uint16_t Hal_Batt_Adc_Get_SampleVal(uint32_t channel );
+void Hal_Batt_Adc_Det_Enable(void );
+void Hal_Batt_Adc_Det_Disable(void );
 
 #endif 
 

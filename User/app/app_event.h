@@ -5,9 +5,13 @@
 #include "drv_timer.h"
 #include "drv_event.h"
 
-#define APP_EVENT_BATT               1
-#define APP_EVENT_HALL               2
-
+typedef enum _app_event_t
+{
+    APP_EVENT_USB_PLUG_OUT = 0,
+    APP_EVENT_USB_PLUG_IN,
+    APP_EVENT_BATT_LEVEL
+    
+}app_event_t;
 
 void App_Event_Init(void );
 

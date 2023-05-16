@@ -438,6 +438,11 @@
               <FileType>1</FileType>
               <FilePath>..\Device\HAL_Driver\src\cs32f0xx_i2c.c</FilePath>
             </File>
+            <File>
+              <FileName>cs32f0xx_adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Device\HAL_Driver\src\cs32f0xx_adc.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -457,6 +462,11 @@
               <FileName>app_led.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\app\app_led.c</FilePath>
+            </File>
+            <File>
+              <FileName>app_batt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\app\app_batt.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -488,6 +498,11 @@
               <FileType>1</FileType>
               <FilePath>..\User\drv\drv_charger.c</FilePath>
             </File>
+            <File>
+              <FileName>drv_batt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\drv\drv_batt.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -517,6 +532,11 @@
               <FileName>hal_charger.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\hal\hal_charger.c</FilePath>
+            </File>
+            <File>
+              <FileName>hal_batt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\hal\hal_batt.c</FilePath>
             </File>
           </Files>
         </Group>

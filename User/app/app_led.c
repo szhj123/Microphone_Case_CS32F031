@@ -52,6 +52,15 @@ static void App_Led_Handler(void *arg )
     }
 }
 
+void App_Led_All_Turn_Off(void )
+{
+    ledCtrl.handler = NULL;
+    
+    Drv_Led_Off(&ledCtrl.led1);
+    Drv_Led_Off(&ledCtrl.led2);
+    Drv_Led_Off(&ledCtrl.led3);
+}
+
 void App_Led_Flash_Callback(void )
 {
    if(ledCtrl.delayCnt > 1000)

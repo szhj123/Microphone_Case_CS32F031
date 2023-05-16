@@ -4,6 +4,7 @@
 #include "hal_batt.h"
 
 void Drv_Batt_Init(void );
+uint16_t Drv_Batt_Get_Vol(void );
 
 #endif 
 
