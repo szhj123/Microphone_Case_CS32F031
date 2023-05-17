@@ -13,6 +13,7 @@
 #include "hal_task.h"
 #include "hal_timer.h"
 #include "hal_charger.h"
+#include "hal_hall.h"
 /* Private typedef --------------------------------------*/
 /* Private define ------------------ --------------------*/
 /* Private macro ----------------------------------------*/
@@ -63,6 +64,18 @@ void EXTI0_1_IRQHandler(void)
         Hal_Chrg_Isr_Handler();
     } 
 }
+
+void EXTI4_15_IRQHandler(void )
+{
+    if(__EXTI_FLAG_STATUS_GET(EXTI_LINE_5) != RESET)
+    {    
+        /* Clear the EXTI line 1  bit */
+        __EXTI_FLAG_CLEAR(EXTI_LINE_5);
+
+        Hal_Hall_Isr_Handler();
+    } 
+}
+
 
 
 

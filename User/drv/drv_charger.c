@@ -23,8 +23,7 @@ static void Drv_Chrg_Intp_Handler(void );
 /* Private variables ------------------------------------*/
 chrg_ctrl_block_t  chrgCtrl;
 
-
-void Drv_BATT_CHRG_INIT(void )
+void Drv_Chrg_Init(void )
 {
     Hal_BATT_CHRG_INIT();
 
@@ -38,8 +37,15 @@ void Drv_Chrg_Cfg(void )
     chrg_status0_t chrgStatus0;
     
     Drv_Chrg_Write(0x00, 0x17);
+    Drv_Chrg_Write(0x01, 0x34);
+    Drv_Chrg_Write(0x02, 0x99);
+    Drv_Chrg_Write(0x03, 0x26);
+    Drv_Chrg_Write(0x04, 0x40);
+    Drv_Chrg_Write(0x05, 0x9e);
+    Drv_Chrg_Write(0x06, 0xe6);
+    Drv_Chrg_Write(0x07, 0x4c);
+    Drv_Chrg_Write(0x0c, 0x75);
 
-    
     chrgStatus0.status = Drv_Chrg_Read(CHRG_REG_STATUS0);
 
     chrgCtrl.chrgStat = (chrg_stat_t)chrgStatus0.bits.chrg_stat;
@@ -62,11 +68,11 @@ static void Drv_Chrg_Read_Status(void *arg )
 
 static void Drv_Chrg_Intp_Handler(void )
 {
-    static uint8_t regRdTimer = TIMER_NULL;
+    static uint8_t timerRdReg = TIMER_NULL;
 
-    Drv_Timer_Delete(regRdTimer);
+    Drv_Timer_Delete(timerRdReg);
     
-    regRdTimer = Drv_Timer_Regist_Oneshot(Drv_Chrg_Read_Status, 25, NULL);
+    timerRdReg = Drv_Timer_Regist_Oneshot(Drv_Chrg_Read_Status, 50, NULL);
 }
 
 uint8_t Drv_Chrg_Get_Usb_State(void )
@@ -83,6 +89,11 @@ uint8_t Drv_Chrg_Get_Usb_State(void )
     }
 
     return regVal;
+}
+
+chrg_stat_t Drv_Chrg_Get_Charging_State(void )
+{    
+    return chrgCtrl.chrgStat;
 }
 
 static void Drv_Chrg_Write(uint8_t regAddr, uint8_t val )

@@ -37,6 +37,7 @@ typedef enum _pin_t
 void Hal_Led_Init(void );
 void Hal_Led_On(port_t port, pin_t pin );
 void Hal_Led_Off(port_t port, pin_t pin );
+uint8_t Hal_Led_Get_Stat(port_t port, pin_t pin );
 
 #endif 
 

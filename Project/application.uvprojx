@@ -468,6 +468,11 @@
               <FileType>1</FileType>
               <FilePath>..\User\app\app_batt.c</FilePath>
             </File>
+            <File>
+              <FileName>app_hall.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\app\app_hall.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -503,6 +508,11 @@
               <FileType>1</FileType>
               <FilePath>..\User\drv\drv_batt.c</FilePath>
             </File>
+            <File>
+              <FileName>drv_hall.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\drv\drv_hall.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -537,6 +547,11 @@
               <FileName>hal_batt.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\hal\hal_batt.c</FilePath>
+            </File>
+            <File>
+              <FileName>hal_hall.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\hal\hal_hall.c</FilePath>
             </File>
           </Files>
         </Group>

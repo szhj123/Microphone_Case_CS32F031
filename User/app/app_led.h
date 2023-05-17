@@ -9,7 +9,8 @@ typedef struct _led_ctrl_block_t
     void (*handler)(void );
     
     uint16_t delayCnt;
-    uint8_t  flashFlag;
+    uint8_t  ledFlashIndex;
+    uint8_t  ledFlashNum;
     
     led_t led1;
     led_t led2;
@@ -19,6 +20,11 @@ typedef struct _led_ctrl_block_t
 
 void App_Led_Init(void );
 void App_Led_All_Turn_Off(void );
+void App_Led_All_Turn_On(void );
+void App_Led_Flash_BattLevel(uint8_t battLevel );
+void App_Led_Hall_Open(uint8_t battLevel );
+void App_Led_Hall_Close(void );
+
 
 #endif 
 

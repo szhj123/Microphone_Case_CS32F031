@@ -28,6 +28,8 @@ void Hal_Batt_Init(void )
     __GPIO_PIN_RESET(GPIOB, GPIO_PIN_3);
 
     Hal_Batt_Adc_Init();
+
+    Hal_Batt_Adc_Get_SampleVal(ADC_CONV_CHANNEL_9);
 }
 
 static void Hal_Batt_Adc_Init(void )

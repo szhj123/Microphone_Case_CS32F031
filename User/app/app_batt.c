@@ -27,13 +27,18 @@ void App_Batt_Init(void )
 {
     Drv_Batt_Init();
 
-    Drv_BATT_CHRG_INIT();
+    Drv_Chrg_Init();
 
-    taskBatt = Drv_Task_Regist_Period(App_Batt_Handler, 0, 1, NULL);
+    taskBatt = Drv_Task_Regist_Period(App_Batt_Handler, 500, 1, NULL);
 }
 
 static void App_Batt_Handler(void *arg )
 {
+    if(battCtrl.delayCnt < 0xffff)
+    {
+        battCtrl.delayCnt++;
+    }
+
     if(Drv_Chrg_Get_Usb_State() == USB_PLUG_OUT)
     {
         App_Batt_Dischrg_Handler();
@@ -61,33 +66,38 @@ static void App_Batt_Dischrg_Handler(void )
                 battCtrl.battLevel = App_Batt_Cal_Level(battCtrl.battVol);
 
                 battCtrl.battSaveLevel  = battCtrl.battLevel;
-                
             }
             
-            battCtrl.dischrgStat = BATT_DISCHRG_PROCESS;
-
             Drv_Msg_Put(APP_EVENT_USB_PLUG_OUT, NULL, 0);
 
-            Drv_Task_Delay(taskBatt, 5000);
+            battCtrl.delayCnt = 0;
+
+            battCtrl.dischrgStat = BATT_DISCHRG_PROCESS;
             
             break;
         }
         case BATT_DISCHRG_PROCESS:
         {
-            battCtrl.battVol = Drv_Batt_Get_Vol();
-                
-            battCtrl.battSaveVol = battCtrl.battVol;
-
-            battCtrl.battLevel = App_Batt_Cal_Level(battCtrl.battVol);
-
-            if(battCtrl.battLevel < battCtrl.battSaveLevel)
+            if(battCtrl.delayCnt > 1000)
             {
-                battCtrl.battSaveLevel = battCtrl.battLevel;
+                battCtrl.delayCnt = 0;
+                
+                battCtrl.battVol = Drv_Batt_Get_Vol();
+                    
+                battCtrl.battSaveVol = battCtrl.battVol;
 
+                battCtrl.battLevel = App_Batt_Cal_Level(battCtrl.battVol);
+
+                if(battCtrl.battLevel < battCtrl.battSaveLevel)
+                {
+                    battCtrl.battSaveLevel = battCtrl.battLevel;
+
+                    if(battCtrl.battLevel == BATT_LEVEL_0);
+                    {
+                        Drv_Msg_Put(APP_EVENT_SYS_SLEEP, NULL, 0);
+                    }
+                }
             }
-            
-            Drv_Task_Delay(taskBatt, 1000);
-            
             break;
         }
         default: break;
@@ -101,13 +111,13 @@ static void App_Batt_Chrg_Handler(void )
     switch(battCtrl.chrgStat)
     {
         case BATT_CHRG_INIT:
-        {
-            battCtrl.battVol = Drv_Batt_Get_Vol();
-            
-            battCtrl.battSaveVol = battCtrl.battVol;
-            
+        {            
             if(battCtrl.battLevel == BATT_LEVEL_0)
             {
+                battCtrl.battVol = Drv_Batt_Get_Vol();
+            
+                battCtrl.battSaveVol = battCtrl.battVol;
+                
                 battCtrl.battLevel = App_Batt_Cal_Level(battCtrl.battVol);
 
                 battCtrl.battSaveLevel  = battCtrl.battLevel;
@@ -115,58 +125,97 @@ static void App_Batt_Chrg_Handler(void )
 
             Drv_Msg_Put(APP_EVENT_BATT_LEVEL, (const uint8_t *)&battCtrl.battLevel, 1);
 
+            battCtrl.delayCnt = 0;
+            
             battCtrl.chrgStat = BATT_CHRG_GET_VOL_ERR;
-
-            Drv_Task_Delay(taskBatt, 5000);
             
             break;
         }
         case BATT_CHRG_GET_VOL_ERR:
         {
-            battCtrl.battVol = Drv_Batt_Get_Vol();
+            if(battCtrl.delayCnt > 5000)
+            {                
+                battCtrl.delayCnt = 0;
+                
+                battCtrl.battVol = Drv_Batt_Get_Vol();
 
-            if(battCtrl.battVol > battCtrl.battSaveLevel)
-            {
-                battCtrl.battErrVol = battCtrl.battVol - battCtrl.battSaveLevel;
-            }
-            else
-            {
-                battCtrl.battErrVol = 0;
-            }
-
-            battCtrl.chrgStat = BATT_CHRG_PROCESS;
-            
-            Drv_Task_Delay(taskBatt, 1000);
-            
+                if(battCtrl.battVol > battCtrl.battSaveVol)
+                {
+                    battCtrl.battErrVol = battCtrl.battVol - battCtrl.battSaveVol;
+                }
+                else
+                {
+                    battCtrl.battErrVol = 0;
+                }
+                
+                battCtrl.chrgStat = BATT_CHRG_PROCESS;
+            }            
             break;
         }
         case BATT_CHRG_PROCESS:
         {
-            battCtrl.battVol = Drv_Batt_Get_Vol();
-
-            if(battCtrl.battVol > 4180)
+            if(battCtrl.delayCnt > 5000)
             {
-                if(battCtrl.battErrVol > 0)
+                battCtrl.delayCnt = 0;
+                
+                battCtrl.battVol = Drv_Batt_Get_Vol();
+    
+                if(battCtrl.battVol > 4195)
                 {
-                    battCtrl.battErrVol--;
+                    if(battCtrl.battErrVol > 0)
+                    {
+                        battCtrl.battErrVol--;
+                    }
+                }
+    
+                battCtrl.battVol -= battCtrl.battErrVol;
+    
+                battCtrl.battSaveVol = battCtrl.battVol;
+    
+                battCtrl.battLevel = App_Batt_Cal_Level(battCtrl.battVol);
+    
+                if(battCtrl.battLevel > battCtrl.battSaveLevel)
+                {
+                    battCtrl.battSaveLevel = battCtrl.battLevel;
+    
+                    Drv_Msg_Put(APP_EVENT_BATT_LEVEL, (const uint8_t *)&battCtrl.battLevel, 1);
                 }
             }
 
-            battCtrl.battVol -= battCtrl.battErrVol;
-
-            battCtrl.battLevel = App_Batt_Cal_Level(battCtrl.battVol);
-
-            if(battCtrl.battLevel > battCtrl.battSaveLevel)
+            if(Drv_Chrg_Get_Charging_State() == CHRG_TERMINATION)
             {
+                battCtrl.battLevel = BATT_LEVEL_100;
+                
                 battCtrl.battSaveLevel = battCtrl.battLevel;
-
+                
                 Drv_Msg_Put(APP_EVENT_BATT_LEVEL, (const uint8_t *)&battCtrl.battLevel, 1);
+
+                battCtrl.delayCnt = 0;
+                
+                battCtrl.chrgStat = BATT_CHRG_DONE;
             }
             
             break;
         }
+        case BATT_CHRG_DONE:
+        {
+            if(battCtrl.delayCnt > 5000)
+            {
+                battCtrl.delayCnt  = 0;
+                
+                battCtrl.battVol = Drv_Batt_Get_Vol();
+                
+                battCtrl.battSaveVol = battCtrl.battVol;
+            }            
+            break;
+        }
         default: break;
     }
+}
+
+uint16_t App_Batt_Get_Vol(void )
+{
+    return Drv_Batt_Get_Vol();
 }
 
 batt_level_t App_Batt_Cal_Level(uint16_t battVol )
@@ -177,7 +226,7 @@ batt_level_t App_Batt_Cal_Level(uint16_t battVol )
     {
         if(battVol > BATT_VOL_80)
         {
-            battCtrl.battLevel = BATT_LEVEL_81_100;
+            battCtrl.battLevel = BATT_LEVEL_81_99;
         }
         else if(battVol > BATT_VOL_50 && battVol <= BATT_VOL_80)
         {
@@ -194,7 +243,7 @@ batt_level_t App_Batt_Cal_Level(uint16_t battVol )
     }
     else
     {
-        if(battCtrl.battLevel == BATT_LEVEL_81_100)
+        if(battCtrl.battLevel == BATT_LEVEL_81_99)
         {
             if(battVol < (BATT_VOL_80- battErrVol))
             {
@@ -205,7 +254,7 @@ batt_level_t App_Batt_Cal_Level(uint16_t battVol )
         {
             if(battVol > (BATT_VOL_80 + battErrVol))
             {
-                battCtrl.battLevel = BATT_LEVEL_81_100;
+                battCtrl.battLevel = BATT_LEVEL_81_99;
             }
             else if(battVol < (BATT_VOL_50 - battErrVol))
             {
@@ -239,8 +288,4 @@ batt_level_t App_Batt_Cal_Level(uint16_t battVol )
     return battCtrl.battLevel;
 }
 
-void App_Batt_Send_Level(void )
-{
-    Drv_Msg_Put(APP_EVENT_BATT_LEVEL, (const uint8_t *)&battCtrl.battLevel, 1);
-}
 

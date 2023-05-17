@@ -26,7 +26,8 @@ typedef enum _batt_level_t
     BATT_LEVEL_1_20,
     BATT_LEVEL_21_50,
     BATT_LEVEL_51_80,
-    BATT_LEVEL_81_100
+    BATT_LEVEL_81_99,
+    BATT_LEVEL_100
 }batt_level_t;
 
 typedef enum _batt_batt_dischrg_stat_t
@@ -39,7 +40,8 @@ typedef enum _batt_chrg_stat_t
 {
     BATT_CHRG_INIT = 0,
     BATT_CHRG_GET_VOL_ERR,
-    BATT_CHRG_PROCESS
+    BATT_CHRG_PROCESS,
+    BATT_CHRG_DONE
 }batt_chrg_stat_t;
 
 typedef struct _batt_ctrl_block_t
@@ -55,8 +57,8 @@ typedef struct _batt_ctrl_block_t
 }batt_ctrl_block_t;
 
 void App_Batt_Init(void );
+uint16_t App_Batt_Get_Vol(void );
 batt_level_t App_Batt_Cal_Level(uint16_t battVol );
-void App_Batt_Send_Level(void );
 
 #endif 
 

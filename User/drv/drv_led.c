@@ -32,3 +32,8 @@ void Drv_Led_Off(led_t *led )
     Hal_Led_On(led->port, led->pin);
 }
 
+uint8_t Drv_Led_Get_Stat(led_t *led )
+{
+    return Hal_Led_Get_Stat(led->port, led->pin);
+}
+

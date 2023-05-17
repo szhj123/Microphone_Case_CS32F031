@@ -13,6 +13,7 @@
 #include "app_event.h"
 #include "app_batt.h"
 #include "app_led.h"
+#include "app_hall.h"
 /* Private typedef --------------------------------------*/
 /* Private define ------------------ --------------------*/
 /* Private macro ----------------------------------------*/
@@ -38,13 +39,52 @@ static void App_Event_Handler(void *arg )
     {
         case APP_EVENT_USB_PLUG_OUT:
         {
-            //todo: judge case state whether open or close
-            App_Led_All_Turn_Off();
+            batt_level_t battLevel = App_Batt_Cal_Level(App_Batt_Get_Vol());
+
+            App_Led_Hall_Open(battLevel);
             
             break;
         }
         case APP_EVENT_USB_PLUG_IN:
         {
+            break;
+        }
+        case APP_EVENT_BATT_LEVEL:
+        {
+            batt_level_t battLevel = (batt_level_t )msg.data[0];
+            
+            if(battLevel == BATT_LEVEL_100)
+            {
+                App_Led_All_Turn_On();
+            }
+            else
+            {
+                App_Led_Flash_BattLevel(battLevel);
+            }
+            break;
+        }
+        case APP_EVENT_HALL_STATE:
+        {
+            uint8_t hallState = msg.data[0];
+            
+            batt_level_t battLevel = App_Batt_Cal_Level(App_Batt_Get_Vol());
+
+            if(Drv_Chrg_Get_Usb_State() == USB_PLUG_OUT)
+            {
+                if(hallState == HALL_OPEN)
+                {
+                    App_Led_Hall_Open(battLevel);
+                }
+                else
+                {
+                    App_Led_Hall_Close();
+                }
+            }
+            break;
+        }
+        case APP_EVENT_SYS_SLEEP:
+        {
+            //todo: system sleep
             break;
         }
         default: break;

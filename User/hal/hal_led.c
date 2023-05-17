@@ -21,21 +21,21 @@ void Hal_Led_Init(void )
 {
     __RCU_AHB_CLK_ENABLE(RCU_AHB_PERI_GPIOA);
 
-    //led green, pa11, output
-    __GPIO_PIN_SET(GPIOA, GPIO_PIN_11);
+    //led4, pa03, output
+    __GPIO_PIN_SET(GPIOA, GPIO_PIN_3);
+    gpio_mode_set(GPIOA, GPIO_PIN_3, GPIO_MODE_OUT_PP(GPIO_SPEED_HIGH));
 
+    //led3, pa12, output
+    __GPIO_PIN_SET(GPIOA, GPIO_PIN_12);
+    gpio_mode_set(GPIOA, GPIO_PIN_12, GPIO_MODE_OUT_PP(GPIO_SPEED_HIGH));
+
+    //led2, pa11, output
+    __GPIO_PIN_SET(GPIOA, GPIO_PIN_11);
     gpio_mode_set(GPIOA, GPIO_PIN_11, GPIO_MODE_OUT_PP(GPIO_SPEED_HIGH));
 
-    //led orange, pa08, output
+    //led1, pa08, output
     __GPIO_PIN_SET(GPIOA, GPIO_PIN_8);
-
-    gpio_mode_set(GPIOA, GPIO_PIN_8, GPIO_MODE_OUT_PP(GPIO_SPEED_HIGH));
-
-    //led white, pa03, output
-    __GPIO_PIN_SET(GPIOA, GPIO_PIN_3);
-
-    gpio_mode_set(GPIOA, GPIO_PIN_3, GPIO_MODE_OUT_PP(GPIO_SPEED_HIGH));
-    
+    gpio_mode_set(GPIOA, GPIO_PIN_8, GPIO_MODE_OUT_PP(GPIO_SPEED_HIGH));    
 }
 
 void Hal_Led_On(port_t port, pin_t pin )
@@ -47,6 +47,10 @@ void Hal_Led_On(port_t port, pin_t pin )
     else if(port == PORTB)
     {
         __GPIO_PIN_SET(GPIOB, 1 << pin);
+    }
+    else if(port == PORTF)
+    {
+        __GPIO_PIN_SET(GPIOF, 1 << pin);
     }
 }
 
@@ -60,5 +64,29 @@ void Hal_Led_Off(port_t port, pin_t pin )
     {
         __GPIO_PIN_RESET(GPIOB, 1 << pin);
     }
+    else if(port == PORTF)
+    {
+        __GPIO_PIN_RESET(GPIOF, 1 << pin);
+    }
+}
+
+uint8_t Hal_Led_Get_Stat(port_t port, pin_t pin )
+{
+    uint8_t retVal;
+    
+    if(port == PORTA)
+    {
+        retVal = __GPIO_INPUT_PIN_GET(GPIOA, 1 << pin);
+    }
+    else if(port == PORTB)
+    {
+        retVal = __GPIO_INPUT_PIN_GET(GPIOB, 1 << pin);
+    }
+    else if(port == PORTF)
+    {
+        retVal = __GPIO_INPUT_PIN_GET(GPIOF, 1 << pin);
+    } 
+
+    return retVal;
 }
 

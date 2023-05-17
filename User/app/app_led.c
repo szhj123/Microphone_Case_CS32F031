@@ -11,30 +11,39 @@
 
 /* Includes ---------------------------------------------*/
 #include "app_led.h"
+#include "app_batt.h"
 /* Private typedef --------------------------------------*/
 /* Private define ------------------ --------------------*/
+#define LED_FLASH_INTERVAL_TIMER                250
 /* Private macro ----------------------------------------*/
 /* Private function -------------------------------------*/
 static void App_Led_Handler(void *arg );
-void App_Led_Flash_Callback(void );
+static void App_Led_Flash_BattLevel_1_20(void );
+static void App_Led_Flash_BattLevel_21_50(void );
+static void App_Led_Flash_BattLevel_51_80(void );
+static void App_Led_Flash_BattLevel_81_99(void );
+
+static void App_Led_Hall_Open_Callback(void *arg );
+
 /* Private variables ------------------------------------*/
 led_ctrl_block_t ledCtrl;
+uint8_t timer_led_5s = TIMER_NULL;
 
 void App_Led_Init(void )
 {
     Drv_Led_Init();
 
     ledCtrl.led1.port = PORTA;
-    ledCtrl.led1.pin = PIN11;
+    ledCtrl.led1.pin = PIN8;
 
     ledCtrl.led2.port = PORTA;
-    ledCtrl.led2.pin = PIN8;
+    ledCtrl.led2.pin = PIN11;
 
     ledCtrl.led3.port = PORTA;
-    ledCtrl.led3.pin = PIN3;
+    ledCtrl.led3.pin = PIN12;
 
-    ledCtrl.handler = App_Led_Flash_Callback;
-    ledCtrl.delayCnt = 0;
+    ledCtrl.led4.port = PORTA;
+    ledCtrl.led4.pin = PIN3;
 
     Drv_Timer_Regist_Period(App_Led_Handler, 0, 1, NULL);
 }
@@ -59,17 +68,46 @@ void App_Led_All_Turn_Off(void )
     Drv_Led_Off(&ledCtrl.led1);
     Drv_Led_Off(&ledCtrl.led2);
     Drv_Led_Off(&ledCtrl.led3);
+    Drv_Led_Off(&ledCtrl.led4);
 }
 
-void App_Led_Flash_Callback(void )
+void App_Led_All_Turn_On(void )
 {
-   if(ledCtrl.delayCnt > 1000)
+    ledCtrl.handler = NULL;
+    
+    Drv_Led_On(&ledCtrl.led1);
+    Drv_Led_On(&ledCtrl.led2);
+    Drv_Led_On(&ledCtrl.led3);
+    Drv_Led_On(&ledCtrl.led4);
+}
+
+void App_Led_Flash_BattLevel(uint8_t battLevel )
+{
+    ledCtrl.delayCnt = 0;
+    ledCtrl.ledFlashIndex = 0;
+
+    Drv_Led_Off(&ledCtrl.led1);
+    Drv_Led_Off(&ledCtrl.led2);
+    Drv_Led_Off(&ledCtrl.led3);
+    Drv_Led_Off(&ledCtrl.led4);
+
+    switch((batt_level_t )battLevel)
+    {
+        case BATT_LEVEL_81_99: ledCtrl.handler = App_Led_Flash_BattLevel_81_99; break;
+        case BATT_LEVEL_51_80: ledCtrl.handler = App_Led_Flash_BattLevel_51_80; break;
+        case BATT_LEVEL_21_50: ledCtrl.handler = App_Led_Flash_BattLevel_21_50; break;
+        case BATT_LEVEL_1_20:  ledCtrl.handler = App_Led_Flash_BattLevel_1_20; break;
+        default: break;
+    }
+}
+
+static void App_Led_Flash_BattLevel_1_20(void )
+{
+   if(ledCtrl.delayCnt >= LED_FLASH_INTERVAL_TIMER)
    {
        ledCtrl.delayCnt = 0;
-       
-       ledCtrl.flashFlag ^= 1;
-       
-       if(ledCtrl.flashFlag)
+              
+       if(Drv_Led_Get_Stat(&ledCtrl.led1))
        {
            Drv_Led_On(&ledCtrl.led1);
        }
@@ -78,5 +116,183 @@ void App_Led_Flash_Callback(void )
            Drv_Led_Off(&ledCtrl.led1);
        }
    }
+}
+
+static void App_Led_Flash_BattLevel_21_50(void )
+{
+    if(ledCtrl.delayCnt >= LED_FLASH_INTERVAL_TIMER)
+    {
+        ledCtrl.delayCnt = 0;
+        
+        switch(ledCtrl.ledFlashIndex)
+        {
+            case 0: 
+            {
+                Drv_Led_On(&ledCtrl.led1);
+                Drv_Led_Off(&ledCtrl.led2);
+                ledCtrl.ledFlashIndex++;
+                break;
+            }
+            case 1:
+            {
+                Drv_Led_Off(&ledCtrl.led1);
+                Drv_Led_On(&ledCtrl.led2);
+                ledCtrl.ledFlashIndex = 0;
+                break;
+            }
+            default: break;
+        }
+    }
+}
+
+static void App_Led_Flash_BattLevel_51_80(void )
+{
+    if(ledCtrl.delayCnt >= LED_FLASH_INTERVAL_TIMER)
+    {
+        ledCtrl.delayCnt = 0;
+        
+        switch(ledCtrl.ledFlashIndex)
+        {
+            case 0: 
+            {
+                Drv_Led_On(&ledCtrl.led1);
+                Drv_Led_Off(&ledCtrl.led2);
+                Drv_Led_Off(&ledCtrl.led3);
+                ledCtrl.ledFlashIndex++;
+                break;
+            }
+            case 1:
+            {
+                Drv_Led_Off(&ledCtrl.led1);
+                Drv_Led_On(&ledCtrl.led2);
+                Drv_Led_Off(&ledCtrl.led3);
+                ledCtrl.ledFlashIndex++;
+                break;
+            }
+            case 2:
+            {
+                Drv_Led_Off(&ledCtrl.led1);
+                Drv_Led_Off(&ledCtrl.led2);
+                Drv_Led_On(&ledCtrl.led3);
+                ledCtrl.ledFlashIndex = 0;
+                break;
+            }
+            default: break;
+        }
+    }
+}
+
+static void App_Led_Flash_BattLevel_81_99(void )
+{
+    if(ledCtrl.delayCnt >= LED_FLASH_INTERVAL_TIMER)
+    {
+        ledCtrl.delayCnt = 0;
+        
+        switch(ledCtrl.ledFlashIndex)
+        {
+            case 0: 
+            {
+                Drv_Led_On(&ledCtrl.led1);
+                Drv_Led_Off(&ledCtrl.led2);
+                Drv_Led_Off(&ledCtrl.led3);
+                Drv_Led_Off(&ledCtrl.led4);
+                ledCtrl.ledFlashIndex++;
+                break;
+            }
+            case 1:
+            {
+                Drv_Led_Off(&ledCtrl.led1);
+                Drv_Led_On(&ledCtrl.led2);
+                Drv_Led_Off(&ledCtrl.led3);
+                Drv_Led_Off(&ledCtrl.led4);
+                ledCtrl.ledFlashIndex++;
+                break;
+            }
+            case 2:
+            {
+                Drv_Led_Off(&ledCtrl.led1);
+                Drv_Led_Off(&ledCtrl.led2);
+                Drv_Led_On(&ledCtrl.led3);
+                Drv_Led_Off(&ledCtrl.led4);
+                ledCtrl.ledFlashIndex++;
+                break;
+            }
+            case 3:
+            {
+                Drv_Led_Off(&ledCtrl.led1);
+                Drv_Led_Off(&ledCtrl.led2);
+                Drv_Led_On(&ledCtrl.led3);
+                Drv_Led_On(&ledCtrl.led4);
+                ledCtrl.ledFlashIndex = 0;
+                break;
+            }
+            default: break;
+        }
+    }
+}
+
+void App_Led_Hall_Open(uint8_t battLevel )
+{
+    ledCtrl.handler = NULL;
+
+    switch((batt_level_t )battLevel)
+    {
+        case BATT_LEVEL_81_99:
+        {
+            Drv_Led_On(&ledCtrl.led1);
+            Drv_Led_On(&ledCtrl.led2);
+            Drv_Led_On(&ledCtrl.led3);
+            Drv_Led_On(&ledCtrl.led4);
+            break;
+        }
+        case BATT_LEVEL_51_80:
+        {
+            Drv_Led_On(&ledCtrl.led1);
+            Drv_Led_On(&ledCtrl.led2);
+            Drv_Led_On(&ledCtrl.led3);
+            Drv_Led_Off(&ledCtrl.led4);
+            break;
+        }
+        case BATT_LEVEL_21_50:
+        {
+            Drv_Led_On(&ledCtrl.led1);
+            Drv_Led_On(&ledCtrl.led2);
+            Drv_Led_Off(&ledCtrl.led3);
+            Drv_Led_Off(&ledCtrl.led4);
+            break;
+        }
+        case BATT_LEVEL_1_20:
+        {
+            Drv_Led_On(&ledCtrl.led1);
+            Drv_Led_Off(&ledCtrl.led2);
+            Drv_Led_Off(&ledCtrl.led3);
+            Drv_Led_Off(&ledCtrl.led4);
+            break;
+        }
+        default: break;
+    }
+
+    Drv_Timer_Delete(timer_led_5s);
+
+    timer_led_5s = Drv_Timer_Regist_Oneshot(App_Led_Hall_Open_Callback, 5000, NULL);
+}
+
+static void App_Led_Hall_Open_Callback(void *arg )
+{
+    timer_led_5s = TIMER_NULL;
+    
+    App_Led_All_Turn_Off();
+}
+
+void App_Led_Hall_Close(void )
+{
+    if(timer_led_5s != TIMER_NULL)
+    {
+        Drv_Timer_Delete(timer_led_5s);
+
+        timer_led_5s = TIMER_NULL;
+    }
+    
+    App_Led_All_Turn_Off();
 }
 
