@@ -13,11 +13,20 @@
 #include "hal_com.h"
 /* Private typedef --------------------------------------*/
 /* Private define ------------------ --------------------*/
+#define UART_PP_R_PORT                 GPIOA
+#define UART_PP_R_PIN                  GPIO_PIN_15
+#define UART_SW_R_PORT                 GPIOA
+#define UART_SW_R_PIN                  GPIO_PIN_0
+#define CHRG_SW_R_PORT                 GPIOB
+#define CHRG_SW_R_PIN                  GPIO_PIN_8
 /* Private macro ----------------------------------------*/
 /* Private function -------------------------------------*/
 static void Hal_Com_Gpio_Init(void );
-static void Hal_Com_Uart1_Init(void )
+static void Hal_Com_Uart1_Init(void );
 /* Private variables ------------------------------------*/
+static hal_isr_callback_t hal_com_uart1_isr_callback = NULL;
+static uint8_t *pUart1Buf = NULL;
+static uint16_t uart1Length;
 
 void Hal_Com_Init(void )
 {
@@ -30,13 +39,13 @@ static void Hal_Com_Gpio_Init(void )
 {
     __RCU_AHB_CLK_ENABLE(RCU_AHB_PERI_GPIOB);
     //pb8, charge_sw_r, output
-    gpio_mode_set(GPIOB, GPIO_PIN_8, GPIO_MODE_OUT_PP(SPEED));
+    //gpio_mode_set(GPIOB, GPIO_PIN_8, GPIO_MODE_OUT_PP(SPEED));
 
     __RCU_AHB_CLK_ENABLE(RCU_AHB_PERI_GPIOA);
     //pa0, uart_sw_r, output
-    gpio_mode_set(GPIOA, GPIO_PIN_0, GPIO_MODE_OUT_PP(SPEED));
+    gpio_mode_set(UART_SW_R_PORT, UART_SW_R_PIN, GPIO_MODE_OUT_PP(SPEED));
     //pa15,uart_pp_r, pullup
-    gpio_mode_set(GPIOA, GPIO_PIN_15, GPIO_MODE_IN_PU);
+    gpio_mode_set(UART_PP_R_PORT, UART_PP_R_PIN, GPIO_MODE_IN_PU);
 }
 
 static void Hal_Com_Uart1_Init(void )
@@ -74,5 +83,35 @@ static void Hal_Com_Uart1_Init(void )
     __USART_ENABLE(USART1); // Enable USART
 
     __USART_INTR_ENABLE(USART1, RXNE); // Enable the USART Receive interrupt
+}
+
+
+void Hal_Com_R_Tx_Enable(void )
+{
+    __GPIO_PIN_SET(UART_SW_R_PORT, UART_SW_R_PIN);
+
+    gpio_mode_set(CHRG_SW_R_PORT, CHRG_SW_R_PIN, GPIO_MODE_IN_FLOAT);
+}
+
+void Hal_Com_R_Tx_Disable(void )
+{
+    __GPIO_PIN_RESET(UART_SW_R_PORT, UART_SW_R_PIN);
+
+    gpio_mode_set(CHRG_SW_R_PORT, CHRG_SW_R_PIN, GPIO_MODE_OUT_PP(SPEED));
+
+    __GPIO_PIN_RESET(CHRG_SW_R_PORT, CHRG_SW_R_PIN);
+}
+
+void Hal_Com_R_Tx_Data(uint8_t *buf, uint16_t length, hal_isr_callback_t callback )
+{
+    pUart1Buf = buf;
+    uart1Length = length;
+
+    
+}
+
+void Hal_Com_Uart1_isr_Handler(void )
+{
+    
 }
 
