@@ -443,6 +443,16 @@
               <FileType>1</FileType>
               <FilePath>..\Device\HAL_Driver\src\cs32f0xx_adc.c</FilePath>
             </File>
+            <File>
+              <FileName>cs32f0xx_usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Device\HAL_Driver\src\cs32f0xx_usart.c</FilePath>
+            </File>
+            <File>
+              <FileName>cs32f0xx_rcu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Device\HAL_Driver\src\cs32f0xx_rcu.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -513,6 +523,11 @@
               <FileType>1</FileType>
               <FilePath>..\User\drv\drv_hall.c</FilePath>
             </File>
+            <File>
+              <FileName>drv_com.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\drv\drv_com.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -552,6 +567,11 @@
               <FileName>hal_hall.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\hal\hal_hall.c</FilePath>
+            </File>
+            <File>
+              <FileName>hal_com.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\hal\hal_com.c</FilePath>
             </File>
           </Files>
         </Group>

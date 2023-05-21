@@ -13,20 +13,22 @@
 #include "hal_com.h"
 /* Private typedef --------------------------------------*/
 /* Private define ------------------ --------------------*/
-#define UART_PP_R_PORT                 GPIOA
-#define UART_PP_R_PIN                  GPIO_PIN_15
-#define UART_SW_R_PORT                 GPIOA
-#define UART_SW_R_PIN                  GPIO_PIN_0
-#define CHRG_SW_R_PORT                 GPIOB
-#define CHRG_SW_R_PIN                  GPIO_PIN_8
+#define TX1_PP_PORT                 GPIOA
+#define TX1_PP_PIN                  GPIO_PIN_15
+#define TX1_SW_PORT                 
+#define TX1_SW_PIN                  
+#define TX1_CHRG_SW_PORT            GPIOB
+#define TX1_CHRG_SW_PIN             GPIO_PIN_4
+#define TX1_PORT                    GPIOB
+#define TX1_PIN                     GPIO_PIN_6
 /* Private macro ----------------------------------------*/
 /* Private function -------------------------------------*/
 static void Hal_Com_Gpio_Init(void );
 static void Hal_Com_Uart1_Init(void );
 /* Private variables ------------------------------------*/
-static hal_isr_callback_t hal_com_uart1_isr_callback = NULL;
-static uint8_t *pUart1Buf = NULL;
-static uint16_t uart1Length;
+static hal_isr_callback_t hal_com_tx1_isr_callback = NULL;
+static uint8_t *pTx1Buf = NULL;
+static uint16_t tx1Length;
 
 void Hal_Com_Init(void )
 {
@@ -43,9 +45,9 @@ static void Hal_Com_Gpio_Init(void )
 
     __RCU_AHB_CLK_ENABLE(RCU_AHB_PERI_GPIOA);
     //pa0, uart_sw_r, output
-    gpio_mode_set(UART_SW_R_PORT, UART_SW_R_PIN, GPIO_MODE_OUT_PP(SPEED));
+    //gpio_mode_set(TX1_SW_PORT, TX1_SW_PIN, GPIO_MODE_OUT_PP(GPIO_SPEED_HIGH));
     //pa15,uart_pp_r, pullup
-    gpio_mode_set(UART_PP_R_PORT, UART_PP_R_PIN, GPIO_MODE_IN_PU);
+    gpio_mode_set(TX1_PP_PORT, TX1_PP_PIN, GPIO_MODE_IN_PU);
 }
 
 static void Hal_Com_Uart1_Init(void )
@@ -54,13 +56,14 @@ static void Hal_Com_Uart1_Init(void )
     usart_config_t usart_config_struct;
 
     // Clock Config
-    __RCU_AHB_CLK_ENABLE(RCU_AHB_PERI_GPIOA);
+    __RCU_AHB_CLK_ENABLE(RCU_AHB_PERI_GPIOB);
     __RCU_APB2_CLK_ENABLE(RCU_APB2_PERI_USART1);
 
     // GPIO MF Config
-    gpio_mf_config(GPIOA, GPIO_PIN_2, GPIO_MF_SEL1);
-
-    gpio_mode_set(GPIOA, GPIO_PIN_2, GPIO_MODE_OUT_OD(SPEED));
+    gpio_mf_config(TX1_PORT, TX1_PIN, GPIO_MF_SEL0);
+    
+    gpio_mode_set(TX1_PORT, TX1_PIN, GPIO_MODE_MF_OD(GPIO_SPEED_HIGH));
+    
 
     // USART Config
     __USART_DEF_INIT(USART1);
@@ -86,32 +89,68 @@ static void Hal_Com_Uart1_Init(void )
 }
 
 
-void Hal_Com_R_Tx_Enable(void )
+void Hal_Com_Tx1_Enable(void )
 {
-    __GPIO_PIN_SET(UART_SW_R_PORT, UART_SW_R_PIN);
+    uint16_t waitCnt = 0;
+    //__GPIO_PIN_SET(TX1_SW_PORT, TX1_SW_PIN);
 
-    gpio_mode_set(CHRG_SW_R_PORT, CHRG_SW_R_PIN, GPIO_MODE_IN_FLOAT);
+    gpio_mode_set(TX1_CHRG_SW_PORT, TX1_CHRG_SW_PIN, GPIO_MODE_IN_FLOAT);
+
+    while(waitCnt++ < 10000);
 }
 
-void Hal_Com_R_Tx_Disable(void )
+void Hal_Com_Tx1_Disable(void )
 {
-    __GPIO_PIN_RESET(UART_SW_R_PORT, UART_SW_R_PIN);
+    //__GPIO_PIN_RESET(TX1_SW_PORT, TX1_SW_PIN);
 
-    gpio_mode_set(CHRG_SW_R_PORT, CHRG_SW_R_PIN, GPIO_MODE_OUT_PP(SPEED));
+    gpio_mode_set(TX1_CHRG_SW_PORT, TX1_CHRG_SW_PIN, GPIO_MODE_OUT_PP(GPIO_SPEED_HIGH));
 
-    __GPIO_PIN_RESET(CHRG_SW_R_PORT, CHRG_SW_R_PIN);
+    __GPIO_PIN_RESET(TX1_CHRG_SW_PORT, TX1_CHRG_SW_PIN);
 }
 
-void Hal_Com_R_Tx_Data(uint8_t *buf, uint16_t length, hal_isr_callback_t callback )
+void Hal_Com_Tx1_Data(uint8_t *buf, uint16_t length, hal_isr_callback_t callback )
 {
-    pUart1Buf = buf;
-    uart1Length = length;
+    pTx1Buf = buf;
+    tx1Length = length;
 
-    
+    hal_com_tx1_isr_callback = callback;
+
+    __USART_INTR_ENABLE(USART1, TXE); // Enable the USART transmit  interrupt
 }
 
-void Hal_Com_Uart1_isr_Handler(void )
+void Hal_Com_Tx1_Isr_Handler(void )
 {
-    
+    if (__USART_FLAG_STATUS_GET(USART1, TXE) == SET)
+    {   
+        if(tx1Length > 0)
+        {
+            __USART_DATA_SEND(USART1, *pTx1Buf);
+
+            pTx1Buf++;
+            tx1Length--;
+        }
+        else 
+        {
+            pTx1Buf = NULL;
+
+            if(hal_com_tx1_isr_callback != NULL)
+            {
+                hal_com_tx1_isr_callback();
+
+                hal_com_tx1_isr_callback = NULL;
+            }
+            /* Disable the USART transmit data register empty interrupt */
+            __USART_INTR_DISABLE(USART1, TXE);
+        }
+    }
+
+    if (__USART_FLAG_STATUS_GET(USART1, RXNE) == SET)
+    {
+        static uint8_t recvVal  = 0;
+        
+        recvVal = (uint8_t)__USART_DATA_RECV(USART1);
+
+        //__USART_INTR_DISABLE(USART1, RXNE);
+    }
 }
 

@@ -25,7 +25,7 @@ chrg_ctrl_block_t  chrgCtrl;
 
 void Drv_Chrg_Init(void )
 {
-    Hal_BATT_CHRG_INIT();
+    Hal_Batt_Chrg_Init();
 
     Hal_Chrg_Regist_Isr_Callback(Drv_Chrg_Intp_Handler);
 
@@ -36,7 +36,7 @@ void Drv_Chrg_Cfg(void )
 {
     chrg_status0_t chrgStatus0;
     
-    Drv_Chrg_Write(0x00, 0x17);
+    Drv_Chrg_Write(0x00, 0x47);
     Drv_Chrg_Write(0x01, 0x34);
     Drv_Chrg_Write(0x02, 0x99);
     Drv_Chrg_Write(0x03, 0x26);
@@ -45,6 +45,14 @@ void Drv_Chrg_Cfg(void )
     Drv_Chrg_Write(0x06, 0xe6);
     Drv_Chrg_Write(0x07, 0x4c);
     Drv_Chrg_Write(0x0c, 0x75);
+
+    #if 0
+    static uint8_t regValBuf[8] = {0};
+    for(uint8_t i=0;i<8;i++)
+    {
+        regValBuf[i] = Drv_Chrg_Read(i);
+    }
+    #endif 
 
     chrgStatus0.status = Drv_Chrg_Read(CHRG_REG_STATUS0);
 

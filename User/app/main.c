@@ -13,6 +13,8 @@
 #include "drv_task.h"
 #include "drv_timer.h"
 
+#include "drv_com.h"
+
 #include "app_led.h"
 #include "app_event.h"
 #include "app_batt.h"
@@ -28,6 +30,8 @@ int main(void )
     Drv_Task_Init();
 
     Drv_Timer_Init();
+
+    Drv_Com_Init();
 
     App_Hall_Init();
 

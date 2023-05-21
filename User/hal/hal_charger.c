@@ -24,7 +24,7 @@ hal_isr_callback_t hal_intp1_isr_callback = NULL;
 static __IO uint32_t max_delay = I2C_LONG_TIMEOUT;
 
 
-void Hal_BATT_CHRG_INIT(void )
+void Hal_Batt_Chrg_Init(void )
 {
     Hal_Chrg_Intp_Init();
 

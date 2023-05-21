@@ -14,6 +14,7 @@
 #include "hal_timer.h"
 #include "hal_charger.h"
 #include "hal_hall.h"
+#include "hal_com.h"
 /* Private typedef --------------------------------------*/
 /* Private define ------------------ --------------------*/
 /* Private macro ----------------------------------------*/
@@ -76,6 +77,14 @@ void EXTI4_15_IRQHandler(void )
     } 
 }
 
-
-
+/**
+* @fn void USARTx_IRQHandler(void)
+* @brief  This function handles USART interrupt request.
+* @param  None
+* @return None
+*/
+void USART1_IRQHandler(void)
+{
+    Hal_Com_Tx1_Isr_Handler();
+}
 
