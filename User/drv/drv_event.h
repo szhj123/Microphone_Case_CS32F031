@@ -6,8 +6,8 @@
 #define MSG_DATA_MAX_LEN                  64
 #define MSG_QUEUE_MAX_LEN                  8     
 
-#define MSG_OK                            0
-#define MSG_ERR                           (!MSG_OK)
+#define MSG_QUEUE_OK                      0
+#define MSG_QUEUE_ERR                     (!MSG_QUEUE_OK)
 
 typedef struct _msg_t
 {

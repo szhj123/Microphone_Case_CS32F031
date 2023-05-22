@@ -30,7 +30,7 @@ static void App_Event_Handler(void *arg )
 {
     static msg_t msg;
 
-    if(Drv_Msg_Get(&msg) == MSG_ERR)
+    if(Drv_Msg_Get(&msg) == MSG_QUEUE_ERR)
     {
         return ;
     }
