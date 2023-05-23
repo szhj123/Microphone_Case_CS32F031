@@ -13,12 +13,11 @@
 #include "drv_task.h"
 #include "drv_timer.h"
 
-#include "drv_com.h"
-
 #include "app_led.h"
 #include "app_event.h"
 #include "app_batt.h"
 #include "app_hall.h"
+#include "app_com.h"
 /* Private typedef --------------------------------------*/
 /* Private define ------------------ --------------------*/
 /* Private macro ----------------------------------------*/
@@ -31,7 +30,7 @@ int main(void )
 
     Drv_Timer_Init();
 
-    Drv_Com_Init();
+    App_Com_Init();
 
     App_Hall_Init();
 

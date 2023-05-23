@@ -3,11 +3,14 @@
 
 #include "drv_task.h"
 #include "drv_com.h"
+#include "drv_event.h"
 
 typedef enum _com_tx_state_t
 {
-    COM_STAT_ENTRY = 0,
-    COM_STAT_PROCESS,
+    COM_STAT_INIT = 0,
+    COM_STAT_TX,
+    COM_STAT_TX_WATI_DONE,
+    COM_STAT_RX_RESPONSE,
     COM_STAT_EXIT    
 }com_tx_state_t;
 
