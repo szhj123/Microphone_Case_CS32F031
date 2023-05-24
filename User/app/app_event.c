@@ -14,6 +14,7 @@
 #include "app_batt.h"
 #include "app_led.h"
 #include "app_hall.h"
+#include "app_com.h"
 /* Private typedef --------------------------------------*/
 /* Private define ------------------ --------------------*/
 /* Private macro ----------------------------------------*/
@@ -80,6 +81,12 @@ static void App_Event_Handler(void *arg )
                     App_Led_Hall_Close();
                 }
             }
+            break;
+        }
+        case APP_EVENT_COM_RX:
+        {
+            App_Com_Rx_Handler(msg.data, msg.lenght);
+            
             break;
         }
         case APP_EVENT_SYS_SLEEP:

@@ -288,4 +288,9 @@ batt_level_t App_Batt_Cal_Level(uint16_t battVol )
     return battCtrl.battLevel;
 }
 
+batt_level_t App_Batt_Get_Level(void )
+{
+	return battCtrl.battLevel;
+}
+
 

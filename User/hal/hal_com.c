@@ -26,10 +26,10 @@
 static void Hal_Com_Gpio_Init(void );
 static void Hal_Com_Uart1_Init(void );
 /* Private variables ------------------------------------*/
-static hal_isr_callback_t hal_com_tx1_isr_callback = NULL;
-static hal_com_rx_callback_t hal_com_rx0_isr_callback = NULL;
-static hal_com_rx_callback_t hal_com_rx1_isr_callback = NULL;
-static hal_com_rx_callback_t hal_com_rx2_isr_callback = NULL;
+static hal_isr_callback_t hal_tx1_isr_callback = NULL;
+static hal_com_rx_callback_t hal_rx0_isr_callback = NULL;
+static hal_com_rx_callback_t hal_rx1_isr_callback = NULL;
+static hal_com_rx_callback_t hal_rx2_isr_callback = NULL;
 static uint8_t *pTx1Buf = NULL;
 static uint16_t tx1Length;
 
@@ -40,19 +40,13 @@ void Hal_Com_Init(void )
     Hal_Com_Uart1_Init();
 }
 
-void Hal_Com_Rx0_Regist_Isr_Callback(hal_com_rx_callback_t callback )
+void Hal_Com_Regist_Rx_Isr_Callback(hal_com_rx_callback_t rx0Callback, hal_com_rx_callback_t rx1Callback, hal_com_rx_callback_t rx2Callback )
 {
-    hal_com_rx1_isr_callback = callback;
-}
-
-void Hal_Com_Rx1_Regist_Isr_Callback(hal_com_rx_callback_t callback )
-{
-    hal_com_rx1_isr_callback = callback;
-}
-
-void Hal_Com_Rx2_Regist_Isr_Callback(hal_com_rx_callback_t callback )
-{
-    hal_com_rx1_isr_callback = callback;
+    hal_rx0_isr_callback = rx0Callback;
+    
+    hal_rx1_isr_callback = rx1Callback;
+    
+    hal_rx2_isr_callback = rx2Callback;
 }
 
 
@@ -130,9 +124,10 @@ void Hal_Com_Tx1_Disable(void )
 void Hal_Com_Tx1_Send(uint8_t *buf, uint16_t length, hal_isr_callback_t callback )
 {
     pTx1Buf = buf;
+    
     tx1Length = length;
 
-    hal_com_tx1_isr_callback = callback;
+    hal_tx1_isr_callback = callback;
 
     __USART_INTR_ENABLE(USART1, TXE); // Enable the USART transmit  interrupt
 }
@@ -152,11 +147,11 @@ void Hal_Com_Tx1_Isr_Handler(void )
         {
             pTx1Buf = NULL;
 
-            if(hal_com_tx1_isr_callback != NULL)
+            if(hal_tx1_isr_callback != NULL)
             {
-                hal_com_tx1_isr_callback();
+                hal_tx1_isr_callback();
 
-                hal_com_tx1_isr_callback = NULL;
+                hal_tx1_isr_callback = NULL;
             }
             /* Disable the USART transmit data register empty interrupt */
             __USART_INTR_DISABLE(USART1, TXE);
@@ -169,9 +164,9 @@ void Hal_Com_Tx1_Isr_Handler(void )
         
         recvVal = (uint8_t)__USART_DATA_RECV(USART1);
 
-        if(hal_com_rx1_isr_callback != NULL)
+        if(hal_rx1_isr_callback != NULL)
         {
-            hal_com_rx1_isr_callback(recvVal);
+            hal_rx1_isr_callback(recvVal);
         }
 
         //__USART_INTR_DISABLE(USART1, RXNE);
