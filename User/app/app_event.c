@@ -75,6 +75,10 @@ static void App_Event_Handler(void *arg )
                 if(hallState == HALL_OPEN)
                 {
                     App_Led_Hall_Open(battLevel);
+                    
+                    App_Com_Tx_Open_Case(DEVICE_LEFT);
+                    
+                    App_Com_Tx_Open_Case(DEVICE_RIGHT);
                 }
                 else
                 {

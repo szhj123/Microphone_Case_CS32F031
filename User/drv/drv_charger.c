@@ -37,7 +37,7 @@ void Drv_Chrg_Cfg(void )
     chrg_status0_t chrgStatus0;
     
     Drv_Chrg_Write(0x00, 0x47);
-    Drv_Chrg_Write(0x01, 0x34);
+    Drv_Chrg_Write(0x01, 0x04);
     Drv_Chrg_Write(0x02, 0x99);
     Drv_Chrg_Write(0x03, 0x26);
     Drv_Chrg_Write(0x04, 0x40);
@@ -53,12 +53,23 @@ void Drv_Chrg_Cfg(void )
         regValBuf[i] = Drv_Chrg_Read(i);
     }
     #endif 
-
-    chrgStatus0.status = Drv_Chrg_Read(CHRG_REG_STATUS0);
-
-    chrgCtrl.chrgStat = (chrg_stat_t)chrgStatus0.bits.chrg_stat;
-    chrgCtrl.vbusStat = (vbus_stat_t)chrgStatus0.bits.vbus_stat;
 }
+
+void Drv_Chrg_Chg_Boost_Disable(void )
+{
+    Drv_Chrg_Write(0x01, 0x04);
+}
+
+void Drv_Chrg_Chg_Enable(void )
+{
+    Drv_Chrg_Write(0x01, 0x14);
+}
+
+void Drv_Chrg_Boost_Enable(void )
+{
+    Drv_Chrg_Write(0x01, 0x24);
+}
+
 
 static void Drv_Chrg_Read_Status(void *arg )
 {
@@ -87,7 +98,7 @@ uint8_t Drv_Chrg_Get_Usb_State(void )
 {
     uint8_t regVal;
     
-    if((chrg_stat_t)chrgCtrl.chrgStat != NOT_CHRG)
+    if((vbus_stat_t)chrgCtrl.vbusStat != NO_INPUT)
     {
         regVal = USB_PLUG_IN;
     }

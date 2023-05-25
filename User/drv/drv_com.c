@@ -18,6 +18,7 @@
 /* Private macro ----------------------------------------*/
 /* Private function -------------------------------------*/
 static void Drv_Com_Tx1_Done_Callback(void );
+static void Drv_Com_Tx2_Done_Callback(void );
 static void Drv_Com_Rx0_Isr_Handler(uint8_t recvVal );
 static void Drv_Com_Rx1_Isr_Handler(uint8_t recvVal );
 static void Drv_Com_Rx2_Isr_Handler(uint8_t recvVal );
@@ -36,6 +37,7 @@ static rx_ctrl_block_t rx2Ctrl;
 
 static com_event_callback_t comEventCallback = NULL;
 static uint8_t tx1DoneFlag;
+static uint8_t tx2DoneFlag;
 
 void Drv_Com_Init(com_event_callback_t callback )
 {
@@ -224,6 +226,8 @@ uint8_t Drv_Tx_Queue_Get(com_port_t com, com_data_t *txData )
     return retVal;
 }
 
+/*********************** UART1 ******************************/
+
 void Drv_Com_Tx1_Enable(void )
 {
     Hal_Com_Tx1_Enable();
@@ -248,4 +252,31 @@ static void Drv_Com_Tx1_Done_Callback(void )
 {
     tx1DoneFlag = 1;
 }
+
+/*********************** UART2 ******************************/
+void Drv_Com_Tx2_Enable(void )
+{
+    Hal_Com_Tx2_Enable();
+}
+
+void Drv_Com_Tx2_Send(uint8_t *buf, uint16_t length )
+{
+    Hal_Com_Tx2_Send(buf, length, Drv_Com_Tx2_Done_Callback);    
+}
+
+uint8_t Drv_Com_Tx2_Get_State(void )
+{
+    return tx2DoneFlag;
+}
+
+void Drv_Com_Tx2_Clr_State(void )
+{
+    tx2DoneFlag = 0;
+}
+
+static void Drv_Com_Tx2_Done_Callback(void )
+{
+    tx2DoneFlag = 1;
+}
+/************************************************************/
 

@@ -27,7 +27,7 @@ typedef enum _com_state_t
     COM_STAT_TX,
     COM_STAT_TX_WATI_DONE,
     COM_STAT_RX_RESPONSE,
-    COM_STAT_EXIT    
+    COM_STAT_ERR    
 }com_state_t;
 
 typedef struct _rx_response_t
@@ -48,7 +48,7 @@ typedef struct _com_ctrl_block_t
 
 void App_Com_Init(void );
 
-void App_Com_Tx_Open_Case(void );
+void App_Com_Tx_Open_Case(uint8_t devType );
 
 void App_Com_Rx_Handler(uint8_t *buf, uint8_t length );
 

@@ -4,6 +4,8 @@
 #include "drv_timer.h"
 #include "drv_led.h"
 
+typedef void (*led_flash_callback_t)(void );
+
 typedef struct _led_ctrl_block_t
 {
     void (*handler)(void );

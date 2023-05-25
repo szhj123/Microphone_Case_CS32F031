@@ -18,15 +18,21 @@
 #define BATT_VOL_15                 3700
 #define BATT_VOL_10                 3680
 #define BATT_VOL_5                  3450
-#define BATT_VOL_3                  3000
+#define BATT_VOL_3                  3200
 
 typedef enum _batt_level_t
 {
     BATT_LEVEL_0 = 0,
-    BATT_LEVEL_1_20,
-    BATT_LEVEL_21_50,
-    BATT_LEVEL_51_80,
-    BATT_LEVEL_81_99,
+    BATT_LEVEL_1_10,
+    BATT_LEVEL_11_20,
+    BATT_LEVEL_21_30,
+    BATT_LEVEL_31_40,
+    BATT_LEVEL_41_50,
+    BATT_LEVEL_51_60,
+    BATT_LEVEL_61_70,
+    BATT_LEVEL_71_80,
+    BATT_LEVEL_81_90,
+    BATT_LEVEL_91_99,
     BATT_LEVEL_100
 }batt_level_t;
 
@@ -39,6 +45,7 @@ typedef enum _batt_batt_dischrg_stat_t
 typedef enum _batt_chrg_stat_t
 {
     BATT_CHRG_INIT = 0,
+    BATT_CHRG_Get_True_Vol,
     BATT_CHRG_GET_VOL_ERR,
     BATT_CHRG_PROCESS,
     BATT_CHRG_DONE

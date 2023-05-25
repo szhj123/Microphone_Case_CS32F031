@@ -83,21 +83,36 @@ void App_Led_All_Turn_On(void )
 
 void App_Led_Flash_BattLevel(uint8_t battLevel )
 {
-    ledCtrl.delayCnt = 0;
-    ledCtrl.ledFlashIndex = 0;
-
-    Drv_Led_Off(&ledCtrl.led1);
-    Drv_Led_Off(&ledCtrl.led2);
-    Drv_Led_Off(&ledCtrl.led3);
-    Drv_Led_Off(&ledCtrl.led4);
-
-    switch((batt_level_t )battLevel)
+    static led_flash_callback_t  led_flash_callback = NULL;
+    
+    if((batt_level_t )battLevel >= BATT_LEVEL_81_90)
     {
-        case BATT_LEVEL_81_99: ledCtrl.handler = App_Led_Flash_BattLevel_81_99; break;
-        case BATT_LEVEL_51_80: ledCtrl.handler = App_Led_Flash_BattLevel_51_80; break;
-        case BATT_LEVEL_21_50: ledCtrl.handler = App_Led_Flash_BattLevel_21_50; break;
-        case BATT_LEVEL_1_20:  ledCtrl.handler = App_Led_Flash_BattLevel_1_20; break;
-        default: break;
+        ledCtrl.handler = App_Led_Flash_BattLevel_81_99; 
+    }
+    else if((batt_level_t )battLevel >= BATT_LEVEL_51_60 && (batt_level_t )battLevel < BATT_LEVEL_81_90)
+    {
+        ledCtrl.handler = App_Led_Flash_BattLevel_51_80; 
+    }
+    else if((batt_level_t )battLevel >= BATT_LEVEL_21_30 && (batt_level_t )battLevel < BATT_LEVEL_51_60)
+    {
+        ledCtrl.handler = App_Led_Flash_BattLevel_21_50;
+    }
+    else
+    {
+        ledCtrl.handler = App_Led_Flash_BattLevel_1_20; 
+    }
+
+    if(ledCtrl.handler != led_flash_callback)
+    {
+        ledCtrl.delayCnt = 0;
+        ledCtrl.ledFlashIndex = 0;
+
+        Drv_Led_Off(&ledCtrl.led1);
+        Drv_Led_Off(&ledCtrl.led2);
+        Drv_Led_Off(&ledCtrl.led3);
+        Drv_Led_Off(&ledCtrl.led4);
+
+        led_flash_callback = ledCtrl.handler;
     }
 }
 
@@ -235,41 +250,33 @@ void App_Led_Hall_Open(uint8_t battLevel )
 {
     ledCtrl.handler = NULL;
 
-    switch((batt_level_t )battLevel)
+    if((batt_level_t )battLevel >= BATT_LEVEL_81_90)
     {
-        case BATT_LEVEL_81_99:
-        {
-            Drv_Led_On(&ledCtrl.led1);
-            Drv_Led_On(&ledCtrl.led2);
-            Drv_Led_On(&ledCtrl.led3);
-            Drv_Led_On(&ledCtrl.led4);
-            break;
-        }
-        case BATT_LEVEL_51_80:
-        {
-            Drv_Led_On(&ledCtrl.led1);
-            Drv_Led_On(&ledCtrl.led2);
-            Drv_Led_On(&ledCtrl.led3);
-            Drv_Led_Off(&ledCtrl.led4);
-            break;
-        }
-        case BATT_LEVEL_21_50:
-        {
-            Drv_Led_On(&ledCtrl.led1);
-            Drv_Led_On(&ledCtrl.led2);
-            Drv_Led_Off(&ledCtrl.led3);
-            Drv_Led_Off(&ledCtrl.led4);
-            break;
-        }
-        case BATT_LEVEL_1_20:
-        {
-            Drv_Led_On(&ledCtrl.led1);
-            Drv_Led_Off(&ledCtrl.led2);
-            Drv_Led_Off(&ledCtrl.led3);
-            Drv_Led_Off(&ledCtrl.led4);
-            break;
-        }
-        default: break;
+        Drv_Led_On(&ledCtrl.led1);
+        Drv_Led_On(&ledCtrl.led2);
+        Drv_Led_On(&ledCtrl.led3);
+        Drv_Led_On(&ledCtrl.led4);
+    }
+    else if((batt_level_t )battLevel >= BATT_LEVEL_51_60 && (batt_level_t )battLevel < BATT_LEVEL_81_90)
+    {
+        Drv_Led_On(&ledCtrl.led1);
+        Drv_Led_On(&ledCtrl.led2);
+        Drv_Led_On(&ledCtrl.led3);
+        Drv_Led_Off(&ledCtrl.led4);
+    }
+    else if((batt_level_t )battLevel >= BATT_LEVEL_21_30 && (batt_level_t )battLevel < BATT_LEVEL_51_60)
+    {
+        Drv_Led_On(&ledCtrl.led1);
+        Drv_Led_On(&ledCtrl.led2);
+        Drv_Led_Off(&ledCtrl.led3);
+        Drv_Led_Off(&ledCtrl.led4);
+    }
+    else
+    {
+        Drv_Led_On(&ledCtrl.led1);
+        Drv_Led_Off(&ledCtrl.led2);
+        Drv_Led_Off(&ledCtrl.led3);
+        Drv_Led_Off(&ledCtrl.led4);
     }
 
     Drv_Timer_Delete(timer_led_5s);

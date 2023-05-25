@@ -19,6 +19,7 @@
 /* Private macro ----------------------------------------*/
 /* Private function -------------------------------------*/
 static void App_Com1_Handler(void *arg );
+static void App_Com2_Handler(void *arg );
 static void App_Com_Send_Msg(uint8_t *buf, uint8_t length );
 /* Private variables ------------------------------------*/
 
@@ -26,18 +27,13 @@ static com_ctrl_block_t com0Ctrl;
 static com_ctrl_block_t com1Ctrl;
 static com_ctrl_block_t com2Ctrl;
 
-static void com_test(void *arg )
-{
-    App_Com_Tx_Open_Case();
-}
-
 void App_Com_Init(void )
 {
     Drv_Com_Init(App_Com_Send_Msg);
 
     Drv_Task_Regist_Period(App_Com1_Handler, 0, 1, NULL);
-
-    Drv_Timer_Regist_Oneshot(com_test, 1000, NULL);
+    
+    Drv_Task_Regist_Period(App_Com2_Handler, 0, 1, NULL);
 }
 
 static void App_Com_Send_Msg(uint8_t *buf, uint8_t length )
@@ -86,14 +82,129 @@ static void App_Com1_Handler(void *arg )
         {
             if(com1Ctrl.rxDoneFlag)
             {
-                
+                com1Ctrl.rxDoneFlag = 0;
+
+                com1Ctrl.delayCnt = 0;
+
+                com1Ctrl.txCnt = 0;
+
+                com1Ctrl.comState = COM_STAT_INIT;
+            }
+            else
+            {
+                if(++com1Ctrl.delayCnt >= 100)
+                {
+                    com1Ctrl.delayCnt = 0;
+
+                    if(++com1Ctrl.txCnt < 3)
+                    {
+                        com1Ctrl.comState = COM_STAT_TX;
+                    }
+                    else
+                    {
+                        com1Ctrl.comState = COM_STAT_ERR;
+                    }
+                }
             }
             break;
-            
+        }
+        case COM_STAT_ERR:
+        {
+            com1Ctrl.rxDoneFlag = 0;
+
+            com1Ctrl.delayCnt = 0;
+
+            com1Ctrl.txCnt = 0;
+
+            com1Ctrl.comState = COM_STAT_INIT;
+            break;
         }
         default: break;
     }
 }
+
+static void App_Com2_Handler(void *arg )
+{    
+    switch(com2Ctrl.comState)
+    {
+        case COM_STAT_INIT:
+        {
+            if(Drv_Tx_Queue_Get(COM2, &com2Ctrl.comData) == COM_QUEUE_OK)
+            {
+                Drv_Com_Tx2_Enable();
+
+                com2Ctrl.txCnt = 0;
+
+                com2Ctrl.comState = COM_STAT_TX;
+            }
+            break;
+        }
+        case COM_STAT_TX:
+        {
+            Drv_Com_Tx2_Send(com2Ctrl.comData.data, com2Ctrl.comData.length);
+
+            com2Ctrl.comState = COM_STAT_TX_WATI_DONE;
+
+            break;
+        }
+        case COM_STAT_TX_WATI_DONE:
+        {
+            if(Drv_Com_Tx2_Get_State())
+            {
+                Drv_Com_Tx2_Clr_State();
+
+                com2Ctrl.delayCnt = 0;
+
+                com2Ctrl.comState = COM_STAT_RX_RESPONSE;
+
+                break;
+            }
+        }
+        case COM_STAT_RX_RESPONSE:
+        {
+            if(com2Ctrl.rxDoneFlag)
+            {
+                com2Ctrl.rxDoneFlag = 0;
+
+                com2Ctrl.delayCnt = 0;
+
+                com2Ctrl.txCnt = 0;
+
+                com2Ctrl.comState = COM_STAT_INIT;
+            }
+            else
+            {
+                if(++com2Ctrl.delayCnt >= 100)
+                {
+                    com2Ctrl.delayCnt = 0;
+
+                    if(++com2Ctrl.txCnt < 3)
+                    {
+                        com2Ctrl.comState = COM_STAT_TX;
+                    }
+                    else
+                    {
+                        com2Ctrl.comState = COM_STAT_ERR;
+                    }
+                }
+            }
+            break;
+        }
+        case COM_STAT_ERR:
+        {
+            com2Ctrl.rxDoneFlag = 0;
+
+            com2Ctrl.delayCnt = 0;
+
+            com2Ctrl.txCnt = 0;
+
+            com2Ctrl.comState = COM_STAT_INIT;
+            break;
+        }
+        default: break;
+    }
+}
+
 
 void App_Com_Rx_Handler(uint8_t *buf, uint8_t length )
 {
@@ -109,7 +220,7 @@ void App_Com_Rx_Handler(uint8_t *buf, uint8_t length )
     {
         case DEVICE_RIGHT:
         {
-            
+            com2Ctrl.rxDoneFlag = 1;
             break;
         }
         case DEVICE_LEFT:
@@ -126,7 +237,7 @@ void App_Com_Rx_Handler(uint8_t *buf, uint8_t length )
     
 }
 
-void App_Com_Tx_Open_Case(void )
+void App_Com_Tx_Open_Case(uint8_t devType )
 {
     uint8_t txBuf[15] = {0};
     uint8_t checkSum = 0;
@@ -140,7 +251,7 @@ void App_Com_Tx_Open_Case(void )
     txBuf[5] = 0x20;
     txBuf[6] = 0x01;
     txBuf[7] = CMD_OPEN_CASE;
-    txBuf[8] = DEVICE_LEFT;
+    txBuf[8] = devType;
     txBuf[9] = 50;
     txBuf[10] = VER_BLD;
     txBuf[11] = VER_APP;
@@ -154,8 +265,14 @@ void App_Com_Tx_Open_Case(void )
 
     txBuf[14] = checkSum;
 
-    Drv_Tx_Queue_Put(COM1, txBuf, sizeof(txBuf));
-    
+    if(devType == DEVICE_LEFT)
+    {
+        Drv_Tx_Queue_Put(COM1, txBuf, sizeof(txBuf));
+    }
+    else if(devType == DEVICE_RIGHT)
+    {
+        Drv_Tx_Queue_Put(COM2, txBuf, sizeof(txBuf));
+    }
 }
 
 

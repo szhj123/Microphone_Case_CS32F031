@@ -88,3 +88,8 @@ void USART1_IRQHandler(void)
     Hal_Com_Tx1_Isr_Handler();
 }
 
+void USART2_IRQHandler(void )
+{
+    Hal_Com_Tx2_Isr_Handler();
+}
+

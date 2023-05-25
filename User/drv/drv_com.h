@@ -71,6 +71,12 @@ void Drv_Com_Tx1_Send(uint8_t *buf, uint16_t length );
 uint8_t Drv_Com_Tx1_Get_State(void );
 void Drv_Com_Tx1_Clr_State(void );
 
+void Drv_Com_Tx2_Enable(void );
+void Drv_Com_Tx2_Send(uint8_t *buf, uint16_t length );
+uint8_t Drv_Com_Tx2_Get_State(void );
+void Drv_Com_Tx2_Clr_State(void );
+
+
 void Drv_Tx_Queue_Put(com_port_t com, uint8_t *buf, uint8_t length );
 uint8_t Drv_Tx_Queue_Get(com_port_t com, com_data_t *txData );
 

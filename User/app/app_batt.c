@@ -111,8 +111,17 @@ static void App_Batt_Chrg_Handler(void )
     switch(battCtrl.chrgStat)
     {
         case BATT_CHRG_INIT:
+        {
+            Drv_Chrg_Chg_Boost_Disable();
+            
+            battCtrl.delayCnt = 0;
+
+            battCtrl.chrgStat = BATT_CHRG_Get_True_Vol;
+            break;
+        }
+        case BATT_CHRG_Get_True_Vol:
         {            
-            if(battCtrl.battLevel == BATT_LEVEL_0)
+            if(battCtrl.delayCnt > 500)
             {
                 battCtrl.battVol = Drv_Batt_Get_Vol();
             
@@ -121,14 +130,16 @@ static void App_Batt_Chrg_Handler(void )
                 battCtrl.battLevel = App_Batt_Cal_Level(battCtrl.battVol);
 
                 battCtrl.battSaveLevel  = battCtrl.battLevel;
+
+                Drv_Msg_Put(APP_EVENT_BATT_LEVEL, (const uint8_t *)&battCtrl.battLevel, 1);
+
+                Drv_Chrg_Chg_Enable();
+                
+                battCtrl.delayCnt = 0;
+                
+                battCtrl.chrgStat = BATT_CHRG_GET_VOL_ERR;
             }
 
-            Drv_Msg_Put(APP_EVENT_BATT_LEVEL, (const uint8_t *)&battCtrl.battLevel, 1);
-
-            battCtrl.delayCnt = 0;
-            
-            battCtrl.chrgStat = BATT_CHRG_GET_VOL_ERR;
-            
             break;
         }
         case BATT_CHRG_GET_VOL_ERR:
@@ -224,63 +235,164 @@ batt_level_t App_Batt_Cal_Level(uint16_t battVol )
     
     if(battCtrl.battLevel == BATT_LEVEL_0)
     {
-        if(battVol > BATT_VOL_80)
+        if(battVol > BATT_VOL_90)
         {
-            battCtrl.battLevel = BATT_LEVEL_81_99;
+            battCtrl.battLevel = BATT_LEVEL_91_99;
         }
-        else if(battVol > BATT_VOL_50 && battVol <= BATT_VOL_80)
+        else if(battVol > BATT_VOL_80 && battVol <= BATT_VOL_90)
         {
-            battCtrl.battLevel = BATT_LEVEL_51_80;
+            battCtrl.battLevel = BATT_LEVEL_81_90;
         }
-        else if(battVol > BATT_VOL_20 && battVol <= BATT_VOL_50)
+        else if(battVol > BATT_VOL_70 && battVol <= BATT_VOL_80)
         {
-            battCtrl.battLevel = BATT_LEVEL_21_50;
+            battCtrl.battLevel = BATT_LEVEL_71_80;
+        }
+        else if(battVol > BATT_VOL_60 && battVol <= BATT_VOL_70)
+        {
+            battCtrl.battLevel = BATT_LEVEL_61_70;
+        }
+        else if(battVol > BATT_VOL_50 && battVol <= BATT_VOL_60)
+        {
+            battCtrl.battLevel = BATT_LEVEL_51_60;
+        }
+        else if(battVol > BATT_VOL_40 && battVol <= BATT_VOL_50)
+        {
+            battCtrl.battLevel = BATT_LEVEL_41_50;
+        }
+        else if(battVol > BATT_VOL_30 && battVol <= BATT_VOL_40)
+        {
+            battCtrl.battLevel = BATT_LEVEL_31_40;
+        }
+        else if(battVol > BATT_VOL_20 && battVol <= BATT_VOL_30)
+        {
+            battCtrl.battLevel = BATT_LEVEL_21_30;
+        }
+        else if(battVol > BATT_VOL_10 && battVol <= BATT_VOL_20)
+        {
+            battCtrl.battLevel = BATT_LEVEL_11_20;
+        }
+        else if(battVol > BATT_VOL_3 && battVol <= BATT_VOL_10)
+        {
+            battCtrl.battLevel = BATT_LEVEL_1_10;
         }
         else
         {
-            battCtrl.battLevel = BATT_LEVEL_1_20;
+            battCtrl.battLevel = BATT_LEVEL_0;
         }
     }
     else
     {
-        if(battCtrl.battLevel == BATT_LEVEL_81_99)
+        if(battCtrl.battLevel == BATT_LEVEL_91_99)
         {
-            if(battVol < (BATT_VOL_80- battErrVol))
+            if(battVol < (BATT_VOL_90- battErrVol))
             {
-                battCtrl.battLevel = BATT_LEVEL_51_80;
+                battCtrl.battLevel = BATT_LEVEL_81_90;
             }
         }
-        else if(battCtrl.battLevel == BATT_LEVEL_51_80)
+        else if(battCtrl.battLevel == BATT_LEVEL_81_90)
+        {
+            if(battVol > (BATT_VOL_90 + battErrVol))
+            {
+                battCtrl.battLevel = BATT_LEVEL_91_99;
+            }
+            else if(battVol < (BATT_VOL_80 - battErrVol))
+            {
+                battCtrl.battLevel = BATT_LEVEL_71_80;
+            }
+        }
+        else if(battCtrl.battLevel == BATT_LEVEL_71_80)
         {
             if(battVol > (BATT_VOL_80 + battErrVol))
             {
-                battCtrl.battLevel = BATT_LEVEL_81_99;
+                battCtrl.battLevel = BATT_LEVEL_81_90;
+            }
+            else if(battVol < (BATT_VOL_70 - battErrVol))
+            {
+                battCtrl.battLevel = BATT_LEVEL_61_70;
+            }
+        }
+        else if(battCtrl.battLevel == BATT_LEVEL_61_70)
+        {
+            if(battVol > (BATT_VOL_70 + battErrVol))
+            {
+                battCtrl.battLevel = BATT_LEVEL_71_80;
+            }
+            else if(battVol < (BATT_VOL_60 - battErrVol))
+            {
+                battCtrl.battLevel = BATT_LEVEL_51_60;
+            }
+        }
+        else if(battCtrl.battLevel == BATT_LEVEL_51_60)
+        {
+            if(battVol > (BATT_VOL_60 + battErrVol))
+            {
+                battCtrl.battLevel = BATT_LEVEL_61_70;
             }
             else if(battVol < (BATT_VOL_50 - battErrVol))
             {
-                battCtrl.battLevel = BATT_LEVEL_21_50;
+                battCtrl.battLevel = BATT_LEVEL_41_50;
             }
         }
-        else if(battCtrl.battLevel == BATT_LEVEL_21_50)
+        else if(battCtrl.battLevel == BATT_LEVEL_41_50)
         {
             if(battVol > (BATT_VOL_50 + battErrVol))
             {
-                battCtrl.battLevel = BATT_LEVEL_51_80;
+                battCtrl.battLevel = BATT_LEVEL_51_60;
+            }
+            else if(battVol < (BATT_VOL_40 - battErrVol))
+            {
+                battCtrl.battLevel = BATT_LEVEL_31_40;
+            }
+        }
+        else if(battCtrl.battLevel == BATT_LEVEL_31_40)
+        {
+            if(battVol > (BATT_VOL_40 + battErrVol))
+            {
+                battCtrl.battLevel = BATT_LEVEL_41_50;
+            }
+            else if(battVol < (BATT_VOL_30 - battErrVol))
+            {
+                battCtrl.battLevel = BATT_LEVEL_21_30;
+            }
+        }
+        else if(battCtrl.battLevel == BATT_LEVEL_21_30)
+        {
+            if(battVol > (BATT_VOL_30 + battErrVol))
+            {
+                battCtrl.battLevel = BATT_LEVEL_31_40;
             }
             else if(battVol < (BATT_VOL_20 - battErrVol))
             {
-                battCtrl.battLevel = BATT_LEVEL_1_20;
+                battCtrl.battLevel = BATT_LEVEL_11_20;
+            }
+        }
+        else if(battCtrl.battLevel == BATT_LEVEL_11_20)
+        {
+            if(battVol > (BATT_VOL_20 + battErrVol))
+            {
+                battCtrl.battLevel = BATT_LEVEL_21_30;
+            }
+            else if(battVol < (BATT_VOL_10 - battErrVol))
+            {
+                battCtrl.battLevel = BATT_LEVEL_1_10;
+            }
+        }
+        else if(battCtrl.battLevel == BATT_LEVEL_1_10)
+        {
+            if(battVol > (BATT_VOL_10 + battErrVol))
+            {
+                battCtrl.battLevel = BATT_LEVEL_11_20;
+            }
+            else if(battVol < (BATT_VOL_3 - battErrVol))
+            {
+                battCtrl.battLevel = BATT_LEVEL_0;
             }
         }
         else
         {
-            if(battVol > (BATT_VOL_20 + battErrVol))
+            if(battVol > (BATT_VOL_5 + battErrVol))
             {
-                battCtrl.battLevel = BATT_LEVEL_21_50;
-            }
-            else if(battVol <= BATT_VOL_3)
-            {
-                battCtrl.battLevel = BATT_LEVEL_0;
+                battCtrl.battLevel = BATT_LEVEL_1_10;
             }
         }
     }
