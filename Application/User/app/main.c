@@ -25,7 +25,9 @@
 /* Private variables ------------------------------------*/
 
 int main(void )
-{    
+{
+    __enable_irq();
+    
     Drv_Task_Init();
 
     Drv_Timer_Init();

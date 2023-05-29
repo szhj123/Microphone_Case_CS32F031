@@ -1,0 +1,1024 @@
+Dependencies for Project 'application', Target 'application': (DO NOT MODIFY !)
+CompilerVersion: 5060960::V5.06 update 7 (build 960)::.\ARMCC
+F (..\Device\Source\ARM\startup_cs32f031.S)(0x645FB623)(--cpu Cortex-M0 -g --apcs=interwork -Id:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include--pd "__UVISION_VERSION SETA 535" --pd "CS32F031 SETA 1"--list .\listings\startup_cs32f031.lst --xref -o .\objects\startup_cs32f031.o --depend .\objects\startup_cs32f031.d)
+F (..\Device\Source\system_cs32f0xx.c)(0x645642FE)(--c99 --gnu -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Device\HAL_Driver\inc -I ..\Device\Include -I ..\User\app -I ..\User\drv -I ..\User\hal-Id:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DCS32F031-o .\objects\system_cs32f0xx.o --omf_browse .\objects\system_cs32f0xx.crf --depend .\objects\system_cs32f0xx.d)
+I (..\Device\Include\cs32f0xx.h)(0x645642FE)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\User\hal\RTE_Components.h)(0x645642FE)
+I (..\Device\Include\core_cm0.h)(0x645642FE)
+I (..\Device\Include\cmsis_version.h)(0x645642FE)
+I (..\Device\Include\cmsis_compiler.h)(0x645642FE)
+I (..\Device\Include\cmsis_armcc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx_conf.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_rcu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_gpio.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_dma.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_adc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_crc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_flash.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_i2c.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_fwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_pmu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_spi.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_tim.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_usart.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_wwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_debug.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_exti.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_misc.h)(0x645642FE)
+F (..\Device\HAL_Driver\src\cs32f0xx_gpio.c)(0x645642FE)(--c99 --gnu -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Device\HAL_Driver\inc -I ..\Device\Include -I ..\User\app -I ..\User\drv -I ..\User\hal-Id:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DCS32F031-o .\objects\cs32f0xx_gpio.o --omf_browse .\objects\cs32f0xx_gpio.crf --depend .\objects\cs32f0xx_gpio.d)
+I (..\Device\HAL_Driver\inc\cs32f0xx_gpio.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx.h)(0x645642FE)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\User\hal\RTE_Components.h)(0x645642FE)
+I (..\Device\Include\core_cm0.h)(0x645642FE)
+I (..\Device\Include\cmsis_version.h)(0x645642FE)
+I (..\Device\Include\cmsis_compiler.h)(0x645642FE)
+I (..\Device\Include\cmsis_armcc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx_conf.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_rcu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_dma.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_adc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_crc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_flash.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_i2c.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_fwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_pmu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_spi.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_tim.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_usart.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_wwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_debug.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_exti.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_misc.h)(0x645642FE)
+F (..\Device\HAL_Driver\src\cs32f0xx_syscfg.c)(0x645642FE)(--c99 --gnu -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Device\HAL_Driver\inc -I ..\Device\Include -I ..\User\app -I ..\User\drv -I ..\User\hal-Id:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DCS32F031-o .\objects\cs32f0xx_syscfg.o --omf_browse .\objects\cs32f0xx_syscfg.crf --depend .\objects\cs32f0xx_syscfg.d)
+I (..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx.h)(0x645642FE)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\User\hal\RTE_Components.h)(0x645642FE)
+I (..\Device\Include\core_cm0.h)(0x645642FE)
+I (..\Device\Include\cmsis_version.h)(0x645642FE)
+I (..\Device\Include\cmsis_compiler.h)(0x645642FE)
+I (..\Device\Include\cmsis_armcc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx_conf.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_rcu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_gpio.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_dma.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_adc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_crc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_flash.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_i2c.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_fwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_pmu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_spi.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_tim.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_usart.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_wwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_debug.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_exti.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_misc.h)(0x645642FE)
+F (..\Device\HAL_Driver\src\cs32f0xx_pmu.c)(0x645642FE)(--c99 --gnu -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Device\HAL_Driver\inc -I ..\Device\Include -I ..\User\app -I ..\User\drv -I ..\User\hal-Id:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DCS32F031-o .\objects\cs32f0xx_pmu.o --omf_browse .\objects\cs32f0xx_pmu.crf --depend .\objects\cs32f0xx_pmu.d)
+I (..\Device\HAL_Driver\inc\cs32f0xx_pmu.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx.h)(0x645642FE)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\User\hal\RTE_Components.h)(0x645642FE)
+I (..\Device\Include\core_cm0.h)(0x645642FE)
+I (..\Device\Include\cmsis_version.h)(0x645642FE)
+I (..\Device\Include\cmsis_compiler.h)(0x645642FE)
+I (..\Device\Include\cmsis_armcc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx_conf.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_rcu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_gpio.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_dma.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_adc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_crc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_flash.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_i2c.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_fwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_spi.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_tim.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_usart.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_wwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_debug.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_exti.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_misc.h)(0x645642FE)
+F (..\Device\HAL_Driver\src\cs32f0xx_debug.c)(0x645642FE)(--c99 --gnu -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Device\HAL_Driver\inc -I ..\Device\Include -I ..\User\app -I ..\User\drv -I ..\User\hal-Id:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DCS32F031-o .\objects\cs32f0xx_debug.o --omf_browse .\objects\cs32f0xx_debug.crf --depend .\objects\cs32f0xx_debug.d)
+I (..\Device\HAL_Driver\inc\cs32f0xx_debug.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx.h)(0x645642FE)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\User\hal\RTE_Components.h)(0x645642FE)
+I (..\Device\Include\core_cm0.h)(0x645642FE)
+I (..\Device\Include\cmsis_version.h)(0x645642FE)
+I (..\Device\Include\cmsis_compiler.h)(0x645642FE)
+I (..\Device\Include\cmsis_armcc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx_conf.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_rcu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_gpio.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_dma.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_adc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_crc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_flash.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_i2c.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_fwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_pmu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_spi.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_tim.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_usart.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_wwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_exti.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_misc.h)(0x645642FE)
+F (..\Device\HAL_Driver\src\cs32f0xx_tim.c)(0x645642FE)(--c99 --gnu -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Device\HAL_Driver\inc -I ..\Device\Include -I ..\User\app -I ..\User\drv -I ..\User\hal-Id:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DCS32F031-o .\objects\cs32f0xx_tim.o --omf_browse .\objects\cs32f0xx_tim.crf --depend .\objects\cs32f0xx_tim.d)
+I (..\Device\HAL_Driver\inc\cs32f0xx_tim.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx.h)(0x645642FE)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\User\hal\RTE_Components.h)(0x645642FE)
+I (..\Device\Include\core_cm0.h)(0x645642FE)
+I (..\Device\Include\cmsis_version.h)(0x645642FE)
+I (..\Device\Include\cmsis_compiler.h)(0x645642FE)
+I (..\Device\Include\cmsis_armcc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx_conf.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_rcu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_gpio.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_dma.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_adc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_crc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_flash.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_i2c.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_fwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_pmu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_spi.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_usart.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_wwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_debug.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_exti.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_misc.h)(0x645642FE)
+F (..\Device\HAL_Driver\src\cs32f0xx_misc.c)(0x645642FE)(--c99 --gnu -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Device\HAL_Driver\inc -I ..\Device\Include -I ..\User\app -I ..\User\drv -I ..\User\hal-Id:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DCS32F031-o .\objects\cs32f0xx_misc.o --omf_browse .\objects\cs32f0xx_misc.crf --depend .\objects\cs32f0xx_misc.d)
+I (..\Device\HAL_Driver\inc\cs32f0xx_misc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx.h)(0x645642FE)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\User\hal\RTE_Components.h)(0x645642FE)
+I (..\Device\Include\core_cm0.h)(0x645642FE)
+I (..\Device\Include\cmsis_version.h)(0x645642FE)
+I (..\Device\Include\cmsis_compiler.h)(0x645642FE)
+I (..\Device\Include\cmsis_armcc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx_conf.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_rcu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_gpio.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_dma.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_adc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_crc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_flash.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_i2c.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_fwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_pmu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_spi.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_tim.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_usart.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_wwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_debug.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_exti.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h)(0x645642FE)
+F (..\Device\HAL_Driver\src\cs32f0xx_i2c.c)(0x645642FE)(--c99 --gnu -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Device\HAL_Driver\inc -I ..\Device\Include -I ..\User\app -I ..\User\drv -I ..\User\hal-Id:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DCS32F031-o .\objects\cs32f0xx_i2c.o --omf_browse .\objects\cs32f0xx_i2c.crf --depend .\objects\cs32f0xx_i2c.d)
+I (..\Device\HAL_Driver\inc\cs32f0xx_i2c.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx.h)(0x645642FE)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\User\hal\RTE_Components.h)(0x645642FE)
+I (..\Device\Include\core_cm0.h)(0x645642FE)
+I (..\Device\Include\cmsis_version.h)(0x645642FE)
+I (..\Device\Include\cmsis_compiler.h)(0x645642FE)
+I (..\Device\Include\cmsis_armcc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx_conf.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_rcu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_gpio.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_dma.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_adc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_crc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_flash.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_fwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_pmu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_spi.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_tim.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_usart.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_wwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_debug.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_exti.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_misc.h)(0x645642FE)
+F (..\Device\HAL_Driver\src\cs32f0xx_adc.c)(0x645642FE)(--c99 --gnu -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Device\HAL_Driver\inc -I ..\Device\Include -I ..\User\app -I ..\User\drv -I ..\User\hal-Id:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DCS32F031-o .\objects\cs32f0xx_adc.o --omf_browse .\objects\cs32f0xx_adc.crf --depend .\objects\cs32f0xx_adc.d)
+I (..\Device\HAL_Driver\inc\cs32f0xx_adc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx.h)(0x645642FE)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\User\hal\RTE_Components.h)(0x645642FE)
+I (..\Device\Include\core_cm0.h)(0x645642FE)
+I (..\Device\Include\cmsis_version.h)(0x645642FE)
+I (..\Device\Include\cmsis_compiler.h)(0x645642FE)
+I (..\Device\Include\cmsis_armcc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx_conf.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_rcu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_gpio.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_dma.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_crc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_flash.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_i2c.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_fwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_pmu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_spi.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_tim.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_usart.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_wwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_debug.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_exti.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_misc.h)(0x645642FE)
+F (..\Device\HAL_Driver\src\cs32f0xx_usart.c)(0x645642FE)(--c99 --gnu -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Device\HAL_Driver\inc -I ..\Device\Include -I ..\User\app -I ..\User\drv -I ..\User\hal-Id:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DCS32F031-o .\objects\cs32f0xx_usart.o --omf_browse .\objects\cs32f0xx_usart.crf --depend .\objects\cs32f0xx_usart.d)
+I (..\Device\HAL_Driver\inc\cs32f0xx_usart.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx.h)(0x645642FE)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\User\hal\RTE_Components.h)(0x645642FE)
+I (..\Device\Include\core_cm0.h)(0x645642FE)
+I (..\Device\Include\cmsis_version.h)(0x645642FE)
+I (..\Device\Include\cmsis_compiler.h)(0x645642FE)
+I (..\Device\Include\cmsis_armcc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx_conf.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_rcu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_gpio.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_dma.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_adc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_crc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_flash.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_i2c.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_fwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_pmu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_spi.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_tim.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_wwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_debug.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_exti.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_misc.h)(0x645642FE)
+F (..\Device\HAL_Driver\src\cs32f0xx_rcu.c)(0x645642FE)(--c99 --gnu -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Device\HAL_Driver\inc -I ..\Device\Include -I ..\User\app -I ..\User\drv -I ..\User\hal-Id:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DCS32F031-o .\objects\cs32f0xx_rcu.o --omf_browse .\objects\cs32f0xx_rcu.crf --depend .\objects\cs32f0xx_rcu.d)
+I (..\Device\HAL_Driver\inc\cs32f0xx_rcu.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx.h)(0x645642FE)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\User\hal\RTE_Components.h)(0x645642FE)
+I (..\Device\Include\core_cm0.h)(0x645642FE)
+I (..\Device\Include\cmsis_version.h)(0x645642FE)
+I (..\Device\Include\cmsis_compiler.h)(0x645642FE)
+I (..\Device\Include\cmsis_armcc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx_conf.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_gpio.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_dma.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_adc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_crc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_flash.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_i2c.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_fwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_pmu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_spi.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_tim.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_usart.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_wwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_debug.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_exti.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_misc.h)(0x645642FE)
+F (..\User\app\main.c)(0x6469AE7C)(--c99 --gnu -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Device\HAL_Driver\inc -I ..\Device\Include -I ..\User\app -I ..\User\drv -I ..\User\hal-Id:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DCS32F031-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
+I (..\User\drv\drv_task.h)(0x645FB625)
+I (..\User\hal\hal_task.h)(0x645FB625)
+I (..\User\hal\hal_cs32f031.h)(0x645FB625)
+I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
+I (..\Device\Include\cs32f0xx.h)(0x645642FE)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\User\hal\RTE_Components.h)(0x645642FE)
+I (..\Device\Include\core_cm0.h)(0x645642FE)
+I (..\Device\Include\cmsis_version.h)(0x645642FE)
+I (..\Device\Include\cmsis_compiler.h)(0x645642FE)
+I (..\Device\Include\cmsis_armcc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx_conf.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_rcu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_gpio.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_dma.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_adc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_crc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_flash.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_i2c.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_fwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_pmu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_spi.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_tim.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_usart.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_wwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_debug.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_exti.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_misc.h)(0x645642FE)
+I (..\User\drv\drv_timer.h)(0x6469A829)
+I (..\User\hal\hal_timer.h)(0x645FB625)
+I (..\User\drv\drv_com.h)(0x6469B4CD)
+I (..\User\hal\hal_com.h)(0x6469B4B1)
+I (..\User\app\app_led.h)(0x6469A829)
+I (..\User\drv\drv_led.h)(0x6469A829)
+I (..\User\hal\hal_led.h)(0x6469A829)
+I (..\User\app\app_event.h)(0x6469A829)
+I (..\User\drv\drv_event.h)(0x645FB625)
+I (..\User\app\app_batt.h)(0x6469A829)
+I (..\User\drv\drv_charger.h)(0x6469A829)
+I (..\User\hal\hal_charger.h)(0x6469C50E)
+I (..\User\drv\drv_batt.h)(0x6469A829)
+I (..\User\hal\hal_batt.h)(0x6469A829)
+I (..\User\app\app_hall.h)(0x6469A829)
+I (..\User\drv\drv_hall.h)(0x6469A829)
+I (..\User\hal\hal_hall.h)(0x6469A829)
+F (..\User\app\app_event.c)(0x6469A829)(--c99 --gnu -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Device\HAL_Driver\inc -I ..\Device\Include -I ..\User\app -I ..\User\drv -I ..\User\hal-Id:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DCS32F031-o .\objects\app_event.o --omf_browse .\objects\app_event.crf --depend .\objects\app_event.d)
+I (..\User\app\app_event.h)(0x6469A829)
+I (..\User\drv\drv_task.h)(0x645FB625)
+I (..\User\hal\hal_task.h)(0x645FB625)
+I (..\User\hal\hal_cs32f031.h)(0x645FB625)
+I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
+I (..\Device\Include\cs32f0xx.h)(0x645642FE)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\User\hal\RTE_Components.h)(0x645642FE)
+I (..\Device\Include\core_cm0.h)(0x645642FE)
+I (..\Device\Include\cmsis_version.h)(0x645642FE)
+I (..\Device\Include\cmsis_compiler.h)(0x645642FE)
+I (..\Device\Include\cmsis_armcc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx_conf.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_rcu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_gpio.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_dma.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_adc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_crc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_flash.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_i2c.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_fwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_pmu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_spi.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_tim.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_usart.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_wwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_debug.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_exti.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_misc.h)(0x645642FE)
+I (..\User\drv\drv_timer.h)(0x6469A829)
+I (..\User\hal\hal_timer.h)(0x645FB625)
+I (..\User\drv\drv_event.h)(0x645FB625)
+I (..\User\app\app_batt.h)(0x6469A829)
+I (..\User\drv\drv_charger.h)(0x6469A829)
+I (..\User\hal\hal_charger.h)(0x6469C50E)
+I (..\User\drv\drv_batt.h)(0x6469A829)
+I (..\User\hal\hal_batt.h)(0x6469A829)
+I (..\User\app\app_led.h)(0x6469A829)
+I (..\User\drv\drv_led.h)(0x6469A829)
+I (..\User\hal\hal_led.h)(0x6469A829)
+I (..\User\app\app_hall.h)(0x6469A829)
+I (..\User\drv\drv_hall.h)(0x6469A829)
+I (..\User\hal\hal_hall.h)(0x6469A829)
+F (..\User\app\app_led.c)(0x6469A829)(--c99 --gnu -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Device\HAL_Driver\inc -I ..\Device\Include -I ..\User\app -I ..\User\drv -I ..\User\hal-Id:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DCS32F031-o .\objects\app_led.o --omf_browse .\objects\app_led.crf --depend .\objects\app_led.d)
+I (..\User\app\app_led.h)(0x6469A829)
+I (..\User\drv\drv_timer.h)(0x6469A829)
+I (..\User\hal\hal_timer.h)(0x645FB625)
+I (..\User\hal\hal_cs32f031.h)(0x645FB625)
+I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
+I (..\Device\Include\cs32f0xx.h)(0x645642FE)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\User\hal\RTE_Components.h)(0x645642FE)
+I (..\Device\Include\core_cm0.h)(0x645642FE)
+I (..\Device\Include\cmsis_version.h)(0x645642FE)
+I (..\Device\Include\cmsis_compiler.h)(0x645642FE)
+I (..\Device\Include\cmsis_armcc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx_conf.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_rcu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_gpio.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_dma.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_adc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_crc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_flash.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_i2c.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_fwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_pmu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_spi.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_tim.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_usart.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_wwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_debug.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_exti.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_misc.h)(0x645642FE)
+I (..\User\drv\drv_led.h)(0x6469A829)
+I (..\User\hal\hal_led.h)(0x6469A829)
+I (..\User\app\app_batt.h)(0x6469A829)
+I (..\User\drv\drv_task.h)(0x645FB625)
+I (..\User\hal\hal_task.h)(0x645FB625)
+I (..\User\drv\drv_event.h)(0x645FB625)
+I (..\User\drv\drv_charger.h)(0x6469A829)
+I (..\User\hal\hal_charger.h)(0x6469C50E)
+I (..\User\drv\drv_batt.h)(0x6469A829)
+I (..\User\hal\hal_batt.h)(0x6469A829)
+F (..\User\app\app_batt.c)(0x6469A829)(--c99 --gnu -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Device\HAL_Driver\inc -I ..\Device\Include -I ..\User\app -I ..\User\drv -I ..\User\hal-Id:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DCS32F031-o .\objects\app_batt.o --omf_browse .\objects\app_batt.crf --depend .\objects\app_batt.d)
+I (..\User\app\app_batt.h)(0x6469A829)
+I (..\User\drv\drv_task.h)(0x645FB625)
+I (..\User\hal\hal_task.h)(0x645FB625)
+I (..\User\hal\hal_cs32f031.h)(0x645FB625)
+I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
+I (..\Device\Include\cs32f0xx.h)(0x645642FE)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\User\hal\RTE_Components.h)(0x645642FE)
+I (..\Device\Include\core_cm0.h)(0x645642FE)
+I (..\Device\Include\cmsis_version.h)(0x645642FE)
+I (..\Device\Include\cmsis_compiler.h)(0x645642FE)
+I (..\Device\Include\cmsis_armcc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx_conf.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_rcu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_gpio.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_dma.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_adc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_crc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_flash.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_i2c.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_fwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_pmu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_spi.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_tim.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_usart.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_wwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_debug.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_exti.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_misc.h)(0x645642FE)
+I (..\User\drv\drv_event.h)(0x645FB625)
+I (..\User\drv\drv_charger.h)(0x6469A829)
+I (..\User\hal\hal_charger.h)(0x6469C50E)
+I (..\User\drv\drv_batt.h)(0x6469A829)
+I (..\User\hal\hal_batt.h)(0x6469A829)
+I (..\User\app\app_event.h)(0x6469A829)
+I (..\User\drv\drv_timer.h)(0x6469A829)
+I (..\User\hal\hal_timer.h)(0x645FB625)
+F (..\User\app\app_hall.c)(0x6469A829)(--c99 --gnu -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Device\HAL_Driver\inc -I ..\Device\Include -I ..\User\app -I ..\User\drv -I ..\User\hal-Id:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DCS32F031-o .\objects\app_hall.o --omf_browse .\objects\app_hall.crf --depend .\objects\app_hall.d)
+I (..\User\app\app_hall.h)(0x6469A829)
+I (..\User\drv\drv_hall.h)(0x6469A829)
+I (..\User\hal\hal_hall.h)(0x6469A829)
+I (..\User\hal\hal_cs32f031.h)(0x645FB625)
+I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
+I (..\Device\Include\cs32f0xx.h)(0x645642FE)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\User\hal\RTE_Components.h)(0x645642FE)
+I (..\Device\Include\core_cm0.h)(0x645642FE)
+I (..\Device\Include\cmsis_version.h)(0x645642FE)
+I (..\Device\Include\cmsis_compiler.h)(0x645642FE)
+I (..\Device\Include\cmsis_armcc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx_conf.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_rcu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_gpio.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_dma.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_adc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_crc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_flash.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_i2c.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_fwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_pmu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_spi.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_tim.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_usart.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_wwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_debug.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_exti.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_misc.h)(0x645642FE)
+I (..\User\drv\drv_timer.h)(0x6469A829)
+I (..\User\hal\hal_timer.h)(0x645FB625)
+I (..\User\drv\drv_event.h)(0x645FB625)
+I (..\User\app\app_event.h)(0x6469A829)
+I (..\User\drv\drv_task.h)(0x645FB625)
+I (..\User\hal\hal_task.h)(0x645FB625)
+F (..\User\drv\drv_task.c)(0x645FB625)(--c99 --gnu -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Device\HAL_Driver\inc -I ..\Device\Include -I ..\User\app -I ..\User\drv -I ..\User\hal-Id:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DCS32F031-o .\objects\drv_task.o --omf_browse .\objects\drv_task.crf --depend .\objects\drv_task.d)
+I (..\User\drv\drv_task.h)(0x645FB625)
+I (..\User\hal\hal_task.h)(0x645FB625)
+I (..\User\hal\hal_cs32f031.h)(0x645FB625)
+I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
+I (..\Device\Include\cs32f0xx.h)(0x645642FE)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\User\hal\RTE_Components.h)(0x645642FE)
+I (..\Device\Include\core_cm0.h)(0x645642FE)
+I (..\Device\Include\cmsis_version.h)(0x645642FE)
+I (..\Device\Include\cmsis_compiler.h)(0x645642FE)
+I (..\Device\Include\cmsis_armcc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx_conf.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_rcu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_gpio.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_dma.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_adc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_crc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_flash.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_i2c.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_fwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_pmu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_spi.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_tim.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_usart.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_wwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_debug.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_exti.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_misc.h)(0x645642FE)
+F (..\User\drv\drv_timer.c)(0x6469A829)(--c99 --gnu -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Device\HAL_Driver\inc -I ..\Device\Include -I ..\User\app -I ..\User\drv -I ..\User\hal-Id:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DCS32F031-o .\objects\drv_timer.o --omf_browse .\objects\drv_timer.crf --depend .\objects\drv_timer.d)
+I (..\User\drv\drv_timer.h)(0x6469A829)
+I (..\User\hal\hal_timer.h)(0x645FB625)
+I (..\User\hal\hal_cs32f031.h)(0x645FB625)
+I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
+I (..\Device\Include\cs32f0xx.h)(0x645642FE)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\User\hal\RTE_Components.h)(0x645642FE)
+I (..\Device\Include\core_cm0.h)(0x645642FE)
+I (..\Device\Include\cmsis_version.h)(0x645642FE)
+I (..\Device\Include\cmsis_compiler.h)(0x645642FE)
+I (..\Device\Include\cmsis_armcc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx_conf.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_rcu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_gpio.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_dma.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_adc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_crc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_flash.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_i2c.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_fwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_pmu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_spi.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_tim.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_usart.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_wwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_debug.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_exti.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_misc.h)(0x645642FE)
+F (..\User\drv\drv_event.c)(0x645FB625)(--c99 --gnu -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Device\HAL_Driver\inc -I ..\Device\Include -I ..\User\app -I ..\User\drv -I ..\User\hal-Id:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DCS32F031-o .\objects\drv_event.o --omf_browse .\objects\drv_event.crf --depend .\objects\drv_event.d)
+I (..\User\drv\drv_event.h)(0x645FB625)
+I (..\User\hal\hal_cs32f031.h)(0x645FB625)
+I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
+I (..\Device\Include\cs32f0xx.h)(0x645642FE)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\User\hal\RTE_Components.h)(0x645642FE)
+I (..\Device\Include\core_cm0.h)(0x645642FE)
+I (..\Device\Include\cmsis_version.h)(0x645642FE)
+I (..\Device\Include\cmsis_compiler.h)(0x645642FE)
+I (..\Device\Include\cmsis_armcc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx_conf.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_rcu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_gpio.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_dma.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_adc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_crc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_flash.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_i2c.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_fwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_pmu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_spi.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_tim.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_usart.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_wwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_debug.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_exti.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_misc.h)(0x645642FE)
+F (..\User\drv\drv_led.c)(0x6469A829)(--c99 --gnu -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Device\HAL_Driver\inc -I ..\Device\Include -I ..\User\app -I ..\User\drv -I ..\User\hal-Id:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DCS32F031-o .\objects\drv_led.o --omf_browse .\objects\drv_led.crf --depend .\objects\drv_led.d)
+I (..\User\drv\drv_led.h)(0x6469A829)
+I (..\User\hal\hal_led.h)(0x6469A829)
+I (..\User\hal\hal_cs32f031.h)(0x645FB625)
+I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
+I (..\Device\Include\cs32f0xx.h)(0x645642FE)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\User\hal\RTE_Components.h)(0x645642FE)
+I (..\Device\Include\core_cm0.h)(0x645642FE)
+I (..\Device\Include\cmsis_version.h)(0x645642FE)
+I (..\Device\Include\cmsis_compiler.h)(0x645642FE)
+I (..\Device\Include\cmsis_armcc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx_conf.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_rcu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_gpio.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_dma.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_adc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_crc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_flash.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_i2c.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_fwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_pmu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_spi.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_tim.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_usart.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_wwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_debug.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_exti.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_misc.h)(0x645642FE)
+F (..\User\drv\drv_charger.c)(0x6469CCAF)(--c99 --gnu -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Device\HAL_Driver\inc -I ..\Device\Include -I ..\User\app -I ..\User\drv -I ..\User\hal-Id:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DCS32F031-o .\objects\drv_charger.o --omf_browse .\objects\drv_charger.crf --depend .\objects\drv_charger.d)
+I (..\User\drv\drv_charger.h)(0x6469A829)
+I (..\User\hal\hal_charger.h)(0x6469C50E)
+I (..\User\hal\hal_cs32f031.h)(0x645FB625)
+I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
+I (..\Device\Include\cs32f0xx.h)(0x645642FE)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\User\hal\RTE_Components.h)(0x645642FE)
+I (..\Device\Include\core_cm0.h)(0x645642FE)
+I (..\Device\Include\cmsis_version.h)(0x645642FE)
+I (..\Device\Include\cmsis_compiler.h)(0x645642FE)
+I (..\Device\Include\cmsis_armcc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx_conf.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_rcu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_gpio.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_dma.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_adc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_crc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_flash.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_i2c.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_fwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_pmu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_spi.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_tim.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_usart.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_wwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_debug.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_exti.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_misc.h)(0x645642FE)
+I (..\User\drv\drv_timer.h)(0x6469A829)
+I (..\User\hal\hal_timer.h)(0x645FB625)
+F (..\User\drv\drv_batt.c)(0x6469A829)(--c99 --gnu -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Device\HAL_Driver\inc -I ..\Device\Include -I ..\User\app -I ..\User\drv -I ..\User\hal-Id:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DCS32F031-o .\objects\drv_batt.o --omf_browse .\objects\drv_batt.crf --depend .\objects\drv_batt.d)
+I (..\User\drv\drv_batt.h)(0x6469A829)
+I (..\User\hal\hal_batt.h)(0x6469A829)
+I (..\User\hal\hal_cs32f031.h)(0x645FB625)
+I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
+I (..\Device\Include\cs32f0xx.h)(0x645642FE)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\User\hal\RTE_Components.h)(0x645642FE)
+I (..\Device\Include\core_cm0.h)(0x645642FE)
+I (..\Device\Include\cmsis_version.h)(0x645642FE)
+I (..\Device\Include\cmsis_compiler.h)(0x645642FE)
+I (..\Device\Include\cmsis_armcc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx_conf.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_rcu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_gpio.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_dma.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_adc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_crc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_flash.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_i2c.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_fwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_pmu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_spi.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_tim.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_usart.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_wwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_debug.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_exti.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_misc.h)(0x645642FE)
+I (..\User\drv\drv_timer.h)(0x6469A829)
+I (..\User\hal\hal_timer.h)(0x645FB625)
+F (..\User\drv\drv_hall.c)(0x6469A829)(--c99 --gnu -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Device\HAL_Driver\inc -I ..\Device\Include -I ..\User\app -I ..\User\drv -I ..\User\hal-Id:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DCS32F031-o .\objects\drv_hall.o --omf_browse .\objects\drv_hall.crf --depend .\objects\drv_hall.d)
+I (..\User\drv\drv_hall.h)(0x6469A829)
+I (..\User\hal\hal_hall.h)(0x6469A829)
+I (..\User\hal\hal_cs32f031.h)(0x645FB625)
+I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
+I (..\Device\Include\cs32f0xx.h)(0x645642FE)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\User\hal\RTE_Components.h)(0x645642FE)
+I (..\Device\Include\core_cm0.h)(0x645642FE)
+I (..\Device\Include\cmsis_version.h)(0x645642FE)
+I (..\Device\Include\cmsis_compiler.h)(0x645642FE)
+I (..\Device\Include\cmsis_armcc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx_conf.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_rcu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_gpio.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_dma.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_adc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_crc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_flash.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_i2c.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_fwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_pmu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_spi.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_tim.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_usart.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_wwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_debug.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_exti.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_misc.h)(0x645642FE)
+I (..\User\drv\drv_timer.h)(0x6469A829)
+I (..\User\hal\hal_timer.h)(0x645FB625)
+I (..\User\drv\drv_event.h)(0x645FB625)
+F (..\User\drv\drv_com.c)(0x6469D9C2)(--c99 --gnu -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Device\HAL_Driver\inc -I ..\Device\Include -I ..\User\app -I ..\User\drv -I ..\User\hal-Id:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DCS32F031-o .\objects\drv_com.o --omf_browse .\objects\drv_com.crf --depend .\objects\drv_com.d)
+I (..\User\drv\drv_com.h)(0x6469B4CD)
+I (..\User\hal\hal_com.h)(0x6469B4B1)
+I (..\User\hal\hal_cs32f031.h)(0x645FB625)
+I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
+I (..\Device\Include\cs32f0xx.h)(0x645642FE)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\User\hal\RTE_Components.h)(0x645642FE)
+I (..\Device\Include\core_cm0.h)(0x645642FE)
+I (..\Device\Include\cmsis_version.h)(0x645642FE)
+I (..\Device\Include\cmsis_compiler.h)(0x645642FE)
+I (..\Device\Include\cmsis_armcc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx_conf.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_rcu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_gpio.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_dma.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_adc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_crc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_flash.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_i2c.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_fwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_pmu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_spi.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_tim.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_usart.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_wwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_debug.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_exti.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_misc.h)(0x645642FE)
+I (..\User\drv\drv_task.h)(0x645FB625)
+I (..\User\hal\hal_task.h)(0x645FB625)
+F (..\User\hal\hal_interrupt.c)(0x6469AF3E)(--c99 --gnu -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Device\HAL_Driver\inc -I ..\Device\Include -I ..\User\app -I ..\User\drv -I ..\User\hal-Id:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DCS32F031-o .\objects\hal_interrupt.o --omf_browse .\objects\hal_interrupt.crf --depend .\objects\hal_interrupt.d)
+I (..\User\hal\hal_task.h)(0x645FB625)
+I (..\User\hal\hal_cs32f031.h)(0x645FB625)
+I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
+I (..\Device\Include\cs32f0xx.h)(0x645642FE)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\User\hal\RTE_Components.h)(0x645642FE)
+I (..\Device\Include\core_cm0.h)(0x645642FE)
+I (..\Device\Include\cmsis_version.h)(0x645642FE)
+I (..\Device\Include\cmsis_compiler.h)(0x645642FE)
+I (..\Device\Include\cmsis_armcc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx_conf.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_rcu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_gpio.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_dma.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_adc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_crc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_flash.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_i2c.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_fwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_pmu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_spi.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_tim.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_usart.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_wwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_debug.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_exti.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_misc.h)(0x645642FE)
+I (..\User\hal\hal_timer.h)(0x645FB625)
+I (..\User\hal\hal_charger.h)(0x6469C50E)
+I (..\User\hal\hal_hall.h)(0x6469A829)
+I (..\User\hal\hal_com.h)(0x6469B4B1)
+F (..\User\hal\hal_task.c)(0x645FB625)(--c99 --gnu -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Device\HAL_Driver\inc -I ..\Device\Include -I ..\User\app -I ..\User\drv -I ..\User\hal-Id:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DCS32F031-o .\objects\hal_task.o --omf_browse .\objects\hal_task.crf --depend .\objects\hal_task.d)
+I (..\User\hal\hal_task.h)(0x645FB625)
+I (..\User\hal\hal_cs32f031.h)(0x645FB625)
+I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
+I (..\Device\Include\cs32f0xx.h)(0x645642FE)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\User\hal\RTE_Components.h)(0x645642FE)
+I (..\Device\Include\core_cm0.h)(0x645642FE)
+I (..\Device\Include\cmsis_version.h)(0x645642FE)
+I (..\Device\Include\cmsis_compiler.h)(0x645642FE)
+I (..\Device\Include\cmsis_armcc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx_conf.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_rcu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_gpio.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_dma.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_adc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_crc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_flash.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_i2c.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_fwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_pmu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_spi.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_tim.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_usart.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_wwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_debug.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_exti.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_misc.h)(0x645642FE)
+F (..\User\hal\hal_timer.c)(0x645FB625)(--c99 --gnu -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Device\HAL_Driver\inc -I ..\Device\Include -I ..\User\app -I ..\User\drv -I ..\User\hal-Id:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DCS32F031-o .\objects\hal_timer.o --omf_browse .\objects\hal_timer.crf --depend .\objects\hal_timer.d)
+I (..\User\hal\hal_timer.h)(0x645FB625)
+I (..\User\hal\hal_cs32f031.h)(0x645FB625)
+I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
+I (..\Device\Include\cs32f0xx.h)(0x645642FE)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\User\hal\RTE_Components.h)(0x645642FE)
+I (..\Device\Include\core_cm0.h)(0x645642FE)
+I (..\Device\Include\cmsis_version.h)(0x645642FE)
+I (..\Device\Include\cmsis_compiler.h)(0x645642FE)
+I (..\Device\Include\cmsis_armcc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx_conf.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_rcu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_gpio.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_dma.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_adc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_crc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_flash.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_i2c.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_fwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_pmu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_spi.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_tim.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_usart.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_wwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_debug.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_exti.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_misc.h)(0x645642FE)
+F (..\User\hal\hal_led.c)(0x6469A829)(--c99 --gnu -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Device\HAL_Driver\inc -I ..\Device\Include -I ..\User\app -I ..\User\drv -I ..\User\hal-Id:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DCS32F031-o .\objects\hal_led.o --omf_browse .\objects\hal_led.crf --depend .\objects\hal_led.d)
+I (..\User\hal\hal_led.h)(0x6469A829)
+I (..\User\hal\hal_cs32f031.h)(0x645FB625)
+I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
+I (..\Device\Include\cs32f0xx.h)(0x645642FE)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\User\hal\RTE_Components.h)(0x645642FE)
+I (..\Device\Include\core_cm0.h)(0x645642FE)
+I (..\Device\Include\cmsis_version.h)(0x645642FE)
+I (..\Device\Include\cmsis_compiler.h)(0x645642FE)
+I (..\Device\Include\cmsis_armcc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx_conf.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_rcu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_gpio.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_dma.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_adc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_crc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_flash.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_i2c.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_fwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_pmu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_spi.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_tim.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_usart.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_wwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_debug.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_exti.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_misc.h)(0x645642FE)
+F (..\User\hal\hal_charger.c)(0x6469C513)(--c99 --gnu -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Device\HAL_Driver\inc -I ..\Device\Include -I ..\User\app -I ..\User\drv -I ..\User\hal-Id:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DCS32F031-o .\objects\hal_charger.o --omf_browse .\objects\hal_charger.crf --depend .\objects\hal_charger.d)
+I (..\User\hal\hal_charger.h)(0x6469C50E)
+I (..\User\hal\hal_cs32f031.h)(0x645FB625)
+I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
+I (..\Device\Include\cs32f0xx.h)(0x645642FE)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\User\hal\RTE_Components.h)(0x645642FE)
+I (..\Device\Include\core_cm0.h)(0x645642FE)
+I (..\Device\Include\cmsis_version.h)(0x645642FE)
+I (..\Device\Include\cmsis_compiler.h)(0x645642FE)
+I (..\Device\Include\cmsis_armcc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx_conf.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_rcu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_gpio.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_dma.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_adc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_crc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_flash.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_i2c.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_fwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_pmu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_spi.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_tim.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_usart.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_wwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_debug.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_exti.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_misc.h)(0x645642FE)
+F (..\User\hal\hal_batt.c)(0x6469C5F3)(--c99 --gnu -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Device\HAL_Driver\inc -I ..\Device\Include -I ..\User\app -I ..\User\drv -I ..\User\hal-Id:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DCS32F031-o .\objects\hal_batt.o --omf_browse .\objects\hal_batt.crf --depend .\objects\hal_batt.d)
+I (..\User\hal\hal_batt.h)(0x6469A829)
+I (..\User\hal\hal_cs32f031.h)(0x645FB625)
+I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
+I (..\Device\Include\cs32f0xx.h)(0x645642FE)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\User\hal\RTE_Components.h)(0x645642FE)
+I (..\Device\Include\core_cm0.h)(0x645642FE)
+I (..\Device\Include\cmsis_version.h)(0x645642FE)
+I (..\Device\Include\cmsis_compiler.h)(0x645642FE)
+I (..\Device\Include\cmsis_armcc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx_conf.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_rcu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_gpio.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_dma.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_adc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_crc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_flash.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_i2c.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_fwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_pmu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_spi.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_tim.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_usart.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_wwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_debug.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_exti.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_misc.h)(0x645642FE)
+F (..\User\hal\hal_hall.c)(0x6469A829)(--c99 --gnu -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Device\HAL_Driver\inc -I ..\Device\Include -I ..\User\app -I ..\User\drv -I ..\User\hal-Id:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DCS32F031-o .\objects\hal_hall.o --omf_browse .\objects\hal_hall.crf --depend .\objects\hal_hall.d)
+I (..\User\hal\hal_hall.h)(0x6469A829)
+I (..\User\hal\hal_cs32f031.h)(0x645FB625)
+I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
+I (..\Device\Include\cs32f0xx.h)(0x645642FE)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\User\hal\RTE_Components.h)(0x645642FE)
+I (..\Device\Include\core_cm0.h)(0x645642FE)
+I (..\Device\Include\cmsis_version.h)(0x645642FE)
+I (..\Device\Include\cmsis_compiler.h)(0x645642FE)
+I (..\Device\Include\cmsis_armcc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx_conf.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_rcu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_gpio.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_dma.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_adc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_crc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_flash.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_i2c.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_fwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_pmu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_spi.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_tim.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_usart.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_wwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_debug.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_exti.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_misc.h)(0x645642FE)
+F (..\User\hal\hal_com.c)(0x646A2D4D)(--c99 --gnu -c --cpu Cortex-M0 -g -O0 --apcs=interwork --split_sections -I ..\Device\HAL_Driver\inc -I ..\Device\Include -I ..\User\app -I ..\User\drv -I ..\User\hal-Id:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DCS32F031-o .\objects\hal_com.o --omf_browse .\objects\hal_com.crf --depend .\objects\hal_com.d)
+I (..\User\hal\hal_com.h)(0x6469B4B1)
+I (..\User\hal\hal_cs32f031.h)(0x645FB625)
+I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x60252374)
+I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
+I (..\Device\Include\cs32f0xx.h)(0x645642FE)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (..\User\hal\RTE_Components.h)(0x645642FE)
+I (..\Device\Include\core_cm0.h)(0x645642FE)
+I (..\Device\Include\cmsis_version.h)(0x645642FE)
+I (..\Device\Include\cmsis_compiler.h)(0x645642FE)
+I (..\Device\Include\cmsis_armcc.h)(0x645642FE)
+I (..\Device\Include\cs32f0xx_conf.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_rcu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_gpio.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_dma.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_adc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_crc.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_flash.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_i2c.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_fwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_pmu.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_spi.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_tim.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_usart.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_wwdt.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_debug.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_exti.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h)(0x645642FE)
+I (..\Device\HAL_Driver\inc\cs32f0xx_misc.h)(0x645642FE)

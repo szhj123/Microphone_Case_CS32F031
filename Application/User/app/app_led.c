@@ -53,26 +53,20 @@ typedef void (*pFunction)(void );
 pFunction bldFunction = NULL;
 
 #define BLD_FLASH_ADDR              0x8000000    
-#define BLD_VECTOR_ADDR				BLD_FLASH_ADDR
-#define BLD_VECTOR_SIZE             0xc0
-
-unsigned char vectors[BLD_VECTOR_SIZE] __attribute__ ((section(".ARM.__at_0x20000000"))) = {0};
 
 uint32_t bldAddress;
 
 
 void Jump_To_Bootloader(void )
 {
-    #if 0
-    RCU->APB2EN |= RCU_APB2_PERI_SYSCFG;
-    
     __disable_irq();
+    
+	#if 0
+    RCU->APB2EN |= RCU_APB2_PERI_SYSCFG;
 
-    //memcpy((void*)vectors, (void*)BLD_VECTOR_ADDR, BLD_VECTOR_SIZE);	//copy interrupt vector table to sram. 
-		
 	if(((*(__IO uint32_t*)BLD_FLASH_ADDR) & 0xFFFF0000 ) == 0x20000000)
     {
-        SYSCFG->RMAPCFG |= SYSCFG_MEM_REMAP_FLASH;
+        SYSCFG->RMAPCFG = (SYSCFG->RMAPCFG & ~SYSCFG_MEM_REMAP_SRAM) | SYSCFG_MEM_REMAP_SYS_MEMORY;
 
         bldAddress = *(__IO uint32_t*) (BLD_FLASH_ADDR + 4);   			// Jump to user application 
 	
@@ -84,9 +78,10 @@ void Jump_To_Bootloader(void )
 			
 	    bldFunction();
     }
-    #endif 
-
+    #else
     NVIC_SystemReset();
+		
+    #endif 
 }
 
 void App_Led_Init(void )

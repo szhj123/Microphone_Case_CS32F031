@@ -39,11 +39,12 @@ void Delay_Ms(uint32_t ms )
 		while(delayCnt);
 }
 
+
 int main(void )
 {
 		static uint8_t dispCnt;
 	
-		Hardware_Init();
+	  Hardware_Init();
 	
     while(1)
 		{
@@ -68,7 +69,7 @@ int main(void )
 
 static void Hardware_Init(void )
 {
-    RCU->APB2EN |= RCU_APB2_PERI_SYSCFG;
+  	RCU->APB2EN |= RCU_APB2_PERI_SYSCFG;
 	
 		SystemCoreClockUpdate();
     
@@ -77,6 +78,7 @@ static void Hardware_Init(void )
 		__RCU_AHB_CLK_ENABLE(RCU_AHB_PERI_GPIOA);
 		__GPIO_PIN_SET(GPIOA, GPIO_PIN_3);
     gpio_mode_set(GPIOA, GPIO_PIN_3, GPIO_MODE_OUT_PP(GPIO_SPEED_HIGH));
+	
 }
 
 static void Jump_To_App(void )
@@ -95,8 +97,6 @@ static void Jump_To_App(void )
 			
 			  __set_MSP(*(__IO uint32_t*) APP_FLASH_ADDR);            			// Initialize user application's Stack Pointer 
 			
-			  __enable_irq();
-			
 	      appFunction();
     }
 }
@@ -107,4 +107,14 @@ void SysTick_Handler(void)
 		{
 		    delayCnt--;
 		}
+}
+void TIM3_IRQHandler(void)
+{
+	if (__TIM_FLAG_STATUS_GET(TIM3, UPDATE) != RESET)
+	{
+		__TIM_FLAG_CLEAR(TIM3, TIM_FLAG_UPDATE);
+
+        //Hal_Timer_Isr_Handler();
+
+	}
 }

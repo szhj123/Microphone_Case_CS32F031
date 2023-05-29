@@ -3,6 +3,8 @@
 ".\objects\system_cs32f0xx.o"
 ".\objects\cs32f0xx_flash.o"
 ".\objects\cs32f0xx_gpio.o"
+".\objects\cs32f0xx_tim.o"
+".\objects\cs32f0xx_misc.o"
 ".\objects\main.o"
 --strict --scatter ".\Objects\bootloader.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols

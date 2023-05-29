@@ -3,6 +3,14 @@
 /Application/Project/Objects/
 /Application/Project/*.uvguix.*
 /Application/Project/*.uvoptx
+/Application/Project/*.scvd
+
+/Bootloader/Project/Listings/
+/Bootloader/Project/Objects/
+/Bootloader/Project/*.uvguix.*
+/Bootloader/Project/*.uvoptx
+/Bootloader/Project/*.scvd
+
 /Document/CS32F03x_DFP/
 
 

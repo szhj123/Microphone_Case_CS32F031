@@ -1,0 +1,54 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: ¦ÌVision V5.35.0.0
+Copyright (C) 2021 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: H J, nuvoton, LIC=47GU5-G0A6M-TGD7T-RAS91-G19VZ-8XPW1
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Plus  Version: 5.35.0.2
+Toolchain Path:  d:\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 7 (build 960)
+Assembler:       Armasm.exe V5.06 update 7 (build 960)
+Linker/Locator:  ArmLink.exe V5.06 update 7 (build 960)
+Library Manager: ArmAr.exe V5.06 update 7 (build 960)
+Hex Converter:   FromElf.exe V5.06 update 7 (build 960)
+CPU DLL:         SARMCM3.DLL V5.35.0.2
+Dialog DLL:      DARMCM1.DLL V1.19.4.0
+Target DLL:      CMSIS_AGDI.dll V1.33.0.0
+Dialog DLL:      TARMCM1.DLL V1.14.4.0
+ 
+<h2>Project:</h2>
+F:\ChargingCase\Microphone_Case_CS32F031\Project\application.uvprojx
+Project File Date:  05/21/2023
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 7 (build 960)', folder: 'd:\Keil_v5\ARM\ARMCC\Bin'
+Build target 'application'
+compiling hal_com.c...
+..\User\hal\hal_com.c(149): warning:  #550-D: variable "recvVal"  was set but never used
+          static uint8_t recvVal  = 0;
+..\User\hal\hal_com.c: 1 warning, 0 errors
+linking...
+Program Size: Code=9588 RO-data=216 RW-data=96 ZI-data=3032  
+FromELF: creating hex file...
+After Build - User command #1: fromelf.exe --bin -o "F:\ChargingCase\Microphone_Case_CS32F031\Project\Objects\application.bin" "F:\ChargingCase\Microphone_Case_CS32F031\Project\Objects\application.axf"
+".\Objects\application.axf" - 0 Error(s), 1 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: Chipsea
+                http://www.keil.com/pack/Chipsea.CS32F03x_DFP.2.0.5.pack
+                Chipsea.CS32F03x_DFP.2.0.5
+                Chipsea Technologies(ShenZhen) CS32F0 Series Device Support, Drivers and Examples
+
+<h2>Collection of Component include folders:</h2>
+  d:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include
+
+<h2>Collection of Component Files used:</h2>
+Build Time Elapsed:  00:00:01
+</pre>
+</body>
+</html>
