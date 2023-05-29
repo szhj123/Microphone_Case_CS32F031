@@ -31,15 +31,21 @@
 #define TX2_PORT                    GPIOA
 #define TX2_PIN                     GPIO_PIN_2
 
+#define TX6_PORT                    GPIOA
+#define TX6_PIN                     GPIO_PIN_4
+
+
 /* Private macro ----------------------------------------*/
 /* Private function -------------------------------------*/
 static void Hal_Com_Gpio_Init(void );
 static void Hal_Com_Uart1_Init(void );
 static void Hal_Com_Uart2_Init(void );
+static void Hal_Com_Uart6_Init(void );
 /* Private variables ------------------------------------*/
 static hal_com_rx_callback_t hal_rx0_isr_callback = NULL;
 static hal_com_rx_callback_t hal_rx1_isr_callback = NULL;
 static hal_com_rx_callback_t hal_rx2_isr_callback = NULL;
+static hal_com_rx_callback_t hal_rx6_isr_callback = NULL;
 
 static hal_isr_callback_t hal_tx1_isr_callback = NULL;
 static uint8_t *pTx1Buf = NULL;
@@ -57,6 +63,8 @@ void Hal_Com_Init(void )
     Hal_Com_Uart1_Init();
 
     Hal_Com_Uart2_Init();
+
+    Hal_Com_Uart6_Init();
 }
 
 void Hal_Com_Regist_Rx_Isr_Callback(hal_com_rx_callback_t rx0Callback, hal_com_rx_callback_t rx1Callback, hal_com_rx_callback_t rx2Callback )
@@ -121,7 +129,6 @@ static void Hal_Com_Uart1_Init(void )
 
     __USART_ENABLE(USART1); // Enable USART
 
-    __USART_INTR_ENABLE(USART1, RXNE); // Enable the USART Receive interrupt
 }
 
 static void Hal_Com_Uart2_Init(void )
@@ -158,8 +165,44 @@ static void Hal_Com_Uart2_Init(void )
     nvic_init(&nvic_config_struct);
 
     __USART_ENABLE(USART2); // Enable USART
+}
 
-    __USART_INTR_ENABLE(USART2, RXNE); // Enable the USART Receive interrupt
+void Hal_Com_Uart6_Init(void )
+{
+    nvic_config_t nvic_config_struct;
+    usart_config_t usart_config_struct;
+
+    // Clock Config
+    __RCU_AHB_CLK_ENABLE(RCU_AHB_PERI_GPIOA);
+    __RCU_APB2_CLK_ENABLE(RCU_APB2_PERI_USART6);
+
+    // GPIO MF Config
+    gpio_mf_config(TX6_PORT, TX6_PIN, GPIO_MF_SEL5);
+    
+    gpio_mode_set(TX6_PORT, TX6_PIN, GPIO_MODE_MF_OD(GPIO_SPEED_HIGH));
+    
+
+    // USART Config
+    __USART_DEF_INIT(USART6);
+    usart_config_struct.baud_rate = 115200;
+    usart_config_struct.data_width = USART_DATA_WIDTH_8;
+    usart_config_struct.stop_bits = USART_STOP_BIT_1;
+    usart_config_struct.parity = USART_PARITY_NO;
+    usart_config_struct.flow_control = USART_FLOW_CONTROL_NONE;
+    usart_config_struct.usart_mode = USART_MODE_RX | USART_MODE_TX;
+    usart_init(USART6, &usart_config_struct);
+
+    USART6->CTR3 |= USART_CTR3_HDEN;
+
+    /* Enable the USART Interrupt */
+    nvic_config_struct.IRQn = IRQn_USART6_8;
+    nvic_config_struct.priority = 0;
+    nvic_config_struct.enable_flag = ENABLE;
+    nvic_init(&nvic_config_struct);
+
+    __USART_ENABLE(USART6); // Enable USART
+
+    __USART_INTR_ENABLE(USART6, RXNE); // Enable the USART Receive interrupt
 }
 
 
@@ -177,6 +220,8 @@ void Hal_Com_Tx1_Disable(void )
     gpio_mode_set(TX1_CHRG_SW_PORT, TX1_CHRG_SW_PIN, GPIO_MODE_OUT_PP(GPIO_SPEED_HIGH));
 
     __GPIO_PIN_RESET(TX1_CHRG_SW_PORT, TX1_CHRG_SW_PIN);
+
+    __USART_INTR_DISABLE(USART1, RXNE); // Enable the USART Receive interrupt
 }
 
 void Hal_Com_Tx1_Send(uint8_t *buf, uint16_t length, hal_isr_callback_t callback )
@@ -188,6 +233,8 @@ void Hal_Com_Tx1_Send(uint8_t *buf, uint16_t length, hal_isr_callback_t callback
     hal_tx1_isr_callback = callback;
 
     __USART_INTR_ENABLE(USART1, TXE); // Enable the USART transmit  interrupt
+    
+    __USART_INTR_DISABLE(USART1, RXNE); // Enable the USART Receive interrupt
 }
 
 void Hal_Com_Tx1_Isr_Handler(void )
@@ -213,6 +260,9 @@ void Hal_Com_Tx1_Isr_Handler(void )
             }
             /* Disable the USART transmit data register empty interrupt */
             __USART_INTR_DISABLE(USART1, TXE);
+            
+            __USART_INTR_ENABLE(USART1, RXNE); // Enable the USART Receive interrupt
+
         }
     }
 
@@ -226,8 +276,6 @@ void Hal_Com_Tx1_Isr_Handler(void )
         {
             hal_rx1_isr_callback(recvVal);
         }
-
-        //__USART_INTR_DISABLE(USART1, RXNE);
     }
 }
 
@@ -245,6 +293,8 @@ void Hal_Com_Tx2_Disable(void )
     gpio_mode_set(TX2_CHRG_SW_PORT, TX2_CHRG_SW_PIN, GPIO_MODE_OUT_PP(GPIO_SPEED_HIGH));
 
     __GPIO_PIN_RESET(TX2_CHRG_SW_PORT, TX2_CHRG_SW_PIN);
+
+    __USART_INTR_DISABLE(USART2, RXNE); // Enable the USART Receive interrupt
 }
 
 void Hal_Com_Tx2_Send(uint8_t *buf, uint16_t length, hal_isr_callback_t callback )
@@ -256,6 +306,8 @@ void Hal_Com_Tx2_Send(uint8_t *buf, uint16_t length, hal_isr_callback_t callback
     hal_tx2_isr_callback = callback;
 
     __USART_INTR_ENABLE(USART2, TXE); // Enable the USART transmit  interrupt
+    
+    __USART_INTR_DISABLE(USART2, RXNE); // Enable the USART Receive interrupt
 }
 
 void Hal_Com_Tx2_Isr_Handler(void )
@@ -281,6 +333,8 @@ void Hal_Com_Tx2_Isr_Handler(void )
             }
             /* Disable the USART transmit data register empty interrupt */
             __USART_INTR_DISABLE(USART2, TXE);
+            
+            __USART_INTR_ENABLE(USART2, RXNE); // Enable the USART Receive interrupt
         }
     }
 
@@ -295,7 +349,7 @@ void Hal_Com_Tx2_Isr_Handler(void )
             hal_rx2_isr_callback(recvVal);
         }
 
-        //__USART_INTR_DISABLE(USART1, RXNE);
+        //__USART_INTR_DISABLE(USART2, RXNE);
     }
 }
 

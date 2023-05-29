@@ -1,8 +1,8 @@
-/*.si4project/
-/Project/Listings/
-/Project/Objects/
-/Project/*.uvguix.*
-/Project/*.uvoptx
+/Application/*.si4project/
+/Application/Project/Listings/
+/Application/Project/Objects/
+/Application/Project/*.uvguix.*
+/Application/Project/*.uvoptx
 /Document/CS32F03x_DFP/
 
 

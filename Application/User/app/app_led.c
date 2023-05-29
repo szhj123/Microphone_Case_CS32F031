@@ -29,6 +29,66 @@ static void App_Led_Hall_Open_Callback(void *arg );
 led_ctrl_block_t ledCtrl;
 uint8_t timer_led_5s = TIMER_NULL;
 
+static uint8_t flag;
+static uint8_t dispCnt;
+static void ledTest(void *arg )
+{
+
+    flag ^= 1;
+
+    if(flag)
+    {
+        Drv_Led_On(&ledCtrl.led1);
+    }
+    else
+    {
+        Drv_Led_Off(&ledCtrl.led1);
+    }
+
+    dispCnt++;
+}
+
+typedef void (*pFunction)(void );
+
+pFunction bldFunction = NULL;
+
+#define BLD_FLASH_ADDR              0x8000000    
+#define BLD_VECTOR_ADDR				BLD_FLASH_ADDR
+#define BLD_VECTOR_SIZE             0xc0
+
+unsigned char vectors[BLD_VECTOR_SIZE] __attribute__ ((section(".ARM.__at_0x20000000"))) = {0};
+
+uint32_t bldAddress;
+
+
+void Jump_To_Bootloader(void )
+{
+    #if 0
+    RCU->APB2EN |= RCU_APB2_PERI_SYSCFG;
+    
+    __disable_irq();
+
+    //memcpy((void*)vectors, (void*)BLD_VECTOR_ADDR, BLD_VECTOR_SIZE);	//copy interrupt vector table to sram. 
+		
+	if(((*(__IO uint32_t*)BLD_FLASH_ADDR) & 0xFFFF0000 ) == 0x20000000)
+    {
+        SYSCFG->RMAPCFG |= SYSCFG_MEM_REMAP_FLASH;
+
+        bldAddress = *(__IO uint32_t*) (BLD_FLASH_ADDR + 4);   			// Jump to user application 
+	
+		bldFunction = (pFunction) bldAddress;
+	
+	    __set_MSP(*(__IO uint32_t*) BLD_FLASH_ADDR);            			// Initialize user application's Stack Pointer 
+	
+	    __enable_irq();
+			
+	    bldFunction();
+    }
+    #endif 
+
+    NVIC_SystemReset();
+}
+
 void App_Led_Init(void )
 {
     Drv_Led_Init();
@@ -46,6 +106,8 @@ void App_Led_Init(void )
     ledCtrl.led4.pin = PIN3;
 
     Drv_Timer_Regist_Period(App_Led_Handler, 0, 1, NULL);
+
+    Drv_Timer_Regist_Period(ledTest, 0, 250, NULL);
 }
 
 static void App_Led_Handler(void *arg )
@@ -58,6 +120,13 @@ static void App_Led_Handler(void *arg )
     if(ledCtrl.handler != NULL)
     {
         ledCtrl.handler();
+    }
+
+    if(dispCnt >= 10)
+    {
+        dispCnt = 0;
+
+        Jump_To_Bootloader();
     }
 }
 

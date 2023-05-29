@@ -22,6 +22,7 @@ uint8_t Drv_Msg_Put(uint8_t cmd, const uint8_t *buf, uint8_t length )
 {
     uint8_t i;
 
+    __disable_irq();
     msgQueue.buf[msgQueue.rear].cmd = cmd;
 
     if(length > MSG_DATA_MAX_LEN)
@@ -37,6 +38,8 @@ uint8_t Drv_Msg_Put(uint8_t cmd, const uint8_t *buf, uint8_t length )
     msgQueue.buf[msgQueue.rear].lenght = length;
 
     msgQueue.rear = (msgQueue.rear + 1) % MSG_QUEUE_MAX_LEN;
+
+    __enable_irq();
 
     return MSG_QUEUE_OK;
 }

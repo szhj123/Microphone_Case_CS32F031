@@ -275,8 +275,8 @@
               </OCR_RVCT3>
               <OCR_RVCT4>
                 <Type>1</Type>
-                <StartAddress>0x8000000</StartAddress>
-                <Size>0x10000</Size>
+                <StartAddress>0x8001000</StartAddress>
+                <Size>0xf000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
                 <Type>1</Type>
@@ -300,8 +300,8 @@
               </OCR_RVCT8>
               <OCR_RVCT9>
                 <Type>0</Type>
-                <StartAddress>0x20000000</StartAddress>
-                <Size>0x2000</Size>
+                <StartAddress>0x200000c0</StartAddress>
+                <Size>0x1f40</Size>
               </OCR_RVCT9>
               <OCR_RVCT10>
                 <Type>0</Type>
@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>..\Device\HAL_Driver\inc;..\Device\Include;..\User\app;..\User\drv;..\User\hal</IncludePath>
+              <IncludePath>..\..\Device\HAL_Driver\inc;..\..\Device\Include;..\User\app;..\User\drv;..\User\hal</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -370,7 +370,7 @@
             <TextAddressRange>0x08000000</TextAddressRange>
             <DataAddressRange>0x20000000</DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile></ScatterFile>
+            <ScatterFile>.\Objects\application.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc></Misc>
@@ -386,7 +386,7 @@
             <File>
               <FileName>startup_cs32f031.S</FileName>
               <FileType>2</FileType>
-              <FilePath>..\Device\Source\ARM\startup_cs32f031.S</FilePath>
+              <FilePath>..\..\Device\Source\ARM\startup_cs32f031.S</FilePath>
             </File>
           </Files>
         </Group>
@@ -396,7 +396,7 @@
             <File>
               <FileName>system_cs32f0xx.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Device\Source\system_cs32f0xx.c</FilePath>
+              <FilePath>..\..\Device\Source\system_cs32f0xx.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -406,52 +406,52 @@
             <File>
               <FileName>cs32f0xx_gpio.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Device\HAL_Driver\src\cs32f0xx_gpio.c</FilePath>
+              <FilePath>..\..\Device\HAL_Driver\src\cs32f0xx_gpio.c</FilePath>
             </File>
             <File>
               <FileName>cs32f0xx_syscfg.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Device\HAL_Driver\src\cs32f0xx_syscfg.c</FilePath>
+              <FilePath>..\..\Device\HAL_Driver\src\cs32f0xx_syscfg.c</FilePath>
             </File>
             <File>
               <FileName>cs32f0xx_pmu.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Device\HAL_Driver\src\cs32f0xx_pmu.c</FilePath>
+              <FilePath>..\..\Device\HAL_Driver\src\cs32f0xx_pmu.c</FilePath>
             </File>
             <File>
               <FileName>cs32f0xx_debug.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Device\HAL_Driver\src\cs32f0xx_debug.c</FilePath>
+              <FilePath>..\..\Device\HAL_Driver\src\cs32f0xx_debug.c</FilePath>
             </File>
             <File>
               <FileName>cs32f0xx_tim.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Device\HAL_Driver\src\cs32f0xx_tim.c</FilePath>
+              <FilePath>..\..\Device\HAL_Driver\src\cs32f0xx_tim.c</FilePath>
             </File>
             <File>
               <FileName>cs32f0xx_misc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Device\HAL_Driver\src\cs32f0xx_misc.c</FilePath>
+              <FilePath>..\..\Device\HAL_Driver\src\cs32f0xx_misc.c</FilePath>
             </File>
             <File>
               <FileName>cs32f0xx_i2c.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Device\HAL_Driver\src\cs32f0xx_i2c.c</FilePath>
+              <FilePath>..\..\Device\HAL_Driver\src\cs32f0xx_i2c.c</FilePath>
             </File>
             <File>
               <FileName>cs32f0xx_adc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Device\HAL_Driver\src\cs32f0xx_adc.c</FilePath>
+              <FilePath>..\..\Device\HAL_Driver\src\cs32f0xx_adc.c</FilePath>
             </File>
             <File>
               <FileName>cs32f0xx_usart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Device\HAL_Driver\src\cs32f0xx_usart.c</FilePath>
+              <FilePath>..\..\Device\HAL_Driver\src\cs32f0xx_usart.c</FilePath>
             </File>
             <File>
               <FileName>cs32f0xx_rcu.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Device\HAL_Driver\src\cs32f0xx_rcu.c</FilePath>
+              <FilePath>..\..\Device\HAL_Driver\src\cs32f0xx_rcu.c</FilePath>
             </File>
           </Files>
         </Group>

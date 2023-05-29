@@ -21,6 +21,8 @@ hal_isr_callback_t hal_task_isr_callback = NULL;
 
 void Hal_Task_Init(void )
 {
+    RCU->APB2EN |= RCU_APB2_PERI_SYSCFG;
+    
     SystemCoreClockUpdate();
     
     SysTick_Config(SystemCoreClock / 1000);

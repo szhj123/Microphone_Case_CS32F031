@@ -49,7 +49,7 @@ static void App_Com1_Handler(void *arg )
         {
             if(Drv_Tx_Queue_Get(COM1, &com1Ctrl.comData) == COM_QUEUE_OK)
             {
-                Drv_Com_Tx1_Enable();
+                Drv_Com_Tx_Enable(COM1);
 
                 com1Ctrl.txCnt = 0;
 
@@ -59,7 +59,7 @@ static void App_Com1_Handler(void *arg )
         }
         case COM_STAT_TX:
         {
-            Drv_Com_Tx1_Send(com1Ctrl.comData.data, com1Ctrl.comData.length);
+            Drv_Com_Tx_Send(COM1, com1Ctrl.comData.data, com1Ctrl.comData.length);
 
             com1Ctrl.comState = COM_STAT_TX_WATI_DONE;
 
@@ -67,9 +67,9 @@ static void App_Com1_Handler(void *arg )
         }
         case COM_STAT_TX_WATI_DONE:
         {
-            if(Drv_Com_Tx1_Get_State())
+            if(Drv_Com_Tx_Get_State(COM1))
             {
-                Drv_Com_Tx1_Clr_State();
+                Drv_Com_Tx_Clr_State(COM1);
 
                 com1Ctrl.delayCnt = 0;
 
@@ -110,6 +110,8 @@ static void App_Com1_Handler(void *arg )
         }
         case COM_STAT_ERR:
         {
+            Drv_Com_Tx_Disable(COM1);
+            
             com1Ctrl.rxDoneFlag = 0;
 
             com1Ctrl.delayCnt = 0;
@@ -131,7 +133,7 @@ static void App_Com2_Handler(void *arg )
         {
             if(Drv_Tx_Queue_Get(COM2, &com2Ctrl.comData) == COM_QUEUE_OK)
             {
-                Drv_Com_Tx2_Enable();
+                Drv_Com_Tx_Enable(COM2);
 
                 com2Ctrl.txCnt = 0;
 
@@ -141,7 +143,7 @@ static void App_Com2_Handler(void *arg )
         }
         case COM_STAT_TX:
         {
-            Drv_Com_Tx2_Send(com2Ctrl.comData.data, com2Ctrl.comData.length);
+            Drv_Com_Tx_Send(COM2, com2Ctrl.comData.data, com2Ctrl.comData.length);
 
             com2Ctrl.comState = COM_STAT_TX_WATI_DONE;
 
@@ -149,9 +151,9 @@ static void App_Com2_Handler(void *arg )
         }
         case COM_STAT_TX_WATI_DONE:
         {
-            if(Drv_Com_Tx2_Get_State())
+            if(Drv_Com_Tx_Get_State(COM2))
             {
-                Drv_Com_Tx2_Clr_State();
+                Drv_Com_Tx_Clr_State(COM2);
 
                 com2Ctrl.delayCnt = 0;
 
@@ -192,6 +194,8 @@ static void App_Com2_Handler(void *arg )
         }
         case COM_STAT_ERR:
         {
+            Drv_Com_Tx_Disable(COM2);
+            
             com2Ctrl.rxDoneFlag = 0;
 
             com2Ctrl.delayCnt = 0;

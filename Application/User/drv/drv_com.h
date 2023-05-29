@@ -66,16 +66,11 @@ typedef struct _rx_ctrl_block_t
 }rx_ctrl_block_t;
 
 void Drv_Com_Init(com_event_callback_t callback );
-void Drv_Com_Tx1_Enable(void );
-void Drv_Com_Tx1_Send(uint8_t *buf, uint16_t length );
-uint8_t Drv_Com_Tx1_Get_State(void );
-void Drv_Com_Tx1_Clr_State(void );
-
-void Drv_Com_Tx2_Enable(void );
-void Drv_Com_Tx2_Send(uint8_t *buf, uint16_t length );
-uint8_t Drv_Com_Tx2_Get_State(void );
-void Drv_Com_Tx2_Clr_State(void );
-
+void Drv_Com_Tx_Enable(com_port_t com );
+void Drv_Com_Tx_Disable(com_port_t com );
+void Drv_Com_Tx_Send(com_port_t com, uint8_t *buf, uint16_t length );
+uint8_t Drv_Com_Tx_Get_State(com_port_t com );
+void Drv_Com_Tx_Clr_State(com_port_t com );
 
 void Drv_Tx_Queue_Put(com_port_t com, uint8_t *buf, uint8_t length );
 uint8_t Drv_Tx_Queue_Get(com_port_t com, com_data_t *txData );

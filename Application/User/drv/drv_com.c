@@ -137,6 +137,7 @@ static void Drv_Com_Rx_Isr_Handler(rx_ctrl_block_t *rxCtrl, uint8_t recvVal )
                 rxCtrl->dataBuf[3+rxCtrl->dataLength] = recvVal;
 
                 comEventCallback(rxCtrl->dataBuf, 4+rxCtrl->dataLength);
+                
             }
             
             rxCtrl->dataCnt = 0;
@@ -228,50 +229,73 @@ uint8_t Drv_Tx_Queue_Get(com_port_t com, com_data_t *txData )
 
 /*********************** UART1 ******************************/
 
-void Drv_Com_Tx1_Enable(void )
+void Drv_Com_Tx_Enable(com_port_t com )
 {
-    Hal_Com_Tx1_Enable();
+    if(com == COM1)
+    {
+        Hal_Com_Tx1_Enable();
+    }
+    else if(com == COM2)
+    {
+        Hal_Com_Tx2_Enable();
+    }
 }
 
-void Drv_Com_Tx1_Send(uint8_t *buf, uint16_t length )
+void Drv_Com_Tx_Disable(com_port_t com )
 {
-    Hal_Com_Tx1_Send(buf, length, Drv_Com_Tx1_Done_Callback);    
+    if(com == COM1)
+    {
+        Hal_Com_Tx1_Disable();
+    }
+    else if(com == COM2)
+    {
+        Hal_Com_Tx2_Disable();
+    }
 }
 
-uint8_t Drv_Com_Tx1_Get_State(void )
+void Drv_Com_Tx_Send(com_port_t com, uint8_t *buf, uint16_t length )
 {
-    return tx1DoneFlag;
+    if(com == COM1)
+    {
+        Hal_Com_Tx1_Send(buf, length, Drv_Com_Tx1_Done_Callback); 
+    }
+    else if(com == COM2)
+    {
+        Hal_Com_Tx2_Send(buf, length, Drv_Com_Tx2_Done_Callback);
+    }
 }
 
-void Drv_Com_Tx1_Clr_State(void )
+uint8_t Drv_Com_Tx_Get_State(com_port_t com )
 {
-    tx1DoneFlag = 0;
+    uint8_t retVal;
+    
+    if(com == COM1)
+    {
+        retVal = tx1DoneFlag;
+    }
+    else if(com == COM2)
+    {
+        retVal = tx2DoneFlag;
+    }
+    
+    return retVal;
+}
+
+void Drv_Com_Tx_Clr_State(com_port_t com )
+{
+    if(com == COM1)
+    {
+        tx1DoneFlag = 0;
+    }
+    else if(com == COM2)
+    {
+        tx2DoneFlag = 0;
+    }
 }
 
 static void Drv_Com_Tx1_Done_Callback(void )
 {
     tx1DoneFlag = 1;
-}
-
-/*********************** UART2 ******************************/
-void Drv_Com_Tx2_Enable(void )
-{
-    Hal_Com_Tx2_Enable();
-}
-
-void Drv_Com_Tx2_Send(uint8_t *buf, uint16_t length )
-{
-    Hal_Com_Tx2_Send(buf, length, Drv_Com_Tx2_Done_Callback);    
-}
-
-uint8_t Drv_Com_Tx2_Get_State(void )
-{
-    return tx2DoneFlag;
-}
-
-void Drv_Com_Tx2_Clr_State(void )
-{
-    tx2DoneFlag = 0;
 }
 
 static void Drv_Com_Tx2_Done_Callback(void )
