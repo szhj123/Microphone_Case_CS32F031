@@ -7,6 +7,19 @@
 #include "cs32f0xx.h"
 #include "cs32f0xx_conf.h"
 
+typedef union _word_t
+{
+    uint32_t dat;
+    struct 
+    {
+        uint8_t byte0;
+        uint8_t byte1;
+        uint8_t byte2;
+        uint8_t byte3;
+    }byte_t;
+}word_t;
+
+
 typedef void (*hal_isr_callback_t)(void );
 
 
