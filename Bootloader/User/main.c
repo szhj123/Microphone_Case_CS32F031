@@ -26,7 +26,7 @@ typedef void (*pFunction)(void );
 static void Hardware_Init(void );
 static void Jump_To_App(void );
 /* Private variables ------------------------------------*/
-unsigned char vectors[APP_VECTOR_SIZE] __attribute__ ((section(".ARM.__at_0x20000000"))) = {0};
+unsigned char vectors[APP_VECTOR_SIZE] __attribute__ ((section(".ARM. __at_0x20000000"))) = {0};
 
 static uint32_t appAddress;
 static pFunction appFunction = NULL;
@@ -48,15 +48,15 @@ int main(void )
 	
     while(1)
 		{
-		    if(++dispCnt < 5 )
+		    if(++dispCnt < 10 )
 				{
-				    __GPIO_PIN_SET(GPIOA, GPIO_PIN_3);
+				    __GPIO_PIN_SET(GPIOA, GPIO_PIN_11);
 					
-						Delay_Ms(250);
+						Delay_Ms(200);
 					
-					  __GPIO_PIN_RESET(GPIOA, GPIO_PIN_3);
+					  __GPIO_PIN_RESET(GPIOA, GPIO_PIN_11);
 					
-					  Delay_Ms(250);
+					  Delay_Ms(200);
 				}
 				else
 				{
@@ -76,9 +76,18 @@ static void Hardware_Init(void )
     SysTick_Config(SystemCoreClock / 1000);
 	  
 		__RCU_AHB_CLK_ENABLE(RCU_AHB_PERI_GPIOA);
-		__GPIO_PIN_SET(GPIOA, GPIO_PIN_3);
-    gpio_mode_set(GPIOA, GPIO_PIN_3, GPIO_MODE_OUT_PP(GPIO_SPEED_HIGH));
-	
+
+    gpio_mode_set(GPIOA, GPIO_PIN_11, GPIO_MODE_OUT_PP(GPIO_SPEED_HIGH));
+}
+
+static void Hal_DeInit(void)
+{
+	/* Lock the access to flash & option bytes */
+    FLASH->CTR |= FMC_CTR_LOCK;
+    FLASH->CTR &= ~FMC_CTR_OBWEN;
+	  __GPIO_DEF_INIT(GPIOA);	
+	  RCU->AHBEN  = 0x00000014; 	// Set to reset value
+	  RCU->APB2EN = 0x00000000;	// Set to reset value
 }
 
 static void Jump_To_App(void )
@@ -90,14 +99,18 @@ static void Jump_To_App(void )
 		if(((*(__IO uint32_t*)APP_FLASH_ADDR) & 0xFFFF0000 ) == 0x20000000)
     {
         SYSCFG->RMAPCFG |= SYSCFG_MEM_REMAP_SRAM;
+			
+				Hal_DeInit();
 
 				appAddress = *(__IO uint32_t*) (APP_FLASH_ADDR + 4);   			// Jump to user application 
 			
 				appFunction = (pFunction) appAddress;
 			
 			  __set_MSP(*(__IO uint32_t*) APP_FLASH_ADDR);            			// Initialize user application's Stack Pointer 
+				
+			 __enable_irq();
 			
-	      appFunction();
+	     appFunction();
     }
 }
 
@@ -108,13 +121,4 @@ void SysTick_Handler(void)
 		    delayCnt--;
 		}
 }
-void TIM3_IRQHandler(void)
-{
-	if (__TIM_FLAG_STATUS_GET(TIM3, UPDATE) != RESET)
-	{
-		__TIM_FLAG_CLEAR(TIM3, TIM_FLAG_UPDATE);
 
-        //Hal_Timer_Isr_Handler();
-
-	}
-}

@@ -29,61 +29,6 @@ static void App_Led_Hall_Open_Callback(void *arg );
 led_ctrl_block_t ledCtrl;
 uint8_t timer_led_5s = TIMER_NULL;
 
-static uint8_t flag;
-static uint8_t dispCnt;
-static void ledTest(void *arg )
-{
-
-    flag ^= 1;
-
-    if(flag)
-    {
-        Drv_Led_On(&ledCtrl.led1);
-    }
-    else
-    {
-        Drv_Led_Off(&ledCtrl.led1);
-    }
-
-    dispCnt++;
-}
-
-typedef void (*pFunction)(void );
-
-pFunction bldFunction = NULL;
-
-#define BLD_FLASH_ADDR              0x8000000    
-
-uint32_t bldAddress;
-
-
-void Jump_To_Bootloader(void )
-{
-    __disable_irq();
-    
-	#if 0
-    RCU->APB2EN |= RCU_APB2_PERI_SYSCFG;
-
-	if(((*(__IO uint32_t*)BLD_FLASH_ADDR) & 0xFFFF0000 ) == 0x20000000)
-    {
-        SYSCFG->RMAPCFG = (SYSCFG->RMAPCFG & ~SYSCFG_MEM_REMAP_SRAM) | SYSCFG_MEM_REMAP_SYS_MEMORY;
-
-        bldAddress = *(__IO uint32_t*) (BLD_FLASH_ADDR + 4);   			// Jump to user application 
-	
-		bldFunction = (pFunction) bldAddress;
-	
-	    __set_MSP(*(__IO uint32_t*) BLD_FLASH_ADDR);            			// Initialize user application's Stack Pointer 
-	
-	    __enable_irq();
-			
-	    bldFunction();
-    }
-    #else
-    NVIC_SystemReset();
-		
-    #endif 
-}
-
 void App_Led_Init(void )
 {
     Drv_Led_Init();
@@ -101,8 +46,6 @@ void App_Led_Init(void )
     ledCtrl.led4.pin = PIN3;
 
     Drv_Timer_Regist_Period(App_Led_Handler, 0, 1, NULL);
-
-    Drv_Timer_Regist_Period(ledTest, 0, 250, NULL);
 }
 
 static void App_Led_Handler(void *arg )
@@ -115,14 +58,7 @@ static void App_Led_Handler(void *arg )
     if(ledCtrl.handler != NULL)
     {
         ledCtrl.handler();
-    }
-
-    if(dispCnt >= 10)
-    {
-        dispCnt = 0;
-
-        Jump_To_Bootloader();
-    }
+    }    
 }
 
 void App_Led_All_Turn_Off(void )
