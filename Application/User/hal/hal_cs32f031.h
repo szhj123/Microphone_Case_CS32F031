@@ -9,7 +9,7 @@
 
 typedef union _word_t
 {
-    uint32_t dat;
+    uint32_t val;
     struct 
     {
         uint8_t byte0;

@@ -453,6 +453,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\Device\HAL_Driver\src\cs32f0xx_rcu.c</FilePath>
             </File>
+            <File>
+              <FileName>cs32f0xx_flash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Device\HAL_Driver\src\cs32f0xx_flash.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -532,6 +537,11 @@
               <FileName>drv_com.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\drv\drv_com.c</FilePath>
+            </File>
+            <File>
+              <FileName>drv_flash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\drv\drv_flash.c</FilePath>
             </File>
           </Files>
         </Group>

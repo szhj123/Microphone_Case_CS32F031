@@ -55,6 +55,10 @@ static hal_isr_callback_t hal_tx2_isr_callback = NULL;
 static uint8_t *pTx2Buf = NULL;
 static uint16_t tx2Length;
 
+static hal_isr_callback_t hal_tx6_isr_callback = NULL;
+static uint8_t *pTx6Buf = NULL;
+static uint16_t tx6Length;
+
 
 void Hal_Com_Init(void )
 {
@@ -67,13 +71,15 @@ void Hal_Com_Init(void )
     Hal_Com_Uart6_Init();
 }
 
-void Hal_Com_Regist_Rx_Isr_Callback(hal_com_rx_callback_t rx0Callback, hal_com_rx_callback_t rx1Callback, hal_com_rx_callback_t rx2Callback )
+void Hal_Com_Regist_Rx_Isr_Callback(hal_com_rx_callback_t rx0Callback, hal_com_rx_callback_t rx1Callback, hal_com_rx_callback_t rx2Callback , hal_com_rx_callback_t rx6Callback )
 {
     hal_rx0_isr_callback = rx0Callback;
     
     hal_rx1_isr_callback = rx1Callback;
     
     hal_rx2_isr_callback = rx2Callback;
+
+    hal_rx6_isr_callback = rx6Callback;
 }
 
 
@@ -246,6 +252,7 @@ void Hal_Com_Tx1_Isr_Handler(void )
             __USART_DATA_SEND(USART1, *pTx1Buf);
 
             pTx1Buf++;
+            
             tx1Length--;
         }
         else 
@@ -319,6 +326,7 @@ void Hal_Com_Tx2_Isr_Handler(void )
             __USART_DATA_SEND(USART2, *pTx2Buf);
 
             pTx2Buf++;
+            
             tx2Length--;
         }
         else 
@@ -352,5 +360,58 @@ void Hal_Com_Tx2_Isr_Handler(void )
         //__USART_INTR_DISABLE(USART2, RXNE);
     }
 }
+
+void Hal_Com_Tx6_Send(uint8_t *buf, uint16_t length, hal_isr_callback_t callback )
+{
+    pTx6Buf = buf;
+    
+    tx6Length = length;
+
+    hal_tx6_isr_callback = callback;
+
+    __USART_INTR_ENABLE(USART6, TXE); // Enable the USART transmit  interrupt
+}
+
+
+void Hal_Com_Tx6_Isr_Handler(void )
+{
+    if (__USART_FLAG_STATUS_GET(USART6, TXE) == SET)
+    {   
+        if(tx6Length > 0)
+        {
+            __USART_DATA_SEND(USART6, *pTx6Buf);
+
+            pTx6Buf++;
+            
+            tx6Length--;
+        }
+        else 
+        {
+            pTx6Buf = NULL;
+
+            if(hal_tx6_isr_callback != NULL)
+            {
+                hal_tx6_isr_callback();
+
+                hal_tx6_isr_callback = NULL;
+            }
+            /* Disable the USART transmit data register empty interrupt */
+            __USART_INTR_DISABLE(USART6, TXE);
+        }
+    }
+
+    if (__USART_FLAG_STATUS_GET(USART6, RXNE) == SET)
+    {
+        uint8_t recvVal  = 0;
+        
+        recvVal = (uint8_t)__USART_DATA_RECV(USART6);
+
+        if(hal_rx6_isr_callback != NULL)
+        {
+            hal_rx6_isr_callback(recvVal);
+        }
+    }
+}
+
 
 

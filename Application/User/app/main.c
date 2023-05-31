@@ -18,6 +18,8 @@
 #include "app_batt.h"
 #include "app_hall.h"
 #include "app_com.h"
+
+#include "drv_flash.h"
 /* Private typedef --------------------------------------*/
 typedef void (*pFunction)(void );
 /* Private define ------------------ --------------------*/
@@ -89,7 +91,9 @@ int main(void )
 
     App_Event_Init();
 
-    Drv_Task_Regist_Period(ledTest, 0, 200, NULL);
+    Drv_Flash_Init();
+
+    //Drv_Task_Regist_Period(ledTest, 0, 200, NULL);
     
     while(1)
 	{
