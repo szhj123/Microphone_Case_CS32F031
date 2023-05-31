@@ -16,7 +16,12 @@ typedef enum _com_port_t
     COM0 = 0,
     COM1,
     COM2,
-    COM3
+    COM3,
+    COM4,
+    COM5,
+    COM6,
+    COM7,
+    COM8
 }com_port_t;
 
 typedef struct _com_data_t

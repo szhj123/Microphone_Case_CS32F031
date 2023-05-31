@@ -19,6 +19,7 @@
 /* Private function -------------------------------------*/
 static void Drv_Com_Tx1_Done_Callback(void );
 static void Drv_Com_Tx2_Done_Callback(void );
+static void Drv_Com_Tx6_Done_Callback(void );
 static void Drv_Com_Rx0_Isr_Handler(uint8_t recvVal );
 static void Drv_Com_Rx1_Isr_Handler(uint8_t recvVal );
 static void Drv_Com_Rx2_Isr_Handler(uint8_t recvVal );
@@ -30,7 +31,7 @@ static uint8_t Drv_Com_Cal_Checksum(uint8_t *buf, uint8_t length );
 static tx_queue_t tx0Queue;
 static tx_queue_t tx1Queue;
 static tx_queue_t tx2Queue;
-static tx_queue_t tx3Queue;
+static tx_queue_t tx6Queue;
 
 static rx_ctrl_block_t rx0Ctrl;
 static rx_ctrl_block_t rx1Ctrl;
@@ -40,6 +41,7 @@ static rx_ctrl_block_t rx6Ctrl;
 static com_event_callback_t comEventCallback = NULL;
 static uint8_t tx1DoneFlag;
 static uint8_t tx2DoneFlag;
+static uint8_t tx6DoneFlag;
 
 void Drv_Com_Init(com_event_callback_t callback )
 {
@@ -258,7 +260,7 @@ void Drv_Tx_Queue_Put(com_port_t com, uint8_t *buf, uint8_t length )
         case COM0: pTxQueue = &tx0Queue; break;
         case COM1: pTxQueue = &tx1Queue; break;
         case COM2: pTxQueue = &tx2Queue; break;
-        case COM3: pTxQueue = &tx3Queue; break;
+        case COM6: pTxQueue = &tx6Queue; break;
         default: break;
     }
 
@@ -285,7 +287,7 @@ uint8_t Drv_Tx_Queue_Get(com_port_t com, com_data_t *txData )
         case COM0: pTxQueue = &tx0Queue; break;
         case COM1: pTxQueue = &tx1Queue; break;
         case COM2: pTxQueue = &tx2Queue; break;
-        case COM3: pTxQueue = &tx3Queue; break;
+        case COM3: pTxQueue = &tx6Queue; break;
         default: break;
     }
     
@@ -341,6 +343,10 @@ void Drv_Com_Tx_Send(com_port_t com, uint8_t *buf, uint16_t length )
     {
         Hal_Com_Tx2_Send(buf, length, Drv_Com_Tx2_Done_Callback);
     }
+    else if(com == COM6)
+    {
+        Hal_Com_Tx6_Send(buf, length, Drv_Com_Tx6_Done_Callback);
+    }
 }
 
 uint8_t Drv_Com_Tx_Get_State(com_port_t com )
@@ -354,6 +360,10 @@ uint8_t Drv_Com_Tx_Get_State(com_port_t com )
     else if(com == COM2)
     {
         retVal = tx2DoneFlag;
+    }
+    else if(com == COM6)
+    {
+        retVal = tx6DoneFlag;
     }
     
     return retVal;
@@ -369,6 +379,10 @@ void Drv_Com_Tx_Clr_State(com_port_t com )
     {
         tx2DoneFlag = 0;
     }
+    else if(com == COM6)
+    {
+        tx6DoneFlag = 0;
+    }
 }
 
 static void Drv_Com_Tx1_Done_Callback(void )
@@ -380,5 +394,12 @@ static void Drv_Com_Tx2_Done_Callback(void )
 {
     tx2DoneFlag = 1;
 }
+
+static void Drv_Com_Tx6_Done_Callback(void )
+{
+    tx6DoneFlag = 1;
+}
+
+
 /************************************************************/
 

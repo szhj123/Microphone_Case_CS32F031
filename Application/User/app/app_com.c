@@ -20,12 +20,14 @@
 /* Private function -------------------------------------*/
 static void App_Com1_Handler(void *arg );
 static void App_Com2_Handler(void *arg );
+static void App_Com6_Handler(void *arg );
 static void App_Com_Send_Msg(uint8_t *buf, uint8_t length );
 /* Private variables ------------------------------------*/
 
 static com_ctrl_block_t com0Ctrl;
 static com_ctrl_block_t com1Ctrl;
 static com_ctrl_block_t com2Ctrl;
+static com_ctrl_block_t com6Ctrl;
 
 void App_Com_Init(void )
 {
@@ -34,6 +36,8 @@ void App_Com_Init(void )
     Drv_Task_Regist_Period(App_Com1_Handler, 0, 1, NULL);
     
     Drv_Task_Regist_Period(App_Com2_Handler, 0, 1, NULL);
+
+    Drv_Task_Regist_Period(App_Com6_Handler, 0, 1, NULL);
 }
 
 static void App_Com_Send_Msg(uint8_t *buf, uint8_t length )
@@ -209,6 +213,40 @@ static void App_Com2_Handler(void *arg )
     }
 }
 
+static void App_Com6_Handler(void *arg )
+{    
+    switch(com6Ctrl.comState)
+    {
+        case COM_STAT_INIT:
+        {
+            if(Drv_Tx_Queue_Get(COM6, &com6Ctrl.comData) == COM_QUEUE_OK)
+            {
+                com6Ctrl.comState = COM_STAT_TX;
+            }
+            break;
+        }
+        case COM_STAT_TX:
+        {
+            Drv_Com_Tx_Send(COM6, com6Ctrl.comData.data, com6Ctrl.comData.length);
+
+            com6Ctrl.comState = COM_STAT_TX_WATI_DONE;
+
+            break;
+        }
+        case COM_STAT_TX_WATI_DONE:
+        {
+            if(Drv_Com_Tx_Get_State(COM6))
+            {
+                Drv_Com_Tx_Clr_State(COM6);
+
+                com6Ctrl.comState = COM_STAT_INIT;
+
+                break;
+            }
+        }
+        default: break;
+    }
+}
 
 void App_Com_Rx_Handler(uint8_t *buf, uint8_t length )
 {
