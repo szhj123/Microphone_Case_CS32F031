@@ -5,7 +5,7 @@
     background-image:url(:/images/background.png);
 }
 
-QWidget#widget_logo
+QWidget#logoWidget
 {
     border-bottom: 1px solid rgb(128,128,128);
 }
@@ -15,17 +15,12 @@ QLabel#labelLogoPic
     border-image:url(:/images/tws.png);
 }
 
-QLabel#labelLogoText
-{
-    color: rgb(50,254,255)
-}
-
-QPushButton#pushButton_min
+QPushButton#btnMinimize
 {
     border-image:url(:/images/minimize.png);
 }
 
-QPushButton#pushButton_close
+QPushButton#btnClose
 {
     border-image:url(:/images/close.png);
 }
