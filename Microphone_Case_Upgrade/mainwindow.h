@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QFile>
 #include <QString>
+#include <QMouseEvent>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -17,8 +18,13 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+protected:
+    void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event );
+    void mouseReleaseEvent(QMouseEvent *event );
 
 private:
     Ui::MainWindow *ui;
+    QPoint lastPoint;
 };
 #endif // MAINWINDOW_H
