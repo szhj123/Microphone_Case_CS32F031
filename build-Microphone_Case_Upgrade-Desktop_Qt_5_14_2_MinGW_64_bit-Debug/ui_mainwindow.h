@@ -42,17 +42,17 @@ public:
     QWidget *gridLayoutWidget;
     QGridLayout *gridLayout;
     QLabel *labelSerialPortNum;
-    QComboBox *comboBox_2;
-    QComboBox *comboBox_6;
+    QComboBox *serialPortBaud;
+    QComboBox *serialPortStopBit;
     QLabel *label_2;
     QLabel *label_4;
-    QComboBox *comboBox;
+    QComboBox *serialPortNum;
     QLabel *label_3;
-    QComboBox *comboBox_5;
-    QComboBox *comboBox_4;
+    QComboBox *serialPortDataBit;
+    QComboBox *serialPortParityBit;
     QLabel *label;
     QLabel *label_5;
-    QComboBox *comboBox_7;
+    QComboBox *serialPortFlowCtrl;
     MyBtn *widget;
     QTabWidget *tabWidget;
     QWidget *tabFwUpgrade;
@@ -163,15 +163,21 @@ public:
 
         gridLayout->addWidget(labelSerialPortNum, 0, 1, 1, 1);
 
-        comboBox_2 = new QComboBox(gridLayoutWidget);
-        comboBox_2->setObjectName(QString::fromUtf8("comboBox_2"));
+        serialPortBaud = new QComboBox(gridLayoutWidget);
+        serialPortBaud->addItem(QString());
+        serialPortBaud->setObjectName(QString::fromUtf8("serialPortBaud"));
+        serialPortBaud->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);\n"
+"font: 8pt \"Microsoft YaHei UI\";"));
 
-        gridLayout->addWidget(comboBox_2, 1, 2, 1, 1);
+        gridLayout->addWidget(serialPortBaud, 1, 2, 1, 1);
 
-        comboBox_6 = new QComboBox(gridLayoutWidget);
-        comboBox_6->setObjectName(QString::fromUtf8("comboBox_6"));
+        serialPortStopBit = new QComboBox(gridLayoutWidget);
+        serialPortStopBit->addItem(QString());
+        serialPortStopBit->setObjectName(QString::fromUtf8("serialPortStopBit"));
+        serialPortStopBit->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);\n"
+"font: 8pt \"Microsoft YaHei UI\";"));
 
-        gridLayout->addWidget(comboBox_6, 4, 2, 1, 1);
+        gridLayout->addWidget(serialPortStopBit, 4, 2, 1, 1);
 
         label_2 = new QLabel(gridLayoutWidget);
         label_2->setObjectName(QString::fromUtf8("label_2"));
@@ -187,11 +193,13 @@ public:
 
         gridLayout->addWidget(label_4, 4, 1, 1, 1);
 
-        comboBox = new QComboBox(gridLayoutWidget);
-        comboBox->setObjectName(QString::fromUtf8("comboBox"));
-        comboBox->setFrame(true);
+        serialPortNum = new QComboBox(gridLayoutWidget);
+        serialPortNum->setObjectName(QString::fromUtf8("serialPortNum"));
+        serialPortNum->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);\n"
+"font: 8pt \"Microsoft YaHei UI\";"));
+        serialPortNum->setFrame(true);
 
-        gridLayout->addWidget(comboBox, 0, 2, 1, 1);
+        gridLayout->addWidget(serialPortNum, 0, 2, 1, 1);
 
         label_3 = new QLabel(gridLayoutWidget);
         label_3->setObjectName(QString::fromUtf8("label_3"));
@@ -200,15 +208,21 @@ public:
 
         gridLayout->addWidget(label_3, 3, 1, 1, 1);
 
-        comboBox_5 = new QComboBox(gridLayoutWidget);
-        comboBox_5->setObjectName(QString::fromUtf8("comboBox_5"));
+        serialPortDataBit = new QComboBox(gridLayoutWidget);
+        serialPortDataBit->addItem(QString());
+        serialPortDataBit->setObjectName(QString::fromUtf8("serialPortDataBit"));
+        serialPortDataBit->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);\n"
+"font: 8pt \"Microsoft YaHei UI\";"));
 
-        gridLayout->addWidget(comboBox_5, 3, 2, 1, 1);
+        gridLayout->addWidget(serialPortDataBit, 3, 2, 1, 1);
 
-        comboBox_4 = new QComboBox(gridLayoutWidget);
-        comboBox_4->setObjectName(QString::fromUtf8("comboBox_4"));
+        serialPortParityBit = new QComboBox(gridLayoutWidget);
+        serialPortParityBit->addItem(QString());
+        serialPortParityBit->setObjectName(QString::fromUtf8("serialPortParityBit"));
+        serialPortParityBit->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);\n"
+"font: 8pt \"Microsoft YaHei UI\";"));
 
-        gridLayout->addWidget(comboBox_4, 2, 2, 1, 1);
+        gridLayout->addWidget(serialPortParityBit, 2, 2, 1, 1);
 
         label = new QLabel(gridLayoutWidget);
         label->setObjectName(QString::fromUtf8("label"));
@@ -225,10 +239,13 @@ public:
 
         gridLayout->addWidget(label_5, 5, 1, 1, 1);
 
-        comboBox_7 = new QComboBox(gridLayoutWidget);
-        comboBox_7->setObjectName(QString::fromUtf8("comboBox_7"));
+        serialPortFlowCtrl = new QComboBox(gridLayoutWidget);
+        serialPortFlowCtrl->addItem(QString());
+        serialPortFlowCtrl->setObjectName(QString::fromUtf8("serialPortFlowCtrl"));
+        serialPortFlowCtrl->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);\n"
+"font: 8pt \"Microsoft YaHei UI\";"));
 
-        gridLayout->addWidget(comboBox_7, 5, 2, 1, 1);
+        gridLayout->addWidget(serialPortFlowCtrl, 5, 2, 1, 1);
 
         widget = new MyBtn(groupBoxSerialPortSetting);
         widget->setObjectName(QString::fromUtf8("widget"));
@@ -259,9 +276,10 @@ public:
         label_6->setGeometry(QRect(10, 230, 65, 30));
         gridLayoutWidget_2 = new QWidget(tabFwUpgrade);
         gridLayoutWidget_2->setObjectName(QString::fromUtf8("gridLayoutWidget_2"));
-        gridLayoutWidget_2->setGeometry(QRect(310, 90, 141, 161));
+        gridLayoutWidget_2->setGeometry(QRect(320, 90, 131, 161));
         gridLayout_2 = new QGridLayout(gridLayoutWidget_2);
         gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
+        gridLayout_2->setSizeConstraint(QLayout::SetDefaultConstraint);
         gridLayout_2->setContentsMargins(0, 0, 0, 0);
         label_11 = new QLabel(gridLayoutWidget_2);
         label_11->setObjectName(QString::fromUtf8("label_11"));
@@ -270,6 +288,7 @@ public:
         font7.setPointSize(10);
         label_11->setFont(font7);
         label_11->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);"));
+        label_11->setAlignment(Qt::AlignCenter);
 
         gridLayout_2->addWidget(label_11, 2, 0, 1, 1);
 
@@ -309,6 +328,7 @@ public:
         label_13->setObjectName(QString::fromUtf8("label_13"));
         label_13->setFont(font);
         label_13->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);"));
+        label_13->setAlignment(Qt::AlignCenter);
 
         gridLayout_2->addWidget(label_13, 2, 1, 1, 1);
 
@@ -321,6 +341,7 @@ public:
         label_8->setObjectName(QString::fromUtf8("label_8"));
         label_8->setFont(font7);
         label_8->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);"));
+        label_8->setAlignment(Qt::AlignCenter);
 
         gridLayout_2->addWidget(label_8, 1, 0, 1, 1);
 
@@ -328,6 +349,7 @@ public:
         label_9->setObjectName(QString::fromUtf8("label_9"));
         label_9->setFont(font9);
         label_9->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);"));
+        label_9->setAlignment(Qt::AlignCenter);
 
         gridLayout_2->addWidget(label_9, 4, 0, 1, 1);
 
@@ -378,11 +400,21 @@ public:
         labelSerialPortName->setText(QCoreApplication::translate("MainWindow", "\351\200\232\344\277\241\350\256\276\345\244\207", nullptr));
         groupBoxSerialPortSetting->setTitle(QCoreApplication::translate("MainWindow", "\344\270\262\345\217\243\350\256\276\347\275\256", nullptr));
         labelSerialPortNum->setText(QCoreApplication::translate("MainWindow", "\344\270\262\345\217\243\345\217\267", nullptr));
+        serialPortBaud->setItemText(0, QCoreApplication::translate("MainWindow", "115200", nullptr));
+
+        serialPortStopBit->setItemText(0, QCoreApplication::translate("MainWindow", "1", nullptr));
+
         label_2->setText(QCoreApplication::translate("MainWindow", "\346\240\241\351\252\214\344\275\215", nullptr));
         label_4->setText(QCoreApplication::translate("MainWindow", "\345\201\234\346\255\242\344\275\215", nullptr));
         label_3->setText(QCoreApplication::translate("MainWindow", "\346\225\260\346\215\256\344\275\215", nullptr));
+        serialPortDataBit->setItemText(0, QCoreApplication::translate("MainWindow", "8", nullptr));
+
+        serialPortParityBit->setItemText(0, QCoreApplication::translate("MainWindow", "NONE", nullptr));
+
         label->setText(QCoreApplication::translate("MainWindow", "\346\263\242\347\211\271\347\216\207", nullptr));
         label_5->setText(QCoreApplication::translate("MainWindow", "\346\265\201\346\216\247\345\210\266", nullptr));
+        serialPortFlowCtrl->setItemText(0, QCoreApplication::translate("MainWindow", "NONE", nullptr));
+
         pushButton->setText(QCoreApplication::translate("MainWindow", "\346\267\273\345\212\240\345\233\272\344\273\266", nullptr));
         pushButton_2->setText(QCoreApplication::translate("MainWindow", "\346\233\264\346\226\260\345\233\272\344\273\266", nullptr));
         pushButton_3->setText(QCoreApplication::translate("MainWindow", "\345\233\272\344\273\266\347\211\210\346\234\254", nullptr));
@@ -393,7 +425,7 @@ public:
         label_7->setText(QCoreApplication::translate("MainWindow", "IAP\345\215\207\347\272\247\346\265\213\350\257\225:", nullptr));
         label_13->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
         pushButton_5->setText(QCoreApplication::translate("MainWindow", "\345\201\234\346\255\242\346\265\213\350\257\225", nullptr));
-        label_8->setText(QCoreApplication::translate("MainWindow", "\346\200\273\346\265\213\350\257\225\346\254\241\346\225\260:", nullptr));
+        label_8->setText(QCoreApplication::translate("MainWindow", "\346\200\273\346\265\213\350\257\225\346\254\241\346\225\260", nullptr));
         label_9->setText(QCoreApplication::translate("MainWindow", "\346\265\213\350\257\225\347\273\223\346\236\234:", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tabFwUpgrade), QCoreApplication::translate("MainWindow", "Tab 1", nullptr));
         label_12->setText(QCoreApplication::translate("MainWindow", "\346\267\261\345\234\263\345\274\247\345\205\213\345\210\233\346\226\260\347\247\221\346\212\200\346\234\211\351\231\220\345\205\254\345\217\270", nullptr));

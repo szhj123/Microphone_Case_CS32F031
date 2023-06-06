@@ -1,5 +1,5 @@
 QT       += core gui
-
+QT       += serialport
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
@@ -19,12 +19,14 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     mybtn.cpp \
-    myprogressbar.cpp
+    myprogressbar.cpp \
+    myserialport.cpp
 
 HEADERS += \
     mainwindow.h \
     mybtn.h \
-    myprogressbar.h
+    myprogressbar.h \
+    myserialport.h
 
 FORMS += \
     mainwindow.ui

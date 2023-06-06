@@ -1,0 +1,10 @@
+release/main.o
+release/mainwindow.o
+release/mybtn.o
+release/myprogressbar.o
+release/myserialport.o
+release/qrc_Resource.o
+release/moc_mainwindow.o
+release/moc_mybtn.o
+release/moc_myprogressbar.o
+release/moc_myserialport.o

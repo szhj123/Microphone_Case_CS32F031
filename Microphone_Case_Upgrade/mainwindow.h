@@ -6,6 +6,9 @@
 #include <QFile>
 #include <QString>
 #include <QMouseEvent>
+#include <QListView>
+#include <QLabel>
+#include <QFileDialog>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

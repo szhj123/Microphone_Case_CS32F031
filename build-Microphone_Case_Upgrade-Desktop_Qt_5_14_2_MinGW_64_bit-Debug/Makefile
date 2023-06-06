@@ -250,6 +250,7 @@ Makefile: ../Microphone_Case_Upgrade/Microphone_Case_Upgrade.pro C:/Qt/Qt5.14.2/
 		../Microphone_Case_Upgrade/Microphone_Case_Upgrade.pro \
 		C:/Qt/Qt5.14.2/5.14.2/mingw73_64/lib/Qt5Widgets.prl \
 		C:/Qt/Qt5.14.2/5.14.2/mingw73_64/lib/Qt5Gui.prl \
+		C:/Qt/Qt5.14.2/5.14.2/mingw73_64/lib/Qt5SerialPort.prl \
 		C:/Qt/Qt5.14.2/5.14.2/mingw73_64/lib/Qt5Core.prl \
 		C:/Qt/Qt5.14.2/5.14.2/mingw73_64/lib/qtmain.prl \
 		C:/Qt/Qt5.14.2/5.14.2/mingw73_64/mkspecs/features/build_pass.prf \
@@ -435,6 +436,7 @@ C:/Qt/Qt5.14.2/5.14.2/mingw73_64/mkspecs/features/lex.prf:
 ../Microphone_Case_Upgrade/Microphone_Case_Upgrade.pro:
 C:/Qt/Qt5.14.2/5.14.2/mingw73_64/lib/Qt5Widgets.prl:
 C:/Qt/Qt5.14.2/5.14.2/mingw73_64/lib/Qt5Gui.prl:
+C:/Qt/Qt5.14.2/5.14.2/mingw73_64/lib/Qt5SerialPort.prl:
 C:/Qt/Qt5.14.2/5.14.2/mingw73_64/lib/Qt5Core.prl:
 C:/Qt/Qt5.14.2/5.14.2/mingw73_64/lib/qtmain.prl:
 C:/Qt/Qt5.14.2/5.14.2/mingw73_64/mkspecs/features/build_pass.prf:

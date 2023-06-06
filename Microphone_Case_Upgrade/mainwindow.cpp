@@ -1,5 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "myserialport.h"
+
+MySerialPort *mySerialPort;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -12,6 +15,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     ui->tabWidget->setTabText(0, tr("固件升级"));
+
+    mySerialPort = new MySerialPort(this);
+
+    mySerialPort->Serial_Port_Init(ui);
 }
 
 MainWindow::~MainWindow()

@@ -217,10 +217,30 @@
        </widget>
       </item>
       <item row="1" column="2">
-       <widget class="QComboBox" name="comboBox_2"/>
+       <widget class="QComboBox" name="serialPortBaud">
+        <property name="styleSheet">
+         <string notr="true">color: rgb(0, 0, 0);
+font: 8pt &quot;Microsoft YaHei UI&quot;;</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>115200</string>
+         </property>
+        </item>
+       </widget>
       </item>
       <item row="4" column="2">
-       <widget class="QComboBox" name="comboBox_6"/>
+       <widget class="QComboBox" name="serialPortStopBit">
+        <property name="styleSheet">
+         <string notr="true">color: rgb(0, 0, 0);
+font: 8pt &quot;Microsoft YaHei UI&quot;;</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>1</string>
+         </property>
+        </item>
+       </widget>
       </item>
       <item row="2" column="1">
        <widget class="QLabel" name="label_2">
@@ -257,7 +277,11 @@
        </widget>
       </item>
       <item row="0" column="2">
-       <widget class="QComboBox" name="comboBox">
+       <widget class="QComboBox" name="serialPortNum">
+        <property name="styleSheet">
+         <string notr="true">color: rgb(0, 0, 0);
+font: 8pt &quot;Microsoft YaHei UI&quot;;</string>
+        </property>
         <property name="frame">
          <bool>true</bool>
         </property>
@@ -281,10 +305,30 @@
        </widget>
       </item>
       <item row="3" column="2">
-       <widget class="QComboBox" name="comboBox_5"/>
+       <widget class="QComboBox" name="serialPortDataBit">
+        <property name="styleSheet">
+         <string notr="true">color: rgb(0, 0, 0);
+font: 8pt &quot;Microsoft YaHei UI&quot;;</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>8</string>
+         </property>
+        </item>
+       </widget>
       </item>
       <item row="2" column="2">
-       <widget class="QComboBox" name="comboBox_4"/>
+       <widget class="QComboBox" name="serialPortParityBit">
+        <property name="styleSheet">
+         <string notr="true">color: rgb(0, 0, 0);
+font: 8pt &quot;Microsoft YaHei UI&quot;;</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>NONE</string>
+         </property>
+        </item>
+       </widget>
       </item>
       <item row="1" column="1">
        <widget class="QLabel" name="label">
@@ -324,7 +368,17 @@
        </widget>
       </item>
       <item row="5" column="2">
-       <widget class="QComboBox" name="comboBox_7"/>
+       <widget class="QComboBox" name="serialPortFlowCtrl">
+        <property name="styleSheet">
+         <string notr="true">color: rgb(0, 0, 0);
+font: 8pt &quot;Microsoft YaHei UI&quot;;</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>NONE</string>
+         </property>
+        </item>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -437,13 +491,19 @@
      <widget class="QWidget" name="gridLayoutWidget_2">
       <property name="geometry">
        <rect>
-        <x>310</x>
+        <x>320</x>
         <y>90</y>
-        <width>141</width>
+        <width>131</width>
         <height>161</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetDefaultConstraint</enum>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
        <item row="2" column="0">
         <widget class="QLabel" name="label_11">
          <property name="font">
@@ -457,6 +517,9 @@
          </property>
          <property name="text">
           <string>当前次数:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
@@ -530,6 +593,9 @@
          <property name="text">
           <string>TextLabel</string>
          </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
         </widget>
        </item>
        <item row="3" column="1">
@@ -551,7 +617,10 @@
           <string notr="true">color: rgb(255, 255, 255);</string>
          </property>
          <property name="text">
-          <string>总测试次数:</string>
+          <string>总测试次数</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
@@ -570,6 +639,9 @@
          </property>
          <property name="text">
           <string>测试结果:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
