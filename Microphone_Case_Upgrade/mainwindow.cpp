@@ -10,6 +10,8 @@ MainWindow::MainWindow(QWidget *parent)
     setFixedSize(this->width(),this->height());
 
     ui->setupUi(this);
+
+    ui->tabWidget->setTabText(0, tr("固件升级"));
 }
 
 MainWindow::~MainWindow()
