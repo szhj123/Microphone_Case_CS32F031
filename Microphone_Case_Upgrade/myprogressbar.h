@@ -11,7 +11,7 @@ class MyProgressBar : public QWidget
 public:
     explicit MyProgressBar(QWidget *parent = nullptr);
     ~MyProgressBar();
-
+    void Update_Val(uint8_t val);
 protected:
     void paintEvent(QPaintEvent *event);
     void Draw_ProcessBar(QPainter *painter);

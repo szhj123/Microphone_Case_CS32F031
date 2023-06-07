@@ -24,6 +24,16 @@ MyProgressBar::~MyProgressBar()
 
 }
 
+void MyProgressBar::Update_Val(uint8_t val)
+{
+    if(val > 100)
+        val = 100;
+
+    currVal = val;
+
+    update();
+}
+
 void MyProgressBar::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);

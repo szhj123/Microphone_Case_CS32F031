@@ -87,10 +87,15 @@ static void App_Event_Handler(void *arg )
             }
             break;
         }
-        case APP_EVENT_COM_RX:
+        case APP_EVENT_COM_CASE:
         {
-            App_Com_Rx_Handler(msg.data, msg.lenght);
+            App_Com_Case_Handler(msg.data, msg.lenght);
             
+            break;
+        }
+        case APP_EVENT_COM_UPG:
+        {
+            App_Com_Upg_Handler(msg.data, msg.lenght);
             break;
         }
         case APP_EVENT_SYS_SLEEP:

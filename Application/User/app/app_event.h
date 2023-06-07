@@ -11,7 +11,8 @@ typedef enum _app_event_t
     APP_EVENT_USB_PLUG_IN,
     APP_EVENT_BATT_LEVEL,
     APP_EVENT_HALL_STATE, 
-    APP_EVENT_COM_RX,
+    APP_EVENT_COM_CASE,
+    APP_EVENT_COM_UPG,
     APP_EVENT_SYS_SLEEP
     
 }app_event_t;

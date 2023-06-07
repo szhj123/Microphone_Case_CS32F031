@@ -38,18 +38,21 @@ static rx_ctrl_block_t rx1Ctrl;
 static rx_ctrl_block_t rx2Ctrl;
 static rx_ctrl_block_t rx6Ctrl;
 
-static com_event_callback_t comEventCallback = NULL;
+static com_event_callback_t comCaseEventCallback = NULL;
+static com_event_callback_t comUpgEventCallback = NULL;
 static uint8_t tx1DoneFlag;
 static uint8_t tx2DoneFlag;
 static uint8_t tx6DoneFlag;
 
-void Drv_Com_Init(com_event_callback_t callback )
+void Drv_Com_Init(com_event_callback_t comCaseCallback, com_event_callback_t comUpgCallback )
 {
     Hal_Com_Init();
 
     Hal_Com_Regist_Rx_Isr_Callback(Drv_Com_Rx0_Isr_Handler, Drv_Com_Rx1_Isr_Handler, Drv_Com_Rx2_Isr_Handler, Drv_Com_Rx6_Isr_Handler);
 
-    comEventCallback = callback;
+    comCaseEventCallback = comCaseCallback;
+
+    comUpgEventCallback = comUpgCallback;
 }
 
 static void Drv_Com_Rx0_Isr_Handler(uint8_t recvVal )
@@ -140,9 +143,9 @@ static void Drv_Com_Rx_Isr_Handler(rx_ctrl_block_t *rxCtrl, uint8_t recvVal )
             {
                 rxCtrl->dataBuf[3+rxCtrl->dataLength] = recvVal;
 
-                if(comEventCallback != NULL)
+                if(comCaseEventCallback != NULL)
                 {
-                    comEventCallback(rxCtrl->dataBuf, 4+rxCtrl->dataLength);
+                    comCaseEventCallback(rxCtrl->dataBuf, 4+rxCtrl->dataLength);
                 }
             }
             
@@ -215,9 +218,9 @@ static void Drv_Com_Rx6_Isr_Handler(uint8_t recvVal )
         {
             if(rx6Ctrl.checkSum == recvVal)
             {
-                if(comEventCallback != NULL)
+                if(comUpgEventCallback != NULL)
                 {
-                    comEventCallback(&rx6Ctrl.dataBuf[1], rx6Ctrl.dataLength - 2);
+                    comUpgEventCallback(&rx6Ctrl.dataBuf[1], rx6Ctrl.dataLength - 2);
                 }
             }
 

@@ -1,8 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "myserialport.h"
+#include "myupgrade.h"
+#include "mybtn.h"
 
 MySerialPort *mySerialPort;
+MyUpgrade *myUpgrade;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -19,6 +22,12 @@ MainWindow::MainWindow(QWidget *parent)
     mySerialPort = new MySerialPort(this);
 
     mySerialPort->Serial_Port_Init(ui);
+
+    myUpgrade = new MyUpgrade(this);
+
+    myUpgrade->Upg_Init(ui, mySerialPort);
+
+    connect(ui->btnSerialPort, SIGNAL(checkedChanged(bool)), this, SLOT(on_btnSerialPort_checked(bool)));
 }
 
 MainWindow::~MainWindow()
@@ -64,3 +73,16 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
         this->move(this->x() + dx, this->y() + dy);
     }
 }
+
+void MainWindow::on_btnSerialPort_checked(bool checked)
+{
+    if(checked)
+    {
+        mySerialPort->Serial_Port_Open();
+    }
+    else
+    {
+        mySerialPort->Serial_Port_Close();
+    }
+}
+

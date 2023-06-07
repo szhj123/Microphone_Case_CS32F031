@@ -53,26 +53,16 @@ public:
     QLabel *label;
     QLabel *label_5;
     QComboBox *serialPortFlowCtrl;
-    MyBtn *widget;
+    MyBtn *btnSerialPort;
     QTabWidget *tabWidget;
     QWidget *tabFwUpgrade;
-    MyProgressBar *widget_2;
-    QPushButton *pushButton;
-    QLineEdit *lineEdit;
-    QPushButton *pushButton_2;
-    QPushButton *pushButton_3;
-    QLabel *label_6;
-    QWidget *gridLayoutWidget_2;
-    QGridLayout *gridLayout_2;
-    QLabel *label_11;
-    QLabel *label_10;
-    QPushButton *pushButton_4;
-    QLabel *label_7;
+    MyProgressBar *upgProgressBar;
+    QPushButton *btnAddFw;
+    QLineEdit *lineEditFwPath;
+    QPushButton *btnUpgEN;
+    QPushButton *btnGetFw;
+    QLabel *labelFwVer;
     QLabel *label_13;
-    QPushButton *pushButton_5;
-    QLabel *label_8;
-    QLabel *label_9;
-    QLineEdit *lineEdit_2;
     QLabel *label_12;
     QLabel *label_14;
     QMenuBar *menubar;
@@ -247,125 +237,52 @@ public:
 
         gridLayout->addWidget(serialPortFlowCtrl, 5, 2, 1, 1);
 
-        widget = new MyBtn(groupBoxSerialPortSetting);
-        widget->setObjectName(QString::fromUtf8("widget"));
-        widget->setGeometry(QRect(35, 240, 71, 31));
+        btnSerialPort = new MyBtn(groupBoxSerialPortSetting);
+        btnSerialPort->setObjectName(QString::fromUtf8("btnSerialPort"));
+        btnSerialPort->setGeometry(QRect(35, 240, 71, 31));
         tabWidget = new QTabWidget(centralwidget);
         tabWidget->setObjectName(QString::fromUtf8("tabWidget"));
         tabWidget->setGeometry(QRect(170, 50, 465, 311));
         tabFwUpgrade = new QWidget();
         tabFwUpgrade->setObjectName(QString::fromUtf8("tabFwUpgrade"));
         tabFwUpgrade->setFont(font6);
-        widget_2 = new MyProgressBar(tabFwUpgrade);
-        widget_2->setObjectName(QString::fromUtf8("widget_2"));
-        widget_2->setGeometry(QRect(100, 90, 211, 161));
-        pushButton = new QPushButton(tabFwUpgrade);
-        pushButton->setObjectName(QString::fromUtf8("pushButton"));
-        pushButton->setGeometry(QRect(10, 30, 65, 30));
-        lineEdit = new QLineEdit(tabFwUpgrade);
-        lineEdit->setObjectName(QString::fromUtf8("lineEdit"));
-        lineEdit->setGeometry(QRect(90, 30, 281, 30));
-        pushButton_2 = new QPushButton(tabFwUpgrade);
-        pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
-        pushButton_2->setGeometry(QRect(390, 30, 65, 30));
-        pushButton_3 = new QPushButton(tabFwUpgrade);
-        pushButton_3->setObjectName(QString::fromUtf8("pushButton_3"));
-        pushButton_3->setGeometry(QRect(10, 190, 65, 30));
-        label_6 = new QLabel(tabFwUpgrade);
-        label_6->setObjectName(QString::fromUtf8("label_6"));
-        label_6->setGeometry(QRect(10, 230, 65, 30));
-        gridLayoutWidget_2 = new QWidget(tabFwUpgrade);
-        gridLayoutWidget_2->setObjectName(QString::fromUtf8("gridLayoutWidget_2"));
-        gridLayoutWidget_2->setGeometry(QRect(320, 90, 131, 161));
-        gridLayout_2 = new QGridLayout(gridLayoutWidget_2);
-        gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
-        gridLayout_2->setSizeConstraint(QLayout::SetDefaultConstraint);
-        gridLayout_2->setContentsMargins(0, 0, 0, 0);
-        label_11 = new QLabel(gridLayoutWidget_2);
-        label_11->setObjectName(QString::fromUtf8("label_11"));
+        upgProgressBar = new MyProgressBar(tabFwUpgrade);
+        upgProgressBar->setObjectName(QString::fromUtf8("upgProgressBar"));
+        upgProgressBar->setGeometry(QRect(100, 90, 211, 161));
+        btnAddFw = new QPushButton(tabFwUpgrade);
+        btnAddFw->setObjectName(QString::fromUtf8("btnAddFw"));
+        btnAddFw->setGeometry(QRect(10, 30, 65, 30));
+        lineEditFwPath = new QLineEdit(tabFwUpgrade);
+        lineEditFwPath->setObjectName(QString::fromUtf8("lineEditFwPath"));
+        lineEditFwPath->setGeometry(QRect(90, 30, 281, 30));
+        btnUpgEN = new QPushButton(tabFwUpgrade);
+        btnUpgEN->setObjectName(QString::fromUtf8("btnUpgEN"));
+        btnUpgEN->setGeometry(QRect(390, 30, 65, 30));
+        btnGetFw = new QPushButton(tabFwUpgrade);
+        btnGetFw->setObjectName(QString::fromUtf8("btnGetFw"));
+        btnGetFw->setGeometry(QRect(310, 220, 65, 30));
+        labelFwVer = new QLabel(tabFwUpgrade);
+        labelFwVer->setObjectName(QString::fromUtf8("labelFwVer"));
+        labelFwVer->setGeometry(QRect(380, 220, 71, 30));
+        labelFwVer->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);"));
+        labelFwVer->setAlignment(Qt::AlignCenter);
+        label_13 = new QLabel(tabFwUpgrade);
+        label_13->setObjectName(QString::fromUtf8("label_13"));
+        label_13->setGeometry(QRect(400, 150, 51, 21));
         QFont font7;
         font7.setFamily(QString::fromUtf8("Microsoft YaHei UI"));
         font7.setPointSize(10);
-        label_11->setFont(font7);
-        label_11->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);"));
-        label_11->setAlignment(Qt::AlignCenter);
-
-        gridLayout_2->addWidget(label_11, 2, 0, 1, 1);
-
-        label_10 = new QLabel(gridLayoutWidget_2);
-        label_10->setObjectName(QString::fromUtf8("label_10"));
-        QFont font8;
-        font8.setFamily(QString::fromUtf8("Microsoft YaHei UI"));
-        font8.setPointSize(10);
-        font8.setBold(false);
-        font8.setWeight(50);
-        label_10->setFont(font8);
-        label_10->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);"));
-        label_10->setAlignment(Qt::AlignCenter);
-
-        gridLayout_2->addWidget(label_10, 4, 1, 1, 1);
-
-        pushButton_4 = new QPushButton(gridLayoutWidget_2);
-        pushButton_4->setObjectName(QString::fromUtf8("pushButton_4"));
-        QFont font9;
-        font9.setFamily(QString::fromUtf8("Microsoft JhengHei UI"));
-        font9.setPointSize(10);
-        font9.setBold(true);
-        font9.setWeight(75);
-        pushButton_4->setFont(font9);
-
-        gridLayout_2->addWidget(pushButton_4, 3, 0, 1, 1);
-
-        label_7 = new QLabel(gridLayoutWidget_2);
-        label_7->setObjectName(QString::fromUtf8("label_7"));
-        label_7->setFont(font9);
-        label_7->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);"));
-        label_7->setAlignment(Qt::AlignCenter);
-
-        gridLayout_2->addWidget(label_7, 0, 0, 1, 2);
-
-        label_13 = new QLabel(gridLayoutWidget_2);
-        label_13->setObjectName(QString::fromUtf8("label_13"));
-        label_13->setFont(font);
+        label_13->setFont(font7);
         label_13->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);"));
         label_13->setAlignment(Qt::AlignCenter);
-
-        gridLayout_2->addWidget(label_13, 2, 1, 1, 1);
-
-        pushButton_5 = new QPushButton(gridLayoutWidget_2);
-        pushButton_5->setObjectName(QString::fromUtf8("pushButton_5"));
-
-        gridLayout_2->addWidget(pushButton_5, 3, 1, 1, 1);
-
-        label_8 = new QLabel(gridLayoutWidget_2);
-        label_8->setObjectName(QString::fromUtf8("label_8"));
-        label_8->setFont(font7);
-        label_8->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);"));
-        label_8->setAlignment(Qt::AlignCenter);
-
-        gridLayout_2->addWidget(label_8, 1, 0, 1, 1);
-
-        label_9 = new QLabel(gridLayoutWidget_2);
-        label_9->setObjectName(QString::fromUtf8("label_9"));
-        label_9->setFont(font9);
-        label_9->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);"));
-        label_9->setAlignment(Qt::AlignCenter);
-
-        gridLayout_2->addWidget(label_9, 4, 0, 1, 1);
-
-        lineEdit_2 = new QLineEdit(gridLayoutWidget_2);
-        lineEdit_2->setObjectName(QString::fromUtf8("lineEdit_2"));
-
-        gridLayout_2->addWidget(lineEdit_2, 1, 1, 1, 1);
-
         tabWidget->addTab(tabFwUpgrade, QString());
         label_12 = new QLabel(centralwidget);
         label_12->setObjectName(QString::fromUtf8("label_12"));
         label_12->setGeometry(QRect(440, 360, 191, 21));
-        QFont font10;
-        font10.setFamily(QString::fromUtf8("Microsoft JhengHei UI"));
-        font10.setPointSize(8);
-        label_12->setFont(font10);
+        QFont font8;
+        font8.setFamily(QString::fromUtf8("Microsoft JhengHei UI"));
+        font8.setPointSize(8);
+        label_12->setFont(font8);
         label_12->setStyleSheet(QString::fromUtf8("color: rgb(50,254,255)"));
         label_12->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
         label_14 = new QLabel(centralwidget);
@@ -415,18 +332,11 @@ public:
         label_5->setText(QCoreApplication::translate("MainWindow", "\346\265\201\346\216\247\345\210\266", nullptr));
         serialPortFlowCtrl->setItemText(0, QCoreApplication::translate("MainWindow", "NONE", nullptr));
 
-        pushButton->setText(QCoreApplication::translate("MainWindow", "\346\267\273\345\212\240\345\233\272\344\273\266", nullptr));
-        pushButton_2->setText(QCoreApplication::translate("MainWindow", "\346\233\264\346\226\260\345\233\272\344\273\266", nullptr));
-        pushButton_3->setText(QCoreApplication::translate("MainWindow", "\345\233\272\344\273\266\347\211\210\346\234\254", nullptr));
-        label_6->setText(QString());
-        label_11->setText(QCoreApplication::translate("MainWindow", "\345\275\223\345\211\215\346\254\241\346\225\260:", nullptr));
-        label_10->setText(QCoreApplication::translate("MainWindow", "PASS", nullptr));
-        pushButton_4->setText(QCoreApplication::translate("MainWindow", "\345\274\200\345\247\213\346\265\213\350\257\225", nullptr));
-        label_7->setText(QCoreApplication::translate("MainWindow", "IAP\345\215\207\347\272\247\346\265\213\350\257\225:", nullptr));
-        label_13->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
-        pushButton_5->setText(QCoreApplication::translate("MainWindow", "\345\201\234\346\255\242\346\265\213\350\257\225", nullptr));
-        label_8->setText(QCoreApplication::translate("MainWindow", "\346\200\273\346\265\213\350\257\225\346\254\241\346\225\260", nullptr));
-        label_9->setText(QCoreApplication::translate("MainWindow", "\346\265\213\350\257\225\347\273\223\346\236\234:", nullptr));
+        btnAddFw->setText(QCoreApplication::translate("MainWindow", "\346\267\273\345\212\240\345\233\272\344\273\266", nullptr));
+        btnUpgEN->setText(QCoreApplication::translate("MainWindow", "\346\233\264\346\226\260\345\233\272\344\273\266", nullptr));
+        btnGetFw->setText(QCoreApplication::translate("MainWindow", "\345\233\272\344\273\266\347\211\210\346\234\254", nullptr));
+        labelFwVer->setText(QCoreApplication::translate("MainWindow", "0.0.0", nullptr));
+        label_13->setText(QString());
         tabWidget->setTabText(tabWidget->indexOf(tabFwUpgrade), QCoreApplication::translate("MainWindow", "Tab 1", nullptr));
         label_12->setText(QCoreApplication::translate("MainWindow", "\346\267\261\345\234\263\345\274\247\345\205\213\345\210\233\346\226\260\347\247\221\346\212\200\346\234\211\351\231\220\345\205\254\345\217\270", nullptr));
         label_14->setText(QCoreApplication::translate("MainWindow", "Fw Verion:1.0.0", nullptr));

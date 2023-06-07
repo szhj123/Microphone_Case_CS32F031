@@ -70,7 +70,7 @@ typedef struct _rx_ctrl_block_t
     uint8_t checkSum;
 }rx_ctrl_block_t;
 
-void Drv_Com_Init(com_event_callback_t callback );
+void Drv_Com_Init(com_event_callback_t comCaseCallback, com_event_callback_t comUpgCallback );
 void Drv_Com_Tx_Enable(com_port_t com );
 void Drv_Com_Tx_Disable(com_port_t com );
 void Drv_Com_Tx_Send(com_port_t com, uint8_t *buf, uint16_t length );

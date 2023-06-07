@@ -5,6 +5,7 @@
 #include "drv_timer.h"
 #include "drv_com.h"
 #include "drv_event.h"
+#include "drv_flash.h"
 
 #define VER_BLD                           0x01
 #define VER_APP                           0x01
@@ -15,6 +16,14 @@
 #define CMD_CHARGER_OFF                   0x04
 #define CMD_CHARGER_KEY                   0x05
 #define CMD_EARBUD_BATT_LEVEL             0x06
+
+#define CMD_FW_ERASE                      0x75
+#define CMD_FW_DATA                       0x76
+#define CMD_FW_CHECKSUM                   0x77
+#define CDM_FW_ACK                        0x78
+#define CMD_FW_VERSION                    0x79
+#define CMD_FW_RESET                      0x7a
+
 
 
 #define DEVICE_LEFT                       0x00
@@ -47,10 +56,9 @@ typedef struct _com_ctrl_block_t
 }com_ctrl_block_t;
 
 void App_Com_Init(void );
-
 void App_Com_Tx_Open_Case(uint8_t devType );
-
-void App_Com_Rx_Handler(uint8_t *buf, uint8_t length );
+void App_Com_Case_Handler(uint8_t *buf, uint8_t length );
+void App_Com_Upg_Handler(uint8_t *buf, uint8_t length );
 
 #endif 
 

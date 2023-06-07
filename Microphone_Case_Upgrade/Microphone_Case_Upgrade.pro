@@ -20,13 +20,15 @@ SOURCES += \
     mainwindow.cpp \
     mybtn.cpp \
     myprogressbar.cpp \
-    myserialport.cpp
+    myserialport.cpp \
+    myupgrade.cpp
 
 HEADERS += \
     mainwindow.h \
     mybtn.h \
     myprogressbar.h \
-    myserialport.h
+    myserialport.h \
+    myupgrade.h
 
 FORMS += \
     mainwindow.ui

@@ -21,7 +21,8 @@
 static void App_Com1_Handler(void *arg );
 static void App_Com2_Handler(void *arg );
 static void App_Com6_Handler(void *arg );
-static void App_Com_Send_Msg(uint8_t *buf, uint8_t length );
+static void App_Com_Send_Case_Msg(uint8_t *buf, uint8_t length );
+static void App_Com_Send_Upg_Msg(uint8_t *buf, uint8_t length );
 /* Private variables ------------------------------------*/
 
 static com_ctrl_block_t com0Ctrl;
@@ -31,7 +32,7 @@ static com_ctrl_block_t com6Ctrl;
 
 void App_Com_Init(void )
 {
-    Drv_Com_Init(App_Com_Send_Msg);
+    Drv_Com_Init(App_Com_Send_Case_Msg, App_Com_Send_Upg_Msg);
 
     Drv_Task_Regist_Period(App_Com1_Handler, 0, 1, NULL);
     
@@ -40,9 +41,14 @@ void App_Com_Init(void )
     Drv_Task_Regist_Period(App_Com6_Handler, 0, 1, NULL);
 }
 
-static void App_Com_Send_Msg(uint8_t *buf, uint8_t length )
+static void App_Com_Send_Case_Msg(uint8_t *buf, uint8_t length )
 {
-    Drv_Msg_Put(APP_EVENT_COM_RX, buf, length);
+    Drv_Msg_Put(APP_EVENT_COM_CASE, buf, length);
+}
+
+static void App_Com_Send_Upg_Msg(uint8_t *buf, uint8_t length )
+{
+    Drv_Msg_Put(APP_EVENT_COM_CASE, buf, length);
 }
 
 static void App_Com1_Handler(void *arg )
@@ -248,7 +254,7 @@ static void App_Com6_Handler(void *arg )
     }
 }
 
-void App_Com_Rx_Handler(uint8_t *buf, uint8_t length )
+void App_Com_Case_Handler(uint8_t *buf, uint8_t length )
 {
     rx_response_t rxResponse;
     uint8_t i;
@@ -277,6 +283,36 @@ void App_Com_Rx_Handler(uint8_t *buf, uint8_t length )
         default: break;
     }
     
+}
+
+void App_Com_Upg_Handler(uint8_t *buf, uint8_t length )
+{
+    uint8_t cmd = buf[1];
+
+    switch(cmd)
+    {
+        case CMD_FW_ERASE:
+        {
+            break;
+        }
+        case CMD_FW_DATA:
+        {
+            break;
+        }
+        case CMD_FW_CHECKSUM:
+        {
+            break;
+        }
+        case CMD_FW_VERSION:
+        {
+            break;
+        }
+        case CMD_FW_RESET:
+        {
+            break;
+        }
+        default: break;
+    }
 }
 
 void App_Com_Tx_Open_Case(uint8_t devType )
