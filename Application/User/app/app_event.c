@@ -15,11 +15,15 @@
 #include "app_led.h"
 #include "app_hall.h"
 #include "app_com.h"
+#include "app_flash.h"
 /* Private typedef --------------------------------------*/
 /* Private define ------------------ --------------------*/
 /* Private macro ----------------------------------------*/
 /* Private function -------------------------------------*/
 static void App_Event_Handler(void *arg );
+static void App_Event_Case_Handler(uint8_t *buf, uint8_t length );
+static void App_Event_Upg_Handler(uint8_t *buf, uint8_t length );
+
 /* Private variables ------------------------------------*/
 
 void App_Event_Init(void )
@@ -76,9 +80,9 @@ static void App_Event_Handler(void *arg )
                 {
                     App_Led_Hall_Open(battLevel);
                     
-                    App_Com_Tx_Open_Case(DEVICE_LEFT);
+                    App_Com_Case_Tx_Open(DEVICE_LEFT);
                     
-                    App_Com_Tx_Open_Case(DEVICE_RIGHT);
+                    App_Com_Case_Tx_Open(DEVICE_RIGHT);
                 }
                 else
                 {
@@ -89,13 +93,13 @@ static void App_Event_Handler(void *arg )
         }
         case APP_EVENT_COM_CASE:
         {
-            App_Com_Case_Handler(msg.data, msg.lenght);
+            App_Event_Case_Handler(msg.data, msg.lenght);
             
             break;
         }
         case APP_EVENT_COM_UPG:
         {
-            App_Com_Upg_Handler(msg.data, msg.lenght);
+            App_Event_Upg_Handler(msg.data, msg.lenght);
             break;
         }
         case APP_EVENT_SYS_SLEEP:
@@ -106,4 +110,82 @@ static void App_Event_Handler(void *arg )
         default: break;
     }
 }
+
+void App_Event_Case_Handler(uint8_t *buf, uint8_t length )
+{
+    rx_response_t rxResponse;
+    uint8_t i;
+
+    for(i=0;i<length-8;i++)
+    {
+        *((uint8_t *)&rxResponse + i) = buf[7+i];
+    }
+    
+    App_Com_Set_Rx_Response(rxResponse);
+}
+
+
+void App_Event_Upg_Handler(uint8_t *buf, uint8_t length )
+{
+    uint8_t cmd = buf[0];
+
+    switch(cmd)
+    {
+        case CMD_FW_ERASE:
+        {
+            word_t fwSize;
+
+            fwSize.byte_t.byte0 = buf[1];
+            fwSize.byte_t.byte1 = buf[2];
+            fwSize.byte_t.byte2 = buf[3];
+            fwSize.byte_t.byte3 = buf[4];
+
+            App_Flash_Set_Fw_Size(fwSize.val);
+                
+            //App_Flash_Erase_App2();
+            
+            App_Com_Upg_Tx_Ack();
+            
+            break;
+        }
+        case CMD_FW_DATA:
+        {
+            word_t fwOffset;
+
+            fwOffset.byte_t.byte0 = buf[1];
+            fwOffset.byte_t.byte1 = buf[2];
+            fwOffset.byte_t.byte2 = buf[3];
+            fwOffset.byte_t.byte3 = buf[4];
+
+            App_Flash_Write_App2(fwOffset.val, &buf[5], length-5);
+
+            App_Com_Upg_Tx_Ack();
+            break;
+        }
+        case CMD_FW_CHECKSUM:
+        {
+            uint16_t fwChecksum = (uint16_t )buf[2] << 8 | buf[1];
+
+            if(fwChecksum == App_Flash_Cal_Fw_Checksum())
+            {
+                App_Com_Upg_Tx_Ack();
+            }
+            break;
+        }
+        case CMD_FW_VERSION:
+        {
+            break;
+        }
+        case CMD_FW_RESET:
+        {
+            App_Flash_Upg_Enable();
+
+            App_Jump_to_Bld();
+            
+            break;
+        }
+        default: break;
+    }
+}
+
 

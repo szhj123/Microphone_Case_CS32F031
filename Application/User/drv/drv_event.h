@@ -3,7 +3,7 @@
 
 #include "hal_cs32f031.h"
 
-#define MSG_DATA_MAX_LEN                  64
+#define MSG_DATA_MAX_LEN                  72
 #define MSG_QUEUE_MAX_LEN                  8     
 
 #define MSG_QUEUE_OK                      0

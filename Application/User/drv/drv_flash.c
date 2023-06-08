@@ -16,20 +16,6 @@
 /* Private macro ----------------------------------------*/
 /* Private function -------------------------------------*/
 /* Private variables ------------------------------------*/
-uint8_t wBuf[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-uint8_t rBuf[10] = {0};
-
-void Drv_Flash_Init(void )
-{
-    Drv_Flash_Erase_Page(APP2_START_ADDR);
-
-    Drv_Flash_Write(APP2_START_ADDR, wBuf, sizeof(wBuf));
-
-    for(uint8_t i=0;i<10;i++)
-    {
-        rBuf[i] = *((uint8_t *)APP2_START_ADDR + i);
-    }
-}
 
 flash_status_t Drv_Flash_Erase_Page(uint32_t pageAddr )
 {

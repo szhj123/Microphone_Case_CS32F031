@@ -56,9 +56,9 @@ typedef struct _com_ctrl_block_t
 }com_ctrl_block_t;
 
 void App_Com_Init(void );
-void App_Com_Tx_Open_Case(uint8_t devType );
-void App_Com_Case_Handler(uint8_t *buf, uint8_t length );
-void App_Com_Upg_Handler(uint8_t *buf, uint8_t length );
+void App_Com_Set_Rx_Response(rx_response_t rxResponse );
+void App_Com_Case_Tx_Open(uint8_t devType );
+void App_Com_Upg_Tx_Ack(void );
 
 #endif 
 

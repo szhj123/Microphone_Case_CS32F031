@@ -493,6 +493,11 @@
               <FileType>1</FileType>
               <FilePath>..\User\app\app_com.c</FilePath>
             </File>
+            <File>
+              <FileName>app_flash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\app\app_flash.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

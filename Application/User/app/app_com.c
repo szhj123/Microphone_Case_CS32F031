@@ -48,7 +48,7 @@ static void App_Com_Send_Case_Msg(uint8_t *buf, uint8_t length )
 
 static void App_Com_Send_Upg_Msg(uint8_t *buf, uint8_t length )
 {
-    Drv_Msg_Put(APP_EVENT_COM_CASE, buf, length);
+    Drv_Msg_Put(APP_EVENT_COM_UPG, buf, length);
 }
 
 static void App_Com1_Handler(void *arg )
@@ -226,7 +226,7 @@ static void App_Com6_Handler(void *arg )
         case COM_STAT_INIT:
         {
             if(Drv_Tx_Queue_Get(COM6, &com6Ctrl.comData) == COM_QUEUE_OK)
-            {
+            {                
                 com6Ctrl.comState = COM_STAT_TX;
             }
             break;
@@ -234,7 +234,7 @@ static void App_Com6_Handler(void *arg )
         case COM_STAT_TX:
         {
             Drv_Com_Tx_Send(COM6, com6Ctrl.comData.data, com6Ctrl.comData.length);
-
+            
             com6Ctrl.comState = COM_STAT_TX_WATI_DONE;
 
             break;
@@ -254,16 +254,8 @@ static void App_Com6_Handler(void *arg )
     }
 }
 
-void App_Com_Case_Handler(uint8_t *buf, uint8_t length )
+void App_Com_Set_Rx_Response(rx_response_t rxResponse )
 {
-    rx_response_t rxResponse;
-    uint8_t i;
-
-    for(i=0;i<length-8;i++)
-    {
-        *((uint8_t *)&rxResponse + i) = buf[7+i];
-    }
-
     switch(rxResponse.devType)
     {
         case DEVICE_RIGHT:
@@ -282,40 +274,10 @@ void App_Com_Case_Handler(uint8_t *buf, uint8_t length )
         }
         default: break;
     }
-    
 }
 
-void App_Com_Upg_Handler(uint8_t *buf, uint8_t length )
-{
-    uint8_t cmd = buf[1];
 
-    switch(cmd)
-    {
-        case CMD_FW_ERASE:
-        {
-            break;
-        }
-        case CMD_FW_DATA:
-        {
-            break;
-        }
-        case CMD_FW_CHECKSUM:
-        {
-            break;
-        }
-        case CMD_FW_VERSION:
-        {
-            break;
-        }
-        case CMD_FW_RESET:
-        {
-            break;
-        }
-        default: break;
-    }
-}
-
-void App_Com_Tx_Open_Case(uint8_t devType )
+void App_Com_Case_Tx_Open(uint8_t devType )
 {
     uint8_t txBuf[15] = {0};
     uint8_t checkSum = 0;
@@ -353,4 +315,23 @@ void App_Com_Tx_Open_Case(uint8_t devType )
     }
 }
 
+void App_Com_Upg_Tx_Ack(void )
+{
+    uint8_t txBuf[5] = {0};
+    uint8_t checksum = 0;
+
+    txBuf[0] = 0x5a;
+    txBuf[1] = 0x5a;
+    txBuf[2] = 0x03;
+    txBuf[3] = CDM_FW_ACK;
+
+    for(int i = 0;i<txBuf[2]-1;i++)
+    {
+        checksum += txBuf[i+2];
+    }
+
+    txBuf[4] = (char)checksum;
+
+    Drv_Tx_Queue_Put(COM6, txBuf, sizeof(txBuf));
+}
 

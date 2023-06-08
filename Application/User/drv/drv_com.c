@@ -290,7 +290,7 @@ uint8_t Drv_Tx_Queue_Get(com_port_t com, com_data_t *txData )
         case COM0: pTxQueue = &tx0Queue; break;
         case COM1: pTxQueue = &tx1Queue; break;
         case COM2: pTxQueue = &tx2Queue; break;
-        case COM3: pTxQueue = &tx6Queue; break;
+        case COM6: pTxQueue = &tx6Queue; break;
         default: break;
     }
     

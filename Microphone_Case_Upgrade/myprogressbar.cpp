@@ -100,4 +100,5 @@ void MyProgressBar::Draw_Text(QPainter *painter)
     strValue += "%";
     painter->drawText(textRect, Qt::AlignCenter, strValue);
 
+    painter->restore();
 }

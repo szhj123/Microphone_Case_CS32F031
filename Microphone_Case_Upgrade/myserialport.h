@@ -9,13 +9,6 @@
 #include <QSerialPort>
 #include <QSerialPortInfo>
 
-#define CMD_FW_ERASE        0x75
-#define CMD_FW_DATA         0x76
-#define CMD_FW_CHECKSUM     0x77
-#define CDM_FW_ACK          0x78
-#define CMD_FW_VERSION      0x79
-#define CMD_FW_RESET        0x7a
-
 class MySerialPort : public QWidget
 {
     Q_OBJECT

@@ -30,10 +30,6 @@
 void SysTick_Handler(void)
 {
     Hal_Task_Isr_Handler();
-
-    extern void timing_delay_decrement(void );
-    timing_delay_decrement();
-    
 }
 
 /**

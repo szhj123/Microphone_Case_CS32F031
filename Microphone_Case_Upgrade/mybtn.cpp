@@ -28,10 +28,6 @@ MyBtn::~MyBtn()
 
 void MyBtn::paintEvent(QPaintEvent *event)
 {
-    int width = this->width();
-    int height = this->height();
-    int side = qMin(width, height);
-
     QPainter painter(this);
     painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing);
 

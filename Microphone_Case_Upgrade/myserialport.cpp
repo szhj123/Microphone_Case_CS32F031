@@ -261,10 +261,10 @@ void MySerialPort::Serial_Port_Tx_Reset(void )
 
     buf[0] = 0x5a;
     buf[1] = 0x5a;
-    buf[2] = 0x2;
+    buf[2] = 0x03;
     buf[3] = CMD_FW_RESET;
 
-    for(int i = 0;i<buf[2];i++)
+    for(int i = 0;i<buf[2]-1;i++)
     {
         checksum += buf[i+2];
     }
@@ -319,7 +319,7 @@ void MySerialPort::Serial_Port_Recv(void )
                 uchar calChecksum = 0;
                 uchar cmdLength = (uchar)data[i+2];
                 uchar cmd = (uchar)data[i+3];
-                uchar cmdCheckSum = (uchar)data[cmdLength+2];
+                uchar cmdCheckSum = (uchar)data[i+cmdLength+1];
 
                 for(int j=0;j<cmdLength-1;j++)
                 {
@@ -330,7 +330,7 @@ void MySerialPort::Serial_Port_Recv(void )
                 {
                     if(cmd == CDM_FW_ACK)
                     {
-                        uchar ack = (uchar)data[i+4];
+                        uchar ack = 0x01;
 
                         myUpgrade->Upg_Set_Ack(ack);
                     }
@@ -342,9 +342,9 @@ void MySerialPort::Serial_Port_Recv(void )
 
                         myUpgrade->Upg_Set_Ver(fwBuildVer, fwMinorVer, fwMajorVer);
                     }
-
-                    i = cmdLength + 3;
                 }
+
+                i = cmdLength + 2;
             }
         }
 

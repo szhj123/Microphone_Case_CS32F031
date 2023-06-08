@@ -109,18 +109,21 @@ void MyUpgrade::on_btnAddFw_Clicked(void )
 
     QDataStream binFileData(&readFile);
 
-    static char *pBuf = nullptr;
-
     fwInfo.fwSize = readFileInfo.size();
+
+    static char *pBuf;
 
     if(pBuf != nullptr)
     {
-        delete [] pBuf;
+        delete []  pBuf;
     }
 
     pBuf = new char[fwInfo.fwSize];
+
     binFileData.readRawData(pBuf, static_cast<int>(fwInfo.fwSize));
+
     fwInfo.fwArray = QByteArray(pBuf, static_cast<int>(fwInfo.fwSize));
+
     fwInfo.fwBuf = (char *)fwInfo.fwArray.data();
 
 }
@@ -185,7 +188,7 @@ void MyUpgrade::upg_handler(void )
 
                     upgState = UPG_STATE_ERASE_FLASH;
 
-                    timer->stop();
+                    //timer->stop();
                 }
             }
             break;
@@ -241,9 +244,10 @@ void MyUpgrade::upg_handler(void )
 
                 ui->upgProgressBar->Update_Val(progressVal);
             }
+#if 0
             else
             {
-                if(++fwInfo.fwTxTimeoutCnt >= (50 / UPG_INTERVAL_TIME))
+                if(++fwInfo.fwTxTimeoutCnt >= (1000 / UPG_INTERVAL_TIME))
                 {
                     fwInfo.fwTxTimeoutCnt = 0;
 
@@ -259,6 +263,7 @@ void MyUpgrade::upg_handler(void )
                     }
                 }
             }
+#endif
             break;
         }
         case UPG_STATE_TX_FW_CHECKSUM:
@@ -291,7 +296,7 @@ void MyUpgrade::upg_handler(void )
             }
             else
             {
-                if(++fwInfo.fwTxTimeoutCnt >= (500 / UPG_INTERVAL_TIME))
+                if(++fwInfo.fwTxTimeoutCnt >= (1000 / UPG_INTERVAL_TIME))
                 {
                     fwInfo.fwTxTimeoutCnt = 0;
 
