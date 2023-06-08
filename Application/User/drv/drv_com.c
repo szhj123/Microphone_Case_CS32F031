@@ -216,12 +216,19 @@ static void Drv_Com_Rx6_Isr_Handler(uint8_t recvVal )
         }
         case RX_STAT_CHECKSUM:
         {
+            static uint16_t cnt;
             if(rx6Ctrl.checkSum == recvVal)
             {
+                #if 0
                 if(comUpgEventCallback != NULL)
                 {
                     comUpgEventCallback(&rx6Ctrl.dataBuf[1], rx6Ctrl.dataLength - 2);
                 }
+                #else
+                extern void App_Com_Upg_Tx_Ack();
+                App_Com_Upg_Tx_Ack();
+                cnt++;
+                #endif
             }
 
             rx6Ctrl.dataCnt = 0;

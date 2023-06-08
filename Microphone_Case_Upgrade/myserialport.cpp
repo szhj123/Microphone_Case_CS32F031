@@ -302,7 +302,7 @@ void MySerialPort::Serial_Port_Recv(void )
     {
         //串口收到的数据可能不是连续的，需要的话应该把数据缓存下来再进行协议解析，类似tcp数据处理
         QByteArray recv_data;
-        recv_data.resize(64);
+        recv_data.resize(256);
         recv_data = serialPort->readAll();
         int length = recv_data.length();
         char *data = recv_data.data();
@@ -312,7 +312,7 @@ void MySerialPort::Serial_Port_Recv(void )
         //qDebug()<<"已接收："<<QString::fromUtf8(recv_data);
 
         int i=0;
-        for(;i<(length-1);i++)
+        while(i<(length-1))
         {
             if(data[i] == 0x5a && data[i+1] == 0x5a)
             {
@@ -328,11 +328,15 @@ void MySerialPort::Serial_Port_Recv(void )
 
                 if(calChecksum == cmdCheckSum)
                 {
+                    static uint32_t cnt;
                     if(cmd == CDM_FW_ACK)
                     {
                         uchar ack = 0x01;
 
+                        cnt++;
+                        qDebug() << QString().sprintf("ack count:%d", cnt);
                         myUpgrade->Upg_Set_Ack(ack);
+
                     }
                     else if(cmd == CMD_FW_VERSION)
                     {
@@ -344,7 +348,11 @@ void MySerialPort::Serial_Port_Recv(void )
                     }
                 }
 
-                i = cmdLength + 2;
+                i += cmdLength + 2;
+            }
+            else
+            {
+                i++;
             }
         }
 

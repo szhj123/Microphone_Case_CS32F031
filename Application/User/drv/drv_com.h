@@ -5,8 +5,8 @@
 
 typedef void (*com_event_callback_t)(uint8_t *, uint8_t );
 
-#define TX_DATA_MAX_SIZE                32
-#define TX_QUEUE_MAX_SIZE               4
+#define TX_DATA_MAX_SIZE                16
+#define TX_QUEUE_MAX_SIZE               16
 
 #define COM_QUEUE_OK                     0
 #define COM_QUEUE_ERR                    (!COM_QUEUE_OK)

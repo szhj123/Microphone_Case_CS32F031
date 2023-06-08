@@ -227,15 +227,20 @@ static void App_Com6_Handler(void *arg )
         {
             if(Drv_Tx_Queue_Get(COM6, &com6Ctrl.comData) == COM_QUEUE_OK)
             {                
+                com6Ctrl.delayCnt = 0;
                 com6Ctrl.comState = COM_STAT_TX;
             }
             break;
         }
         case COM_STAT_TX:
         {
-            Drv_Com_Tx_Send(COM6, com6Ctrl.comData.data, com6Ctrl.comData.length);
-            
-            com6Ctrl.comState = COM_STAT_TX_WATI_DONE;
+            //if(++com6Ctrl.delayCnt >= 5)
+            {
+                com6Ctrl.delayCnt = 0;
+                Drv_Com_Tx_Send(COM6, com6Ctrl.comData.data, com6Ctrl.comData.length);
+                
+                com6Ctrl.comState = COM_STAT_TX_WATI_DONE;
+            }
 
             break;
         }

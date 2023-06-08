@@ -157,7 +157,7 @@ void App_Event_Upg_Handler(uint8_t *buf, uint8_t length )
             fwOffset.byte_t.byte2 = buf[3];
             fwOffset.byte_t.byte3 = buf[4];
 
-            App_Flash_Write_App2(fwOffset.val, &buf[5], length-5);
+            //App_Flash_Write_App2(fwOffset.val, &buf[5], length-5);
 
             App_Com_Upg_Tx_Ack();
             break;
@@ -180,7 +180,7 @@ void App_Event_Upg_Handler(uint8_t *buf, uint8_t length )
         {
             App_Flash_Upg_Enable();
 
-            App_Jump_to_Bld();
+            //App_Jump_to_Bld();
             
             break;
         }

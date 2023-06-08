@@ -370,6 +370,8 @@ void Hal_Com_Tx6_Send(uint8_t *buf, uint16_t length, hal_isr_callback_t callback
     hal_tx6_isr_callback = callback;
 
     __USART_INTR_ENABLE(USART6, TXE); // Enable the USART transmit  interrupt
+
+    __USART_INTR_DISABLE(USART6, RXNE);
 }
 
 
@@ -397,6 +399,8 @@ void Hal_Com_Tx6_Isr_Handler(void )
             }
             /* Disable the USART transmit data register empty interrupt */
             __USART_INTR_DISABLE(USART6, TXE);
+
+            __USART_INTR_ENABLE(USART6, RXNE);
         }
     }
 

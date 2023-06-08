@@ -1,6 +1,6 @@
 #include "myupgrade.h"
 
-#define UPG_INTERVAL_TIME                10 //ms
+#define UPG_INTERVAL_TIME                 10//ms
 #define UPG_ERASE_TIMEOUT                5000 //ms
 
 static fw_info_t   fwInfo;
@@ -209,8 +209,9 @@ void MyUpgrade::upg_handler(void )
         }
         case UPG_STATE_WAIT_ACK_FOR_TX:
         {
-            if(Upg_Get_Ack() == 0x01)
+            if(++fwInfo.fwTxTimeoutCnt >= (30 / UPG_INTERVAL_TIME))
             {
+                fwInfo.fwTxTimeoutCnt = 0;
                 Upg_Clr_Ack();
 
                 fwInfo.fwTxTimeoutCnt = 0;
@@ -259,7 +260,7 @@ void MyUpgrade::upg_handler(void )
 
                         QMessageBox::warning(this, tr("Upgrade State"),tr("Upgrade Error, it's timeout for transmiting data"));
 
-                        timer->stop();
+                        //timer->stop();
                     }
                 }
             }
