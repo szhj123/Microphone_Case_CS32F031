@@ -328,17 +328,14 @@ void MySerialPort::Serial_Port_Recv(void )
 
                 if(calChecksum == cmdCheckSum)
                 {
-                    static uint32_t cnt;
-                    if(cmd == CDM_FW_ACK)
+                    if(cmd == (CDM_FW_ACK | CMD_MCU_TO_PC))
                     {
                         uchar ack = 0x01;
 
-                        cnt++;
-                        qDebug() << QString().sprintf("ack count:%d", cnt);
                         myUpgrade->Upg_Set_Ack(ack);
 
                     }
-                    else if(cmd == CMD_FW_VERSION)
+                    else if(cmd == (CMD_FW_VERSION | CMD_MCU_TO_PC))
                     {
                         uchar fwBuildVer = (uchar)data[i+4];
                         uchar fwMinorVer = (uchar)data[i+5];

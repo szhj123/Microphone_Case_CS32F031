@@ -3,12 +3,12 @@
 #define UPG_INTERVAL_TIME                 10//ms
 #define UPG_ERASE_TIMEOUT                5000 //ms
 
-static fw_info_t   fwInfo;
-static upg_state_t upgState;
 
 MyUpgrade::MyUpgrade(QWidget *parent) : QWidget(parent)
 {
+    this->upgState = UPG_STATE_IDLE;
 
+    this->fwVerRecvFlag = false;
 }
 
 void MyUpgrade::Upg_Init(Ui::MainWindow *ui, MySerialPort *serialPort)
@@ -31,7 +31,7 @@ void MyUpgrade::Upg_Set_Ver(char fwBuildVer, char fwMinorVer, char fwMajorVer)
 
     str[0] = fwBuildVer + 0x30;
     str[2] = fwMinorVer + 0x30;
-    str[3] = fwMajorVer + 0x30;
+    str[4] = fwMajorVer + 0x30;
 
     fwVerRecvFlag = true;
 
@@ -149,7 +149,7 @@ void MyUpgrade::on_btnUpgEn_Clicked()
 
 void MyUpgrade::on_btnGetFw_Clicked(void )
 {
-
+    serialPort->Serial_Port_Get_Version();
 }
 
 void MyUpgrade::upg_handler(void )
@@ -188,7 +188,7 @@ void MyUpgrade::upg_handler(void )
 
                     upgState = UPG_STATE_ERASE_FLASH;
 
-                    //timer->stop();
+                    timer->stop();
                 }
             }
             break;
@@ -209,10 +209,11 @@ void MyUpgrade::upg_handler(void )
         }
         case UPG_STATE_WAIT_ACK_FOR_TX:
         {
-            if(++fwInfo.fwTxTimeoutCnt >= (30 / UPG_INTERVAL_TIME))
+            if(Upg_Get_Ack() == 0x01)
             {
-                fwInfo.fwTxTimeoutCnt = 0;
                 Upg_Clr_Ack();
+
+                fwInfo.fwTxTimeoutCnt = 0;
 
                 fwInfo.fwTxTimeoutCnt = 0;
                 fwInfo.fwTxErrCnt = 0;
@@ -245,26 +246,24 @@ void MyUpgrade::upg_handler(void )
 
                 ui->upgProgressBar->Update_Val(progressVal);
             }
-#if 0
             else
             {
-                if(++fwInfo.fwTxTimeoutCnt >= (1000 / UPG_INTERVAL_TIME))
+                if(++fwInfo.fwTxTimeoutCnt >= (20 / UPG_INTERVAL_TIME))
                 {
                     fwInfo.fwTxTimeoutCnt = 0;
 
                     upgState = UPG_STATE_TX_FW_DATA;
 
-                    if(++fwInfo.fwTxErrCnt >= 10)
+                    if(++fwInfo.fwTxErrCnt >= 250)
                     {
                         upgState = UPG_STATE_ERASE_FLASH;
 
                         QMessageBox::warning(this, tr("Upgrade State"),tr("Upgrade Error, it's timeout for transmiting data"));
 
-                        //timer->stop();
+                        timer->stop();
                     }
                 }
             }
-#endif
             break;
         }
         case UPG_STATE_TX_FW_CHECKSUM:
@@ -349,7 +348,7 @@ void MyUpgrade::upg_handler(void )
                     {
                         upgState = UPG_STATE_ERASE_FLASH;
 
-                        QMessageBox::warning(this, tr("Upgrade State"),tr("Upgrade Error, it's timeout for getting correct checksum"));
+                        QMessageBox::warning(this, tr("Upgrade State"),tr("Upgrade Error, it's timeout for getting new firmware version"));
 
                         timer->stop();
                     }

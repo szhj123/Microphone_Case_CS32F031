@@ -24,6 +24,7 @@ typedef struct _flash_ctrl_block_t
 typedef struct _user_data_t
 {
     uint8_t upgEn;
+    uint32_t fwSize;
 }user_data_t;
 
 void App_Flash_Erase_App2(void );

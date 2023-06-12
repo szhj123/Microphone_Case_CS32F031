@@ -10,6 +10,9 @@
 #include <QMessageBox>
 #include <QTimer>
 
+#define CMD_MCU_TO_PC       0x80
+#define CMD_PC_TO_MCU       0x00
+
 #define CMD_FW_ERASE        0x75
 #define CMD_FW_DATA         0x76
 #define CMD_FW_CHECKSUM     0x77
@@ -63,6 +66,8 @@ private:
     Ui::MainWindow  *ui;
     MySerialPort *serialPort;
     QTimer *timer;
+    fw_info_t fwInfo;
+    upg_state_t upgState;
     char ack;
     bool fwVerRecvFlag;
 signals:

@@ -219,7 +219,9 @@ static void Drv_Com_Rx6_Isr_Handler(uint8_t recvVal )
             static uint16_t cnt;
             if(rx6Ctrl.checkSum == recvVal)
             {
-                #if 0
+                while ((__USART_FLAG_STATUS_GET(USART6, TC) == RESET));
+                
+                #if 1
                 if(comUpgEventCallback != NULL)
                 {
                     comUpgEventCallback(&rx6Ctrl.dataBuf[1], rx6Ctrl.dataLength - 2);

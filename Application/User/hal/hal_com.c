@@ -389,6 +389,12 @@ void Hal_Com_Tx6_Isr_Handler(void )
         }
         else 
         {
+            while ((__USART_FLAG_STATUS_GET(USART6, TC) == RESET));
+            
+            __USART_INTR_DISABLE(USART6, TXE);
+
+            __USART_INTR_ENABLE(USART6, RXNE);
+            
             pTx6Buf = NULL;
 
             if(hal_tx6_isr_callback != NULL)
@@ -398,9 +404,7 @@ void Hal_Com_Tx6_Isr_Handler(void )
                 hal_tx6_isr_callback = NULL;
             }
             /* Disable the USART transmit data register empty interrupt */
-            __USART_INTR_DISABLE(USART6, TXE);
-
-            __USART_INTR_ENABLE(USART6, RXNE);
+            
         }
     }
 

@@ -320,6 +320,30 @@ void App_Com_Case_Tx_Open(uint8_t devType )
     }
 }
 
+void App_Com_Upg_Tx_FwVer(void )
+{
+    uint8_t txBuf[8] = {0};
+    uint8_t checksum = 0;
+
+    txBuf[0] = 0x5a;
+    txBuf[1] = 0x5a;
+    txBuf[2] = 0x06;
+    txBuf[3] = CMD_FW_VERSION | CMD_MCU_TO_PC;
+    txBuf[4] = FW_BUILD_VER;
+    txBuf[5] = FW_MINOR_VER;
+    txBuf[6] = FW_MAJOR_VER;
+
+    for(int i = 0;i<txBuf[2]-1;i++)
+    {
+        checksum += txBuf[i+2];
+    }
+
+    txBuf[7] = (char)checksum;
+
+    Drv_Tx_Queue_Put(COM6, txBuf, sizeof(txBuf));
+}
+
+
 void App_Com_Upg_Tx_Ack(void )
 {
     uint8_t txBuf[5] = {0};
@@ -328,7 +352,7 @@ void App_Com_Upg_Tx_Ack(void )
     txBuf[0] = 0x5a;
     txBuf[1] = 0x5a;
     txBuf[2] = 0x03;
-    txBuf[3] = CDM_FW_ACK;
+    txBuf[3] = CDM_FW_ACK | CMD_MCU_TO_PC;
 
     for(int i = 0;i<txBuf[2]-1;i++)
     {

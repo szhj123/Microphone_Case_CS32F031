@@ -31,6 +31,5 @@ private:
     QPoint lastPoint;
 private slots:
     void on_btnSerialPort_checked(bool checked);
-    void on_serialPortNum_activated(int index);
 };
 #endif // MAINWINDOW_H

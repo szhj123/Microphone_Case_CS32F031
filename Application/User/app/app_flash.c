@@ -28,7 +28,7 @@ static pFunction Jump_To_Bld = NULL;
 void App_Flash_Erase_App2(void )
 {
     uint32_t offsetAddr = 0;
-
+    
     while(offsetAddr < flashCtrl.fwSize)
     {
         Drv_Flash_Erase_Page(APP2_START_ADDR + offsetAddr);
@@ -100,6 +100,8 @@ void App_Flash_Save_User_Data(void )
 void App_Flash_Set_Fw_Size(uint32_t fwSize )
 {
     flashCtrl.fwSize = fwSize;
+
+    userData.fwSize = fwSize;
 }
 
 static void Hal_Deinit(void)
