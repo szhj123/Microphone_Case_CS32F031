@@ -28,3 +28,5 @@
 .\objects\main.o: ..\..\Device\HAL_Driver\inc\cs32f0xx_exti.h
 .\objects\main.o: ..\..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h
 .\objects\main.o: ..\..\Device\HAL_Driver\inc\cs32f0xx_misc.h
+.\objects\main.o: ..\User\user_config.h
+.\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h

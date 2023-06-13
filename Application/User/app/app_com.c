@@ -329,9 +329,9 @@ void App_Com_Upg_Tx_FwVer(void )
     txBuf[1] = 0x5a;
     txBuf[2] = 0x06;
     txBuf[3] = CMD_FW_VERSION | CMD_MCU_TO_PC;
-    txBuf[4] = FW_BUILD_VER;
+    txBuf[4] = FW_MAJOR_VER;
     txBuf[5] = FW_MINOR_VER;
-    txBuf[6] = FW_MAJOR_VER;
+    txBuf[6] = FW_BUILD_VER;
 
     for(int i = 0;i<txBuf[2]-1;i++)
     {

@@ -6,12 +6,11 @@
 #define BLD_START_ADDR                 0x08000000
 #define BLD_MAX_SIZE                   0x00001000
 #define APP1_START_ADDR                (BLD_START_ADDR + BLD_MAX_SIZE)
-#define APP1_MAX_SIZE                  0x00007800
+#define APP1_MAX_SIZE                  0x00007400
 #define APP2_START_ADDR                (APP1_START_ADDR + APP1_MAX_SIZE)
 #define APP2_MAX_SIZE                  APP1_MAX_SIZE
-
-#define USER_START_ADDR                0x1FFFF840
-#define USER_MAX_SIZE                  192
+#define USER_START_ADDR                (APP2_START_ADDR + APP2_MAX_SIZE)
+#define USER_MAX_SIZE                  1024
 
 #define FLASH_PAGE_SIZE                1024
 

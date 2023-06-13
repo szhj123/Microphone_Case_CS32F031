@@ -15,84 +15,108 @@
 #include <string.h>
 #include "cs32f0xx.h"
 #include "cs32f0xx_conf.h"
+#include "user_config.h"
 /* Private typedef --------------------------------------*/
-typedef void (*pFunction)(void );
 
-typedef union _word_t
-{
-    uint32_t val;
-    struct 
-    {
-        uint8_t byte0;
-        uint8_t byte1;
-        uint8_t byte2;
-        uint8_t byte3;
-    }byte_t;
-}word_t;
-
-typedef struct _user_data_t
-{
-    uint8_t upgEn;
-    uint32_t fwSize; 
-}user_data_t;
 /* Private define ---------------------------------------*/
-#define APP_FLASH_ADDR                 0x8001000   
-#define APP_VECTOR_ADDR					 				APP_FLASH_ADDR
-#define APP_VECTOR_SIZE                0xc0
 
-#define BLD_START_ADDR                 0x08000000
-#define BLD_MAX_SIZE                   0x00001000
-#define APP1_START_ADDR                (BLD_START_ADDR + BLD_MAX_SIZE)
-#define APP1_MAX_SIZE                  0x00007800
-#define APP2_START_ADDR                (APP1_START_ADDR + APP1_MAX_SIZE)
-#define APP2_MAX_SIZE                  APP1_MAX_SIZE
-
-#define FLASH_PAGE_SIZE                1024
-
-#define USER_START_ADDR                0x1FFFF840
-#define USER_MAX_SIZE                  192
 /* Private macro ----------------------------------------*/
 /* Private function -------------------------------------*/
-static void Get_User_Data(void );
+static void User_Data_Get(void );
+static void User_Data_Set(void );
 static void App_Flash_Erase(void );
+static flash_status_t App_Flash_Write(uint32_t flashAddr, uint8_t *buf, uint32_t length );
+static uint16_t App_Flash_Get_Checksum(uint8_t *buf, uint32_t length );
+
 static void Jump_To_App(void );
 /* Private variables ------------------------------------*/
-unsigned char vectors[APP_VECTOR_SIZE] __attribute__ ((section(".ARM. __at_0x20000000"))) = {0};
 
 static user_data_t userData;
-static uint32_t appAddress;
-static pFunction appFunction = NULL;
-static uint32_t delayCnt;
+
+static volatile uint32_t timing_delay;
+
+extern unsigned char Vectors[];
+typedef  void (*pFunction)(void);
+pFunction Jump_To_Application;
+unsigned int JumpAddress;
+
+void timing_delay_decrement(void)
+{
+    if (timing_delay != 0x00)
+    { 
+        timing_delay--;
+    }
+}
+
+void delay(volatile uint32_t value)
+{ 
+    timing_delay = value;
+
+    while(timing_delay != 0);
+}
+
+void SysTick_Handler(void)
+{
+		timing_delay_decrement();
+}
 
 int main(void )
 {
-	  __disable_irq();
+	  static uint8_t i;
 	
-		Get_User_Data();
+    RCU->APB2EN |= RCU_APB2_PERI_SYSCFG;
 	
-		if(userData.upgEn)
+	  __RCU_AHB_CLK_ENABLE(RCU_AHB_PERI_GPIOA);
+ 
+    // Configure PA5 pins as output  
+	  gpio_mode_set(GPIOA, GPIO_PIN_11, GPIO_MODE_OUT_PP(GPIO_SPEED_LOW));
+	
+    SysTick_Config(SystemCoreClock / 1000);
+	
+    for(i=0;i<5;i++)
 		{
-		    App_Flash_Erase();     	
+		    __GPIO_PIN_SET(GPIOA, GPIO_PIN_11);
+			  delay(100);
+				__GPIO_PIN_RESET(GPIOA, GPIO_PIN_11);
+				delay(100);
+		}
 			
-				App_Flash_Write();
-		}
-	
-    while(1)
-		{
-		   
-		}
-}
-
-static void Get_User_Data(void )
-{
-		uint8_t i;
-	
-		uint8_t *pData = (uint8_t *)USER_START_ADDR;
-	
-		for(i=0;i<sizeof(user_data_t);i++)
+		User_Data_Get();
+				
+		if(userData.upgEn == 0x01)
 	  {
-		    *((uint8_t *)&userData + i) = *((uint8_t *)USER_START_ADDR + i);	
-	  }
+		    uint16_t app1Checksum = 0;
+				uint16_t app2Checksum = 0;
+						
+			  App_Flash_Erase();     	
+			
+			  App_Flash_Write(APP1_START_ADDR, (uint8_t *)APP2_START_ADDR, userData.fwSize);
+			
+				app1Checksum = App_Flash_Get_Checksum((uint8_t *)APP1_START_ADDR, userData.fwSize);
+			
+			  app2Checksum = App_Flash_Get_Checksum((uint8_t *)APP2_START_ADDR, userData.fwSize);
+						
+				if(app1Checksum == app2Checksum)
+				{
+				    userData.upgEn = 0;
+									
+						User_Data_Set();
+								
+						__enable_irq();
+								
+						Jump_To_App();
+				}
+				else
+				{
+				    NVIC_SystemReset();
+				}
+    }		
+		else
+		{
+		    Jump_To_App();   	
+		}
+		
+		while(1);
 }
 
 flash_status_t Drv_Flash_Erase_Page(uint32_t pageAddr )
@@ -108,29 +132,81 @@ flash_status_t Drv_Flash_Erase_Page(uint32_t pageAddr )
     return retStatus;
 }
 
+static void User_Data_Get(void )
+{
+		uint8_t i;
+	
+		for(i=0;i<sizeof(user_data_t);i++)
+	  {
+		    *((uint8_t *)&userData + i) = *((uint8_t *)USER_START_ADDR + i);	
+	  }
+}
+
+static void User_Data_Set(void )
+{
+		Drv_Flash_Erase_Page(USER_START_ADDR);
+	
+		App_Flash_Write(USER_START_ADDR, (uint8_t *)&userData, sizeof(user_data_t));
+}
+
 static void App_Flash_Erase(void )
 {
    	uint32_t offsetAddr = 0;
     
     while(offsetAddr < userData.fwSize)
     {
-        Drv_Flash_Erase_Page(APP_FLASH_ADDR + offsetAddr);
+        Drv_Flash_Erase_Page(APP1_START_ADDR + offsetAddr);
 
         offsetAddr += FLASH_PAGE_SIZE;
     }
 }
 
-flash_status_t App_Flash_Write(void )
+void InvertUint16(uint16_t *poly )
+{
+    uint8_t i;
+    uint16_t tmp = 0;
+    uint16_t polyVal = *poly;
+
+    for(i=0;i<16;i++)
+    {
+        if(polyVal & (1 << i))
+            tmp |= 1 << (15-i);
+    }
+    *poly = tmp;
+}
+
+static uint16_t App_Flash_Get_Checksum(uint8_t *buf, uint32_t length )
+{
+		uint16_t wCRCin = 0x0000;
+    uint16_t wCPoly = 0x8005;
+    uint8_t i;
+
+    InvertUint16(&wCPoly);
+
+    while(length--)
+    {
+        wCRCin ^= *(buf++);
+        for(i=0;i<8;i++)
+        {
+
+            if(wCRCin & 0x0001)
+                wCRCin = (wCRCin >> 1) ^ wCPoly;
+            else
+                wCRCin >>= 1;
+        }
+    }
+    return wCRCin;
+}
+
+static flash_status_t App_Flash_Write(uint32_t flashAddr, uint8_t *buf, uint32_t length )
 {
 		uint16_t i;
     uint16_t u32DataLen;
-    uint32_t *pData;
+    word_t u32Data;
 
     flash_status_t retStatus;
         
-    u32DataLen = userData.fwSize / 4;
-	
-		pData = (uint32_t *)
+    u32DataLen = length / 4;
 
     flash_unlock();    
     
@@ -141,7 +217,7 @@ flash_status_t App_Flash_Write(void )
         u32Data.byte_t.byte2 = buf[i*4 + 2];
         u32Data.byte_t.byte3 = buf[i*4 + 3];
         
-        retStatus = flash_word_program(APP_FLASH_ADDR, u32Data.val);
+        retStatus = flash_word_program(flashAddr, u32Data.val);
         
         if(retStatus == FLASH_STATUS_COMPLETE)
         {
@@ -169,38 +245,40 @@ flash_status_t App_Flash_Write(void )
 
 static void Hal_DeInit(void)
 {
-	/* Lock the access to flash & option bytes */
+		/* Lock the access to flash & option bytes */
     FLASH->CTR |= FMC_CTR_LOCK;
     FLASH->CTR &= ~FMC_CTR_OBWEN;
-	  __GPIO_DEF_INIT(GPIOA);	
-	  RCU->AHBEN  = 0x00000014; 	// Set to reset value
-	  RCU->APB2EN = 0x00000000;	// Set to reset value
+	
+	/* Wait for USART TX completed */
+	//while(!(USART1->STS & USART_FLAG_TC));
+	
+	__GPIO_DEF_INIT(GPIOA);	
+	//__USART_DEF_INIT(USART1);
+	
+	//NVIC_DisableIRQ(IRQn_USART1);
+
+	RCU->AHBEN  = 0x00000014; 	// Set to reset value
+	RCU->APB2EN = 0x00000000;	// Set to reset value
+	
+#if CSBOOT_CONFIG_DEBUG_LOG_ENABLE	
+	__USART_DEF_INIT(USART2);	
+	NVIC_DisableIRQ(IRQn_USART2);
+#endif	
 }
 
 static void Jump_To_App(void )
 {
-		__disable_irq();
-	
-		RCU->APB2EN |= RCU_APB2_PERI_SYSCFG;
-	
-	  memcpy((void*)vectors, (void*)APP_VECTOR_ADDR, APP_VECTOR_SIZE);	//copy interrupt vector table to sram. 
-	
-		if(((*(__IO uint32_t*)APP_FLASH_ADDR) & 0xFFFF0000 ) == 0x20000000)
-    {
-        SYSCFG->RMAPCFG |= SYSCFG_MEM_REMAP_SRAM;
-			
-				Hal_DeInit();
-
-				appAddress = *(__IO uint32_t*) (APP_FLASH_ADDR + 4);   			// Jump to user application 
-			
-				appFunction = (pFunction) appAddress;
-			
-			  __set_MSP(*(__IO uint32_t*) APP_FLASH_ADDR);            			// Initialize user application's Stack Pointer 
-				
-			 __enable_irq();
-			
-	     appFunction();
-    }
+	  memcpy((void*)Vectors, (void*)APP1_START_ADDR, APP1_VECTOR_SIZE);	//copy interrupt vector table to sram.
+    
+		if(((*(__IO uint32_t*)APP1_START_ADDR) & 0xFFFF0000 ) == 0x20000000)
+		{
+				SYSCFG->RMAPCFG |= SYSCFG_MEM_REMAP_SRAM;
+				Hal_DeInit();                                               		//close interrupt and clock and so on.
+				JumpAddress = *(__IO uint32_t*) (APP1_START_ADDR + 4);   			// Jump to user application 
+				Jump_To_Application = (pFunction) JumpAddress;
+				__set_MSP(*(__IO uint32_t*) APP1_START_ADDR);            			// Initialize user application's Stack Pointer 
+				Jump_To_Application();
+		}
 }
 
 

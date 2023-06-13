@@ -35,6 +35,8 @@ void MyUpgrade::Upg_Set_Ver(char fwBuildVer, char fwMinorVer, char fwMajorVer)
 
     fwVerRecvFlag = true;
 
+    qDebug() << str;
+
     ui->labelFwVer->setText(str);
 }
 
