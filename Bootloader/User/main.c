@@ -69,17 +69,17 @@ int main(void )
 	  __RCU_AHB_CLK_ENABLE(RCU_AHB_PERI_GPIOA);
  
     // Configure PA5 pins as output  
-	  gpio_mode_set(GPIOA, GPIO_PIN_11, GPIO_MODE_OUT_PP(GPIO_SPEED_LOW));
+	  //gpio_mode_set(GPIOA, GPIO_PIN_11, GPIO_MODE_OUT_PP(GPIO_SPEED_LOW));
 	
     SysTick_Config(SystemCoreClock / 1000);
 	
-    for(i=0;i<5;i++)
-		{
-		    __GPIO_PIN_SET(GPIOA, GPIO_PIN_11);
-			  delay(100);
-				__GPIO_PIN_RESET(GPIOA, GPIO_PIN_11);
-				delay(100);
-		}
+//    for(i=0;i<5;i++)
+//		{
+//		    __GPIO_PIN_SET(GPIOA, GPIO_PIN_11);
+//			  delay(100);
+//				__GPIO_PIN_RESET(GPIOA, GPIO_PIN_11);
+//				delay(100);
+//		}
 			
 		User_Data_Get();
 				

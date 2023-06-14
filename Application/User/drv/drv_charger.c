@@ -46,7 +46,7 @@ void Drv_Chrg_Cfg(void )
     Drv_Chrg_Write(0x07, 0x4c);
     Drv_Chrg_Write(0x0c, 0x75);
 
-    #if 0
+    #if 1
     static uint8_t regValBuf[8] = {0};
     for(uint8_t i=0;i<8;i++)
     {

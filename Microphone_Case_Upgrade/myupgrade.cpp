@@ -98,36 +98,7 @@ void MyUpgrade::on_btnAddFw_Clicked(void )
 
     ui->lineEditFwPath->setText(filePath);
 
-    QFile readFile(ui->lineEditFwPath->text());
-
-    QFileInfo readFileInfo(readFile);
-
-    if(!readFile.open(QIODevice::ReadOnly))
-    {
-        //QMessageBox::warning(this, tr("Read File)"), tr("Cannot open file:\n%1").arg(ui->lineEditFwPath->text()));
-
-        return ;
-    }
-
-    QDataStream binFileData(&readFile);
-
-    fwInfo.fwSize = readFileInfo.size();
-
-    static char *pBuf;
-
-    if(pBuf != nullptr)
-    {
-        delete []  pBuf;
-    }
-
-    pBuf = new char[fwInfo.fwSize];
-
-    binFileData.readRawData(pBuf, static_cast<int>(fwInfo.fwSize));
-
-    fwInfo.fwArray = QByteArray(pBuf, static_cast<int>(fwInfo.fwSize));
-
-    fwInfo.fwBuf = (char *)fwInfo.fwArray.data();
-
+    ui->lineEditFwPath->setReadOnly(true);
 }
 
 void MyUpgrade::on_btnUpgEn_Clicked()
@@ -136,6 +107,35 @@ void MyUpgrade::on_btnUpgEn_Clicked()
 
     if(serialPort->Serial_Port_Get_Opened())
     {
+        QFile readFile(ui->lineEditFwPath->text());
+
+        QFileInfo readFileInfo(readFile);
+
+        if(!readFile.open(QIODevice::ReadOnly))
+        {
+            //QMessageBox::warning(this, tr("Read File)"), tr("Cannot open file:\n%1").arg(ui->lineEditFwPath->text()));
+
+            return ;
+        }
+
+        QDataStream binFileData(&readFile);
+
+        fwInfo.fwSize = readFileInfo.size();
+
+        static char *pBuf;
+
+        if(pBuf != nullptr)
+        {
+            delete []  pBuf;
+        }
+
+        pBuf = new char[fwInfo.fwSize];
+
+        binFileData.readRawData(pBuf, static_cast<int>(fwInfo.fwSize));
+
+        fwInfo.fwArray = QByteArray(pBuf, static_cast<int>(fwInfo.fwSize));
+
+        fwInfo.fwBuf = (char *)fwInfo.fwArray.data();
 
         ui->upgProgressBar->Update_Val(0);
 
