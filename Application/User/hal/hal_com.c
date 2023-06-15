@@ -112,7 +112,7 @@ static void Hal_Com_Uart1_Init(void )
     // GPIO MF Config
     gpio_mf_config(TX1_PORT, TX1_PIN, GPIO_MF_SEL0);
     
-    gpio_mode_set(TX1_PORT, TX1_PIN, GPIO_MODE_MF_OD(GPIO_SPEED_HIGH));
+    gpio_mode_set(TX1_PORT, TX1_PIN, GPIO_MODE_MF_OD_PU(GPIO_SPEED_HIGH));
     
 
     // USART Config
@@ -149,7 +149,7 @@ static void Hal_Com_Uart2_Init(void )
     // GPIO MF Config
     gpio_mf_config(TX2_PORT, TX2_PIN, GPIO_MF_SEL1);
     
-    gpio_mode_set(TX2_PORT, TX2_PIN, GPIO_MODE_MF_OD(GPIO_SPEED_HIGH));
+    gpio_mode_set(TX2_PORT, TX2_PIN, GPIO_MODE_MF_OD_PU(GPIO_SPEED_HIGH));
     
 
     // USART Config
@@ -177,15 +177,15 @@ void Hal_Com_Uart6_Init(void )
 {
     nvic_config_t nvic_config_struct;
     usart_config_t usart_config_struct;
-
     // Clock Config
     __RCU_AHB_CLK_ENABLE(RCU_AHB_PERI_GPIOA);
     __RCU_APB2_CLK_ENABLE(RCU_APB2_PERI_USART6);
 
+    __RCU_PERI_RST_ENABLE(USART6);
     // GPIO MF Config
     gpio_mf_config(TX6_PORT, TX6_PIN, GPIO_MF_SEL5);
     
-    gpio_mode_set(TX6_PORT, TX6_PIN, GPIO_MODE_MF_OD(GPIO_SPEED_HIGH));
+    gpio_mode_set(TX6_PORT, TX6_PIN, GPIO_MODE_MF_OD_PU(GPIO_SPEED_HIGH));
     
 
     // USART Config

@@ -124,7 +124,6 @@ void App_Event_Case_Handler(uint8_t *buf, uint8_t length )
     App_Com_Set_Rx_Response(rxResponse);
 }
 
-
 void App_Event_Upg_Handler(uint8_t *buf, uint8_t length )
 {
     static word_t saveFwOffset;
@@ -162,6 +161,7 @@ void App_Event_Upg_Handler(uint8_t *buf, uint8_t length )
             if(saveFwOffset.val != fwOffset.val)
             {
                 saveFwOffset.val = fwOffset.val;
+                
                 App_Flash_Write_App2(fwOffset.val, &buf[5], length-5);
             }
 

@@ -27,19 +27,35 @@ static pFunction Jump_To_Bld = NULL;
 
 void App_Flash_Erase_App2(void )
 {
+    flash_status_t retStatus;
     uint32_t offsetAddr = 0;
     
     while(offsetAddr < flashCtrl.fwSize)
     {
-        Drv_Flash_Erase_Page(APP2_START_ADDR + offsetAddr);
+         retStatus = Drv_Flash_Erase_Page(APP2_START_ADDR + offsetAddr);
 
-        offsetAddr += FLASH_PAGE_SIZE;
+        if(retStatus == FLASH_STATUS_COMPLETE)
+        {
+            offsetAddr += FLASH_PAGE_SIZE;
+
+            App_Flash_Dleay();
+        }
     }
 }
 
 void App_Flash_Write_App2(uint32_t offset, uint8_t *buf, uint8_t length )
 {
     Drv_Flash_Write(APP2_START_ADDR + offset, buf, length );
+}
+
+void App_Flash_Dleay(void )
+{
+    uint32_t delayCnt = 100000;
+
+    while(delayCnt--)
+    {
+        __NOP();__NOP();__NOP();__NOP();__NOP();
+    }
 }
 
 void InvertUint16(uint16_t *poly )

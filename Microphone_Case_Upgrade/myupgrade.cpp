@@ -1,6 +1,6 @@
 #include "myupgrade.h"
 
-#define UPG_INTERVAL_TIME                 10//ms
+#define UPG_INTERVAL_TIME                 15//ms
 #define UPG_ERASE_TIMEOUT                5000 //ms
 
 
@@ -139,6 +139,8 @@ void MyUpgrade::on_btnUpgEn_Clicked()
 
         ui->upgProgressBar->Update_Val(0);
 
+        ui->btnUpgEN->setEnabled(false);
+
         timer->start();
     }
     else
@@ -189,6 +191,10 @@ void MyUpgrade::upg_handler(void )
                     fwInfo.fwTxTimeoutCnt = 0;
 
                     upgState = UPG_STATE_ERASE_FLASH;
+
+                    ui->btnUpgEN->setEnabled(true);
+
+                    QMessageBox::warning(this, tr("Upgrade State"),tr("Upgrade Error, it's timeout for erasing flash"));
 
                     timer->stop();
                 }
@@ -244,13 +250,13 @@ void MyUpgrade::upg_handler(void )
                     progressVal = 99;
                 }
 
-                qDebug() << QString().sprintf("firmware data offset:%d", fwInfo.fwOffset);
+                //qDebug() << QString().sprintf("firmware data offset:%d", fwInfo.fwOffset);
 
                 ui->upgProgressBar->Update_Val(progressVal);
             }
             else
             {
-                if(++fwInfo.fwTxTimeoutCnt >= (20 / UPG_INTERVAL_TIME))
+                if(++fwInfo.fwTxTimeoutCnt >= (30 / UPG_INTERVAL_TIME))
                 {
                     fwInfo.fwTxTimeoutCnt = 0;
 
@@ -261,6 +267,8 @@ void MyUpgrade::upg_handler(void )
                         upgState = UPG_STATE_ERASE_FLASH;
 
                         QMessageBox::warning(this, tr("Upgrade State"),tr("Upgrade Error, it's timeout for transmiting data"));
+
+                        ui->btnUpgEN->setEnabled(true);
 
                         timer->stop();
                     }
@@ -308,7 +316,9 @@ void MyUpgrade::upg_handler(void )
                     {
                         upgState = UPG_STATE_ERASE_FLASH;
 
-                        QMessageBox::warning(this, tr("Upgrade State"),tr("Upgrade Error, it's timeout for getting correct checksum"));
+                        QMessageBox::warning(this, tr("Upgrade State"),tr("Upgrade Fail, it's timeout for getting correct checksum"));
+
+                        ui->btnUpgEN->setEnabled(true);
 
                         timer->stop();
                     }
@@ -336,6 +346,8 @@ void MyUpgrade::upg_handler(void )
 
                 QMessageBox::warning(this,tr("Upgrade State"), tr("Upgrade Successful!"));
 
+                ui->btnUpgEN->setEnabled(true);
+
                 timer->stop();
             }
             else
@@ -351,6 +363,8 @@ void MyUpgrade::upg_handler(void )
                         upgState = UPG_STATE_ERASE_FLASH;
 
                         QMessageBox::warning(this, tr("Upgrade State"),tr("Upgrade Error, it's timeout for getting new firmware version"));
+
+                        ui->btnUpgEN->setEnabled(true);
 
                         timer->stop();
                     }

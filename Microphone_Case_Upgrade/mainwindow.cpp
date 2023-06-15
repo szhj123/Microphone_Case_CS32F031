@@ -28,6 +28,11 @@ MainWindow::MainWindow(QWidget *parent)
     myUpgrade->Upg_Init(ui, mySerialPort);
 
     connect(ui->btnSerialPort, SIGNAL(checkedChanged(bool)), this, SLOT(on_btnSerialPort_checked(bool)));
+
+    connect(ui->btnMinimize, SIGNAL(clicked()), this, SLOT(on_btn_minimize_clicked()));
+
+    connect(ui->btnClose, SIGNAL(clicked()), qApp, SLOT(quit()));
+
 }
 
 MainWindow::~MainWindow()
@@ -85,4 +90,10 @@ void MainWindow::on_btnSerialPort_checked(bool checked)
         mySerialPort->Serial_Port_Close();
     }
 }
+
+void MainWindow::on_btn_minimize_clicked()
+{
+   this->showMinimized();
+}
+
 

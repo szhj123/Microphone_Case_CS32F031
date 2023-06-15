@@ -13,7 +13,7 @@
 
 #define FW_BUILD_VER                      0x00
 #define FW_MINOR_VER                      0x00
-#define FW_MAJOR_VER                      0x02
+#define FW_MAJOR_VER                      0x01
 
 #define CMD_OPEN_CASE                     0x02
 #define CMD_CLOSE_CASE                    0x03
