@@ -194,6 +194,8 @@ void MyUpgrade::upg_handler(void )
 
                     ui->btnUpgEN->setEnabled(true);
 
+                    serialPort->Serial_Port_Tx_Reset();
+
                     QMessageBox::warning(this, tr("Upgrade State"),tr("Upgrade Error, it's timeout for erasing flash"));
 
                     timer->stop();
@@ -250,7 +252,7 @@ void MyUpgrade::upg_handler(void )
                     progressVal = 99;
                 }
 
-                //qDebug() << QString().sprintf("firmware data offset:%d", fwInfo.fwOffset);
+                qDebug() << QString().sprintf("firmware data offset:%d", fwInfo.fwOffset);
 
                 ui->upgProgressBar->Update_Val(progressVal);
             }
@@ -267,6 +269,8 @@ void MyUpgrade::upg_handler(void )
                         upgState = UPG_STATE_ERASE_FLASH;
 
                         QMessageBox::warning(this, tr("Upgrade State"),tr("Upgrade Error, it's timeout for transmiting data"));
+
+                        serialPort->Serial_Port_Tx_Reset();
 
                         ui->btnUpgEN->setEnabled(true);
 
@@ -318,6 +322,8 @@ void MyUpgrade::upg_handler(void )
 
                         QMessageBox::warning(this, tr("Upgrade State"),tr("Upgrade Fail, it's timeout for getting correct checksum"));
 
+                        serialPort->Serial_Port_Tx_Reset();
+
                         ui->btnUpgEN->setEnabled(true);
 
                         timer->stop();
@@ -328,12 +334,16 @@ void MyUpgrade::upg_handler(void )
         }
         case UPG_STATE_TX_GET_VERSION:
         {
-            fwVerRecvFlag = false;
+            if(++fwInfo.fwTxTimeoutCnt > (2500 / UPG_INTERVAL_TIME))
+            {
+                fwVerRecvFlag = false;
 
-            serialPort->Serial_Port_Get_Version();
+                fwInfo.fwTxTimeoutCnt = 0;
 
-            upgState = UPG_STATE_WAIT_FW_VERSION;
+                serialPort->Serial_Port_Get_Version();
 
+                upgState = UPG_STATE_WAIT_FW_VERSION;
+            }
             break;
         }
         case UPG_STATE_WAIT_FW_VERSION:
@@ -363,6 +373,8 @@ void MyUpgrade::upg_handler(void )
                         upgState = UPG_STATE_ERASE_FLASH;
 
                         QMessageBox::warning(this, tr("Upgrade State"),tr("Upgrade Error, it's timeout for getting new firmware version"));
+
+                        serialPort->Serial_Port_Tx_Reset();
 
                         ui->btnUpgEN->setEnabled(true);
 

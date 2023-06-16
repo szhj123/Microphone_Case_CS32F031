@@ -27,19 +27,13 @@ static pFunction Jump_To_Bld = NULL;
 
 void App_Flash_Erase_App2(void )
 {
-    flash_status_t retStatus;
     uint32_t offsetAddr = 0;
     
     while(offsetAddr < flashCtrl.fwSize)
     {
-         retStatus = Drv_Flash_Erase_Page(APP2_START_ADDR + offsetAddr);
+        Drv_Flash_Erase_Page(APP2_START_ADDR + offsetAddr);
 
-        if(retStatus == FLASH_STATUS_COMPLETE)
-        {
-            offsetAddr += FLASH_PAGE_SIZE;
-
-            App_Flash_Dleay();
-        }
+        offsetAddr += FLASH_PAGE_SIZE;
     }
 }
 
@@ -136,6 +130,8 @@ static void Hal_Deinit(void)
 
 void App_Jump_to_Bld(void)
 {
+
+    #if 0
     RCU->APB2EN |= RCU_APB2_PERI_SYSCFG;
 	
     if(((*(__IO uint32_t*)BLD_START_ADDR) & 0xFFFF0000 ) == 0x20000000)
@@ -147,6 +143,11 @@ void App_Jump_to_Bld(void)
 		__set_MSP(*(__IO uint32_t*) BLD_START_ADDR);            			// Initialize user application's Stack Pointer 
 		Jump_To_Bld();
     }
+    #else
+    
+    NVIC_SystemReset();
+    
+    #endif 
 }
 
 

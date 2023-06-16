@@ -11,7 +11,7 @@
 #define VER_APP                           0x01
 #define VER_HARDWARE                      0x01
 
-#define FW_BUILD_VER                      0x00
+#define FW_BUILD_VER                      0x02
 #define FW_MINOR_VER                      0x00
 #define FW_MAJOR_VER                      0x01
 

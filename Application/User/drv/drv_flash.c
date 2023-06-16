@@ -22,9 +22,15 @@ flash_status_t Drv_Flash_Erase_Page(uint32_t pageAddr )
     flash_status_t retStatus;
     
     flash_unlock();
-    
-    retStatus = flash_page_erase(pageAddr);
 
+    do{
+
+        __FLASH_FLAG_CLEAR(FLASH_FLAG_ENDF | FLASH_FLAG_PGERR | FLASH_FLAG_WPERR);
+    
+        retStatus = flash_page_erase(pageAddr);
+    
+    }while(retStatus != FLASH_STATUS_COMPLETE);
+    
     flash_lock();
 
     return retStatus;
@@ -48,6 +54,8 @@ flash_status_t Drv_Flash_Write(uint32_t flashAddr, uint8_t *buf, uint16_t length
         u32Data.byte_t.byte1 = buf[i*4 + 1];
         u32Data.byte_t.byte2 = buf[i*4 + 2];
         u32Data.byte_t.byte3 = buf[i*4 + 3];
+
+        __FLASH_FLAG_CLEAR(FLASH_FLAG_ENDF | FLASH_FLAG_PGERR | FLASH_FLAG_WPERR);
         
         retStatus = flash_word_program(flashAddr, u32Data.val);
         
@@ -67,6 +75,8 @@ flash_status_t Drv_Flash_Write(uint32_t flashAddr, uint8_t *buf, uint16_t length
     {
         *((uint8_t *)&u32Data.val + i) = *((uint8_t *)&buf[u32DataLen*4] + i);
     }
+
+    __FLASH_FLAG_CLEAR(FLASH_FLAG_ENDF | FLASH_FLAG_PGERR | FLASH_FLAG_WPERR);
 
     retStatus = flash_word_program(flashAddr, u32Data.val);
 
