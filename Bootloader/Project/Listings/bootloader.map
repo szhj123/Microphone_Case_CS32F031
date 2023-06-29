@@ -82,7 +82,7 @@ Section Cross References
 
 Removing Unused input sections from the image.
 
-    Removing startup_cs32f031.o(HEAP), (1024 bytes).
+    Removing startup_cs32f031.o(HEAP), (1536 bytes).
     Removing system_cs32f0xx.o(.rev16_text), (4 bytes).
     Removing system_cs32f0xx.o(.revsh_text), (4 bytes).
     Removing system_cs32f0xx.o(i.SystemCoreClockUpdate), (176 bytes).
@@ -152,7 +152,7 @@ Removing Unused input sections from the image.
     Removing vector.o(.rev16_text), (4 bytes).
     Removing vector.o(.revsh_text), (4 bytes).
 
-69 unused section(s) (total 3780 bytes) removed from the image.
+69 unused section(s) (total 4292 bytes) removed from the image.
 
 ==============================================================================
 

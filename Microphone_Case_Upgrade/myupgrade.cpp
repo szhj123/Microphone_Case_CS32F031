@@ -196,7 +196,7 @@ void MyUpgrade::upg_handler(void )
 
                     serialPort->Serial_Port_Tx_Reset();
 
-                    QMessageBox::warning(this, tr("Upgrade State"),tr("Upgrade Error, it's timeout for erasing flash"));
+                    QMessageBox::warning(this, tr("警告"),tr("升级失败，擦除MCU FLASH 超时！！！"));
 
                     timer->stop();
                 }
@@ -268,7 +268,7 @@ void MyUpgrade::upg_handler(void )
                     {
                         upgState = UPG_STATE_ERASE_FLASH;
 
-                        QMessageBox::warning(this, tr("Upgrade State"),tr("Upgrade Error, it's timeout for transmiting data"));
+                        QMessageBox::warning(this, tr("警告"),tr("升级失败，写MCU FLASH 出错！！！"));
 
                         serialPort->Serial_Port_Tx_Reset();
 
@@ -320,7 +320,7 @@ void MyUpgrade::upg_handler(void )
                     {
                         upgState = UPG_STATE_ERASE_FLASH;
 
-                        QMessageBox::warning(this, tr("Upgrade State"),tr("Upgrade Fail, it's timeout for getting correct checksum"));
+                        QMessageBox::warning(this, tr("警告"),tr("升级失败，升级固件校验出错！！！"));
 
                         serialPort->Serial_Port_Tx_Reset();
 
@@ -354,7 +354,7 @@ void MyUpgrade::upg_handler(void )
 
                 ui->upgProgressBar->Update_Val(100);
 
-                QMessageBox::warning(this,tr("Upgrade State"), tr("Upgrade Successful!"));
+                QMessageBox::warning(this,tr("警告"), tr("升级成功！！!"));
 
                 ui->btnUpgEN->setEnabled(true);
 
@@ -372,7 +372,7 @@ void MyUpgrade::upg_handler(void )
                     {
                         upgState = UPG_STATE_ERASE_FLASH;
 
-                        QMessageBox::warning(this, tr("Upgrade State"),tr("Upgrade Error, it's timeout for getting new firmware version"));
+                        QMessageBox::warning(this, tr("警告"),tr("升级出错，获取MCU固件版本出错！！！"));
 
                         serialPort->Serial_Port_Tx_Reset();
 

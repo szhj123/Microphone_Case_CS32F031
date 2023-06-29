@@ -14,7 +14,7 @@
 #include "drv_timer.h"
 /* Private typedef --------------------------------------*/
 /* Private define ------------------ --------------------*/
-#define CHARGER_DEV_ADDR                 (0x6a << 1)
+#define CHARGER_DEV_ADDR                 (0x1a << 1)
 /* Private macro ----------------------------------------*/
 /* Private function -------------------------------------*/
 static void Drv_Chrg_Write(uint8_t regAddr, uint8_t val );
@@ -36,23 +36,16 @@ void Drv_Chrg_Cfg(void )
 {
     chrg_status0_t chrgStatus0;
     
-    Drv_Chrg_Write(0x00, 0x47);
-    Drv_Chrg_Write(0x01, 0x04);
-    Drv_Chrg_Write(0x02, 0x99);
-    Drv_Chrg_Write(0x03, 0x26);
-    Drv_Chrg_Write(0x04, 0x40);
-    Drv_Chrg_Write(0x05, 0x9e);
-    Drv_Chrg_Write(0x06, 0xe6);
+    Drv_Chrg_Write(0x00, 0x17);//input current limit: 2400mA
+    Drv_Chrg_Write(0x01, 0x16);//sys_min: 3.2v
+    Drv_Chrg_Write(0x02, 0xa8);//ichg: 0xa8,1020mA
+    Drv_Chrg_Write(0x03, 0x57);//iprechg:40mA, iterm: 60mA
+    Drv_Chrg_Write(0x04, 0x58);//chg vol limit: 4.208v, bat rechg: 100mV
+    Drv_Chrg_Write(0x05, 0x8f);
+    Drv_Chrg_Write(0x06, 0xe5);//ovp thresh: 6.5v, vindpm:4.4v
     Drv_Chrg_Write(0x07, 0x4c);
-    Drv_Chrg_Write(0x0c, 0x75);
 
-    #if 1
-    static uint8_t regValBuf[8] = {0};
-    for(uint8_t i=0;i<8;i++)
-    {
-        regValBuf[i] = Drv_Chrg_Read(i);
-    }
-    #endif 
+    
 }
 
 void Drv_Chrg_Chg_Boost_Disable(void )

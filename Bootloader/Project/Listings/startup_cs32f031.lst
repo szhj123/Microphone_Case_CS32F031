@@ -75,23 +75,23 @@ ARM Macro Assembler    Page 2
    43 00000400         ;   <o>  Heap Size (in Bytes) <0x0-0xFFFFFFFF:8>
    44 00000400         ; </h>
    45 00000400         
-   46 00000400 00000400 
+   46 00000400 00000600 
                        Heap_Size
-                               EQU              0x00000400
+                               EQU              0x00000600
    47 00000400         
    48 00000400                 AREA             HEAP, NOINIT, READWRITE, ALIGN=
 3
    49 00000000         __heap_base
    50 00000000         Heap_Mem
                                SPACE            Heap_Size
-   51 00000400         __heap_limit
-   52 00000400         
-   53 00000400                 PRESERVE8
-   54 00000400                 THUMB
-   55 00000400         
-   56 00000400         
-   57 00000400         ; Vector Table Mapped to Address 0 at Reset
-   58 00000400                 AREA             RESET, DATA, READONLY
+   51 00000600         __heap_limit
+   52 00000600         
+   53 00000600                 PRESERVE8
+   54 00000600                 THUMB
+   55 00000600         
+   56 00000600         
+   57 00000600         ; Vector Table Mapped to Address 0 at Reset
+   58 00000600                 AREA             RESET, DATA, READONLY
    59 00000000                 EXPORT           __Vectors
    60 00000000                 EXPORT           __Vectors_End
    61 00000000                 EXPORT           __Vectors_Size
@@ -428,7 +428,7 @@ Symbol: __heap_base
    Uses
       At line 226 in file ..\..\Device\Source\ARM\startup_cs32f031.S
 Comment: __heap_base used once
-__heap_limit 00000400
+__heap_limit 00000600
 
 Symbol: __heap_limit
    Definitions
@@ -835,7 +835,7 @@ Symbol: WWDT_IRQHandler
 ARM Macro Assembler    Page 1 Alphabetic symbol ordering
 Absolute symbols
 
-Heap_Size 00000400
+Heap_Size 00000600
 
 Symbol: Heap_Size
    Definitions
