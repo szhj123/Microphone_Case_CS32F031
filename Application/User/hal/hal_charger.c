@@ -26,6 +26,12 @@ static __IO uint32_t max_delay = I2C_LONG_TIMEOUT;
 
 void Hal_Batt_Chrg_Init(void )
 {
+    __RCU_AHB_CLK_ENABLE(RCU_AHB_PERI_GPIOB);
+
+    //boost, pb03, output
+    gpio_mode_set(GPIOB, GPIO_PIN_2, GPIO_MODE_OUT_PP(GPIO_SPEED_HIGH));
+    __GPIO_PIN_SET(GPIOB, GPIO_PIN_2); 
+
     Hal_Chrg_Intp_Init();
 
     Hal_Chrg_I2c_Init();

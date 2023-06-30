@@ -21,10 +21,6 @@ typedef void (*pFunction)(void );
 static flash_ctrl_block_t flashCtrl;
 static user_data_t userData;
 
-static uint32_t JumpAddress;
-static pFunction Jump_To_Bld = NULL;
-
-
 void App_Flash_Erase_App2(void )
 {
     uint32_t offsetAddr = 0;
@@ -114,6 +110,7 @@ void App_Flash_Set_Fw_Size(uint32_t fwSize )
     userData.fwSize = fwSize;
 }
 
+#if 0
 static void Hal_Deinit(void)
 {
 	/* Lock the access to flash & option bytes */
@@ -127,11 +124,15 @@ static void Hal_Deinit(void)
 	RCU->APB1EN = 0x00000000;	// Set to reset value	
 	RCU->APB2EN = 0x00000000;	// Set to reset value
 }
+#endif
 
 void App_Jump_to_Bld(void)
 {
 
     #if 0
+		static uint32_t JumpAddress;
+		static pFunction Jump_To_Bld = NULL;
+	
     RCU->APB2EN |= RCU_APB2_PERI_SYSCFG;
 	
     if(((*(__IO uint32_t*)BLD_START_ADDR) & 0xFFFF0000 ) == 0x20000000)

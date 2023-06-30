@@ -29,7 +29,9 @@ void App_Batt_Init(void )
 
     Drv_Chrg_Init();
 
-    taskBatt = Drv_Task_Regist_Period(App_Batt_Handler, 500, 1, NULL);
+    Drv_Chrg_Boost_Enable();
+
+    taskBatt = Drv_Task_Regist_Period(App_Batt_Handler, 1000, 1, NULL);
 }
 
 static void App_Batt_Handler(void *arg )
@@ -68,6 +70,8 @@ static void App_Batt_Dischrg_Handler(void )
                 battCtrl.battSaveLevel  = battCtrl.battLevel;
             }
             
+            Drv_Chrg_Chg_Disable();
+            
             Drv_Msg_Put(APP_EVENT_USB_PLUG_OUT, NULL, 0);
 
             battCtrl.delayCnt = 0;
@@ -92,7 +96,7 @@ static void App_Batt_Dischrg_Handler(void )
                 {
                     battCtrl.battSaveLevel = battCtrl.battLevel;
 
-                    if(battCtrl.battLevel == BATT_LEVEL_0);
+                    if(battCtrl.battLevel == BATT_LEVEL_0)
                     {
                         Drv_Msg_Put(APP_EVENT_SYS_SLEEP, NULL, 0);
                     }
@@ -112,33 +116,21 @@ static void App_Batt_Chrg_Handler(void )
     {
         case BATT_CHRG_INIT:
         {
-            Drv_Chrg_Chg_Boost_Disable();
+            battCtrl.battVol = Drv_Batt_Get_Vol();
+            
+            battCtrl.battSaveVol = battCtrl.battVol;
+            
+            battCtrl.battLevel = App_Batt_Cal_Level(battCtrl.battVol);
+
+            battCtrl.battSaveLevel  = battCtrl.battLevel;
+
+            Drv_Msg_Put(APP_EVENT_BATT_LEVEL, (const uint8_t *)&battCtrl.battLevel, 1);
+
+            Drv_Chrg_Chg_Enable();
             
             battCtrl.delayCnt = 0;
-
-            battCtrl.chrgStat = BATT_CHRG_Get_True_Vol;
-            break;
-        }
-        case BATT_CHRG_Get_True_Vol:
-        {            
-            if(battCtrl.delayCnt > 500)
-            {
-                battCtrl.battVol = Drv_Batt_Get_Vol();
             
-                battCtrl.battSaveVol = battCtrl.battVol;
-                
-                battCtrl.battLevel = App_Batt_Cal_Level(battCtrl.battVol);
-
-                battCtrl.battSaveLevel  = battCtrl.battLevel;
-
-                Drv_Msg_Put(APP_EVENT_BATT_LEVEL, (const uint8_t *)&battCtrl.battLevel, 1);
-
-                Drv_Chrg_Chg_Enable();
-                
-                battCtrl.delayCnt = 0;
-                
-                battCtrl.chrgStat = BATT_CHRG_GET_VOL_ERR;
-            }
+            battCtrl.chrgStat = BATT_CHRG_GET_VOL_ERR;
 
             break;
         }
@@ -171,7 +163,7 @@ static void App_Batt_Chrg_Handler(void )
                 
                 battCtrl.battVol = Drv_Batt_Get_Vol();
     
-                if(battCtrl.battVol > 4195)
+                if(battCtrl.battVol > 4190)
                 {
                     if(battCtrl.battErrVol > 0)
                     {

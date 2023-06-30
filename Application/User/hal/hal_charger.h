@@ -3,6 +3,9 @@
 
 #include "hal_cs32f031.h"
 
+#define BOOST_ENABLE                 __GPIO_PIN_SET(GPIOB, GPIO_PIN_2)
+#define BOOST_DISABLE                __GPIO_PIN_RESET(GPIOB, GPIO_PIN_2)
+
 void Hal_Batt_Chrg_Init(void );
 void Hal_Chrg_Regist_Isr_Callback(hal_isr_callback_t callback );
 uint32_t Hal_Chrg_Write(uint32_t devAddr, uint8_t *buf, uint8_t length );

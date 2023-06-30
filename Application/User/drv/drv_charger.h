@@ -82,8 +82,9 @@ typedef struct chrg_ctrl_block_t
 void Drv_Chrg_Init(void );
 void Drv_Chrg_Cfg(void );
 void Drv_Chrg_Chg_Boost_Disable(void );
-void Drv_Chrg_Chg_Enable(void );
 void Drv_Chrg_Boost_Enable(void );
+void Drv_Chrg_Chg_Enable(void );
+void Drv_Chrg_Chg_Disable(void );
 uint8_t Drv_Chrg_Get_Usb_State(void );
 chrg_stat_t Drv_Chrg_Get_Charging_State(void );
 
