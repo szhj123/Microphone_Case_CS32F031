@@ -14,7 +14,7 @@
 #include "app_batt.h"
 /* Private typedef --------------------------------------*/
 /* Private define ------------------ --------------------*/
-#define LED_FLASH_INTERVAL_TIMER                250
+#define LED_FLASH_INTERVAL_TIMER                350
 /* Private macro ----------------------------------------*/
 /* Private function -------------------------------------*/
 static void App_Led_Handler(void *arg );
@@ -236,7 +236,7 @@ static void App_Led_Flash_BattLevel_81_99(void )
             {
                 Drv_Led_Off(&ledCtrl.led1);
                 Drv_Led_Off(&ledCtrl.led2);
-                Drv_Led_On(&ledCtrl.led3);
+                Drv_Led_Off(&ledCtrl.led3);
                 Drv_Led_On(&ledCtrl.led4);
                 ledCtrl.ledFlashIndex = 0;
                 break;

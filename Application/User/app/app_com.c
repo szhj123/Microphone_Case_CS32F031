@@ -18,8 +18,8 @@
 /* Private define ------------------ --------------------*/
 /* Private macro ----------------------------------------*/
 /* Private function -------------------------------------*/
-static void App_Com1_Handler(void *arg );
-static void App_Com2_Handler(void *arg );
+static void App_ComTx1_Handler(void *arg );
+static void App_ComTx2_Handler(void *arg );
 static void App_Com6_Handler(void *arg );
 static void App_Com_Send_Case_Msg(uint8_t *buf, uint8_t length );
 static void App_Com_Send_Upg_Msg(uint8_t *buf, uint8_t length );
@@ -34,9 +34,9 @@ void App_Com_Init(void )
 {
     Drv_Com_Init(App_Com_Send_Case_Msg, App_Com_Send_Upg_Msg);
 
-    Drv_Task_Regist_Period(App_Com1_Handler, 0, 1, NULL);
+    Drv_Task_Regist_Period(App_ComTx1_Handler, 0, 1, NULL);
     
-    Drv_Task_Regist_Period(App_Com2_Handler, 0, 1, NULL);
+    Drv_Task_Regist_Period(App_ComTx2_Handler, 0, 1, NULL);
 
     Drv_Task_Regist_Period(App_Com6_Handler, 0, 1, NULL);
 }
@@ -51,7 +51,7 @@ static void App_Com_Send_Upg_Msg(uint8_t *buf, uint8_t length )
     Drv_Msg_Put(APP_EVENT_COM_UPG, buf, length);
 }
 
-static void App_Com1_Handler(void *arg )
+static void App_ComTx1_Handler(void *arg )
 {    
     switch(com1Ctrl.comState)
     {
@@ -102,7 +102,7 @@ static void App_Com1_Handler(void *arg )
             }
             else
             {
-                if(++com1Ctrl.delayCnt >= 100)
+                if(++com1Ctrl.delayCnt >= 5000)
                 {
                     com1Ctrl.delayCnt = 0;
 
@@ -135,7 +135,7 @@ static void App_Com1_Handler(void *arg )
     }
 }
 
-static void App_Com2_Handler(void *arg )
+static void App_ComTx2_Handler(void *arg )
 {    
     switch(com2Ctrl.comState)
     {
