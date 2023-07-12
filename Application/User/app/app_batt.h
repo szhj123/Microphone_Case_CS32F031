@@ -23,17 +23,17 @@
 typedef enum _batt_level_t
 {
     BATT_LEVEL_0 = 0,
-    BATT_LEVEL_1_10,
-    BATT_LEVEL_11_20,
-    BATT_LEVEL_21_30,
-    BATT_LEVEL_31_40,
-    BATT_LEVEL_41_50,
-    BATT_LEVEL_51_60,
-    BATT_LEVEL_61_70,
-    BATT_LEVEL_71_80,
-    BATT_LEVEL_81_90,
-    BATT_LEVEL_91_99,
-    BATT_LEVEL_100
+    BATT_LEVEL_1_10 = 5,
+    BATT_LEVEL_11_20 = 10,
+    BATT_LEVEL_21_30 = 20,
+    BATT_LEVEL_31_40 = 30,
+    BATT_LEVEL_41_50 = 40,
+    BATT_LEVEL_51_60 = 50,
+    BATT_LEVEL_61_70 = 60,
+    BATT_LEVEL_71_80 = 70,
+    BATT_LEVEL_81_90 = 80,
+    BATT_LEVEL_91_99 = 90,
+    BATT_LEVEL_100 = 100
 }batt_level_t;
 
 typedef enum _batt_batt_dischrg_stat_t

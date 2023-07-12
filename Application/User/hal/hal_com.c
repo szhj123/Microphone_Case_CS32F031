@@ -31,6 +31,14 @@
 #define TX2_PORT                    GPIOA
 #define TX2_PIN                     GPIO_PIN_5
 
+#define TX3_PP_PORT                 GPIOA
+#define TX3_PP_PIN                  GPIO_PIN_15
+#define TX3_CHRG_SW_PORT            GPIOB
+#define TX3_CHRG_SW_PIN             GPIO_PIN_4
+#define TX3_PORT                    GPIOB
+#define TX3_PIN                     GPIO_PIN_6
+
+
 #define TX6_PORT                    GPIOA
 #define TX6_PIN                     GPIO_PIN_4
 
@@ -40,6 +48,7 @@
 static void Hal_Com_Gpio_Init(void );
 static void Hal_Com_Uart1_Init(void );
 static void Hal_Com_Uart2_Init(void );
+static void Hal_Com_Uart3_Init(void );
 static void Hal_Com_Uart6_Init(void );
 /* Private variables ------------------------------------*/
 static hal_com_rx_callback_t hal_rx0_isr_callback = NULL;
@@ -67,6 +76,8 @@ void Hal_Com_Init(void )
     Hal_Com_Uart1_Init();
 
     Hal_Com_Uart2_Init();
+
+    Hal_Com_Uart3_Init();
 
     Hal_Com_Uart6_Init();
 }
@@ -106,7 +117,12 @@ static void Hal_Com_Gpio_Init(void )
     __GPIO_PIN_RESET(TX2_PP_PORT, TX2_PP_PIN);
     __GPIO_PIN_RESET(TX2_SW_PORT, TX2_SW_PIN);     
     __GPIO_PIN_SET(TX2_CHRG_SW_PORT, TX2_CHRG_SW_PIN);
-   
+
+    gpio_mode_set(TX3_PP_PORT, TX3_PP_PIN, GPIO_MODE_OUT_PP(GPIO_SPEED_HIGH));
+    gpio_mode_set(TX3_CHRG_SW_PORT, TX3_CHRG_SW_PIN, GPIO_MODE_OUT_PP(GPIO_SPEED_HIGH));
+
+    __GPIO_PIN_RESET(TX3_PP_PORT, TX3_PP_PIN);
+    __GPIO_PIN_SET(TX3_CHRG_SW_PORT, TX3_CHRG_SW_PIN);
 }
 
 static void Hal_Com_Uart1_Init(void )
@@ -179,6 +195,41 @@ static void Hal_Com_Uart2_Init(void )
     nvic_init(&nvic_config_struct);
 
     __USART_ENABLE(USART8); // Enable USART
+}
+
+void Hal_Com_Uart3_Init(void )
+{
+    nvic_config_t nvic_config_struct;
+    usart_config_t usart_config_struct;
+
+    // Clock Config
+    __RCU_AHB_CLK_ENABLE(RCU_AHB_PERI_GPIOB);
+    __RCU_APB2_CLK_ENABLE(RCU_APB2_PERI_USART1);
+
+    // GPIO MF Config
+    gpio_mf_config(TX3_PORT, TX3_PIN, GPIO_MF_SEL0);
+    
+    gpio_mode_set(TX3_PORT, TX3_PIN, GPIO_MODE_MF_OD_PU(GPIO_SPEED_HIGH));
+
+    // USART Config
+    __USART_DEF_INIT(USART1);
+    usart_config_struct.baud_rate = 115200;
+    usart_config_struct.data_width = USART_DATA_WIDTH_8;
+    usart_config_struct.stop_bits = USART_STOP_BIT_1;
+    usart_config_struct.parity = USART_PARITY_NO;
+    usart_config_struct.flow_control = USART_FLOW_CONTROL_NONE;
+    usart_config_struct.usart_mode = USART_MODE_RX | USART_MODE_TX;
+    usart_init(USART1, &usart_config_struct);
+
+    USART1->CTR3 |= USART_CTR3_HDEN;
+
+    /* Enable the USART Interrupt */
+    nvic_config_struct.IRQn = IRQn_USART1;
+    nvic_config_struct.priority = 0;
+    nvic_config_struct.enable_flag = ENABLE;
+    nvic_init(&nvic_config_struct);
+
+    __USART_ENABLE(USART1); // Enable USART
 }
 
 void Hal_Com_Uart6_Init(void )
