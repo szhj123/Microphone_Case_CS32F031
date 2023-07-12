@@ -86,6 +86,10 @@ static void App_Event_Handler(void *arg )
                 }
                 else
                 {
+                    App_Com_Case_Tx_Close(DEVICE_LEFT);
+                    
+                    App_Com_Case_Tx_Close(DEVICE_RIGHT);
+                    
                     App_Led_Hall_Close();
                 }
             }

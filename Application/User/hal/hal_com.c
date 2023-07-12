@@ -222,6 +222,10 @@ void Hal_Com_Uart6_Init(void )
 
 void Hal_Com_Tx1_Enable(void )
 {
+    gpio_mf_config(TX1_PORT, TX1_PIN, GPIO_MF_SEL1);
+    
+    gpio_mode_set(TX1_PORT, TX1_PIN, GPIO_MODE_MF_OD_PU(GPIO_SPEED_HIGH));
+
     __GPIO_PIN_RESET(TX1_CHRG_SW_PORT, TX1_CHRG_SW_PIN);
 
     __GPIO_PIN_SET(TX1_PP_PORT, TX1_PP_PIN);
@@ -231,7 +235,11 @@ void Hal_Com_Tx1_Enable(void )
 
 void Hal_Com_Tx1_Disable(void )
 {
-    __GPIO_PIN_RESET(TX1_SW_PORT, TX1_SW_PIN);
+    //__GPIO_PIN_RESET(TX1_SW_PORT, TX1_SW_PIN);
+
+    gpio_mf_config(TX1_PORT, TX1_PIN, GPIO_MF_SEL3);
+    
+    gpio_mode_set(TX1_PORT, TX1_PIN, GPIO_MODE_IN_PU);
     
     __GPIO_PIN_RESET(TX1_PP_PORT, TX1_PP_PIN);
 
@@ -298,6 +306,11 @@ void Hal_Com_Tx1_Isr_Handler(void )
 
 void Hal_Com_Tx2_Enable(void )
 {
+    // GPIO MF Config
+    gpio_mf_config(TX2_PORT, TX2_PIN, GPIO_MF_SEL7);
+    
+    gpio_mode_set(TX2_PORT, TX2_PIN, GPIO_MODE_MF_OD_PU(GPIO_SPEED_HIGH));
+    
     __GPIO_PIN_RESET(TX2_CHRG_SW_PORT, TX2_CHRG_SW_PIN);
 
     __GPIO_PIN_SET(TX2_PP_PORT, TX2_PP_PIN);
@@ -307,7 +320,10 @@ void Hal_Com_Tx2_Enable(void )
 
 void Hal_Com_Tx2_Disable(void )
 {
-    __GPIO_PIN_RESET(TX2_SW_PORT, TX2_SW_PIN);
+    gpio_mf_config(TX2_PORT, TX2_PIN, GPIO_MF_SEL1);
+    
+    gpio_mode_set(TX2_PORT, TX2_PIN, GPIO_MODE_IN_PU);
+    //__GPIO_PIN_RESET(TX2_SW_PORT, TX2_SW_PIN);
     
     __GPIO_PIN_RESET(TX2_PP_PORT, TX2_PP_PIN);
 

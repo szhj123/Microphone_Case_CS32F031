@@ -30,6 +30,8 @@ static com_ctrl_block_t com1Ctrl;
 static com_ctrl_block_t com2Ctrl;
 static com_ctrl_block_t com6Ctrl;
 
+static uint8_t txFlag;
+
 void App_Com_Init(void )
 {
     Drv_Com_Init(App_Com_Send_Case_Msg, App_Com_Send_Upg_Msg);
@@ -102,7 +104,7 @@ static void App_ComTx1_Handler(void *arg )
             }
             else
             {
-                if(++com1Ctrl.delayCnt >= 5000)
+                if(++com1Ctrl.delayCnt >= 100)
                 {
                     com1Ctrl.delayCnt = 0;
 
@@ -291,20 +293,54 @@ void App_Com_Case_Tx_Open(uint8_t devType )
     txBuf[4] = 0x00;
     txBuf[5] = 0x20;
     txBuf[6] = 0x01;
-    txBuf[7] = CMD_OPEN_CASE;
+    txBuf[7] = CMD_CASE_OPEN;
     txBuf[8] = devType;
-    txBuf[9] = 50;
+    txBuf[9] = (uint8_t )App_Batt_Get_Level();
     txBuf[10] = VER_BLD;
     txBuf[11] = VER_APP;
     txBuf[12] = VER_HARDWARE;
     txBuf[13] = 0x00;
     
-    for(i=0;i<sizeof(txBuf);i++)
+    for(i=0;i<sizeof(txBuf)-4;i++)
     {
-        checkSum += txBuf[i];
+        checkSum += txBuf[i+4];
     }
 
     txBuf[14] = checkSum;
+
+    if(devType == DEVICE_LEFT)
+    {
+        Drv_Tx_Queue_Put(COM1, txBuf, sizeof(txBuf));
+    }
+    else if(devType == DEVICE_RIGHT)
+    {
+        Drv_Tx_Queue_Put(COM2, txBuf, sizeof(txBuf));
+    }
+}
+
+void App_Com_Case_Tx_Close(uint8_t devType )
+{
+    uint8_t txBuf[11] = {0};
+    uint8_t checkSum = 0;
+    uint8_t i;
+
+    txBuf[0] = 0x05;
+    txBuf[1] = 0x5a;
+    txBuf[2] = 0x06;
+    txBuf[3] = 0x00;
+    txBuf[4] = 0x00;
+    txBuf[5] = 0x20;
+    txBuf[6] = 0x01;
+    txBuf[7] = CMD_CASE_CLOSE;
+    txBuf[8] = devType;
+    txBuf[9] = (uint8_t )App_Batt_Get_Level();
+    
+    for(i=0;i<sizeof(txBuf)-4;i++)
+    {
+        checkSum += txBuf[i+4];
+    }
+
+    txBuf[10] = checkSum;
 
     if(devType == DEVICE_LEFT)
     {

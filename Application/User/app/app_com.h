@@ -15,8 +15,8 @@
 #define FW_MINOR_VER                      0x00
 #define FW_MAJOR_VER                      0x01
 
-#define CMD_OPEN_CASE                     0x02
-#define CMD_CLOSE_CASE                    0x03
+#define CMD_CASE_OPEN                     0x02
+#define CMD_CASE_CLOSE                    0x03
 #define CMD_CHARGER_OFF                   0x04
 #define CMD_CHARGER_KEY                   0x05
 #define CMD_EARBUD_BATT_LEVEL             0x06
@@ -64,6 +64,7 @@ typedef struct _com_ctrl_block_t
 void App_Com_Init(void );
 void App_Com_Set_Rx_Response(rx_response_t rxResponse );
 void App_Com_Case_Tx_Open(uint8_t devType );
+void App_Com_Case_Tx_Close(uint8_t devType );
 void App_Com_Upg_Tx_FwVer(void );
 void App_Com_Upg_Tx_Ack(void );
 

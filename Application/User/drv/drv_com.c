@@ -139,7 +139,7 @@ static void Drv_Com_Rx_Isr_Handler(rx_ctrl_block_t *rxCtrl, uint8_t recvVal )
         }
         case RX_STAT_CHECKSUM:
         {
-            if(Drv_Com_Cal_Checksum(rxCtrl->dataBuf, 3+rxCtrl->dataLength) == recvVal)
+            if(Drv_Com_Cal_Checksum(&rxCtrl->dataBuf[4], rxCtrl->dataLength-1) == recvVal)
             {
                 rxCtrl->dataBuf[3+rxCtrl->dataLength] = recvVal;
 
