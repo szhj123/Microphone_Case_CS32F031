@@ -19,6 +19,7 @@
 static void App_Batt_Handler(void *arg );
 static void App_Batt_Dischrg_Handler(void );
 static void App_Batt_Chrg_Handler(void );
+static void App_Ebud_Chrg_Handler(void );
 /* Private variables ------------------------------------*/
 batt_ctrl_block_t battCtrl;
 task_ctrl_block_t *taskBatt = NULL;
@@ -49,6 +50,8 @@ static void App_Batt_Handler(void *arg )
     {
         App_Batt_Chrg_Handler();
     }
+
+    App_Ebud_Chrg_Handler();
 }
 
 static void App_Batt_Dischrg_Handler(void )
@@ -98,7 +101,7 @@ static void App_Batt_Dischrg_Handler(void )
 
                     if(battCtrl.battLevel == BATT_LEVEL_0)
                     {
-                        Drv_Msg_Put(APP_EVENT_SYS_SLEEP, NULL, 0);
+                        Drv_Msg_Put(APP_EVENT_BATT_LEVEL, (const uint8_t *)&battCtrl.battLevel, 1);
                     }
                 }
             }
@@ -213,6 +216,90 @@ static void App_Batt_Chrg_Handler(void )
             break;
         }
         default: break;
+    }
+}
+
+static void App_Ebud_Chrg_Handler(void )
+{
+    static uint8_t ebudDetCnt;
+    static uint32_t ebudTx1CurSum;
+    static uint32_t ebudTx2CurSum;
+    static uint32_t ebudRxCurSum;
+
+    if(ebudDetCnt < 100)
+    {
+        ebudTx1CurSum += Drv_Ebud_Get_Tx1_Cur();
+
+        ebudTx2CurSum += Drv_Ebud_Get_Tx2_Cur();
+
+        ebudRxCurSum += Drv_Ebud_Get_Rx_Cur();
+
+        ebudDetCnt++;
+    }
+    else
+    {
+        battCtrl.ebudTx1Cur = ebudTx1CurSum / 100;
+        battCtrl.ebudTx2Cur = ebudTx2CurSum / 100;
+        battCtrl.ebudRxCur = ebudRxCurSum / 100;
+
+        ebudTx1CurSum = 0;
+        ebudTx2CurSum = 0;
+        ebudRxCurSum = 0;
+        ebudDetCnt = 0;
+
+        if(battCtrl.ebudTx1Stat == EBUD_CHRG_PROCESS)
+        {
+            if(battCtrl.ebudTx1Cur <= 7)
+            {
+                battCtrl.ebudTx1Stat = EBUD_CHRG_DONE;
+
+                battCtrl.ebudTx1ChrgOffReason = REASON_CHRG_FULL;
+
+                Drv_Msg_Put(APP_EVENT_EBUD_TX1_CHRG_OFF, (const uint8_t *)&battCtrl.ebudTx1ChrgOffReason, 1);
+            }
+        }
+        else
+        {
+            if(battCtrl.ebudTx1Cur >= 10)
+            {
+                battCtrl.ebudTx1Stat = EBUD_CHRG_PROCESS;
+            }
+        }
+
+        if(battCtrl.ebudTx2Stat == EBUD_CHRG_PROCESS)
+        {
+            if(battCtrl.ebudTx2Cur <= 7)
+            {
+                battCtrl.ebudTx2Stat = EBUD_CHRG_DONE;
+                
+                battCtrl.ebudTx2ChrgOffReason = REASON_CHRG_FULL;
+                
+                Drv_Msg_Put(APP_EVENT_EBUD_TX2_CHRG_OFF, (const uint8_t *)&battCtrl.ebudTx2ChrgOffReason, 1);
+            }
+        }
+        else
+        {
+            if(battCtrl.ebudTx2Cur >= 10)
+            {
+                battCtrl.ebudTx2Stat = EBUD_CHRG_PROCESS;
+            }
+        }
+
+        if(battCtrl.ebudRxStat == EBUD_CHRG_PROCESS)
+        {
+            if(battCtrl.ebudRxCur <= 7)
+            {
+                battCtrl.ebudRxStat = EBUD_CHRG_DONE;
+            }
+        }
+        else
+        {
+            if(battCtrl.ebudRxCur >= 10)
+            {
+                battCtrl.ebudRxStat = EBUD_CHRG_PROCESS;
+            }
+        }
+
     }
 }
 

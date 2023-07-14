@@ -51,16 +51,42 @@ typedef enum _batt_chrg_stat_t
     BATT_CHRG_DONE
 }batt_chrg_stat_t;
 
+typedef enum _ebud_charging_stat_t
+{
+    EBUD_CHRG_PROCESS = 0,
+    EBUD_CHRG_DONE
+}ebud_charging_stat_t;
+
+typedef enum _ebud_chrg_off_reason_t
+{
+    REASON_NONE = 0,
+    REASON_CHRG_FULL,
+    REASON_BATT_LOW
+}ebud_chrg_off_reason_t;
+
 typedef struct _batt_ctrl_block_t
 {
     batt_dischrg_stat_t dischrgStat;
     batt_chrg_stat_t chrgStat;
     batt_level_t battLevel;
 	batt_level_t battSaveLevel;
+
+    ebud_charging_stat_t ebudTx1Stat;
+    ebud_charging_stat_t ebudTx2Stat;
+    ebud_charging_stat_t ebudRxStat;
+
+    ebud_chrg_off_reason_t ebudTx1ChrgOffReason;
+    ebud_chrg_off_reason_t ebudTx2ChrgOffReason;
+    ebud_chrg_off_reason_t ebudRxChrgOffReason;
+    
     uint16_t delayCnt;
     uint16_t battVol;
     uint16_t battSaveVol;
     uint16_t battErrVol;
+
+    uint16_t ebudTx1Cur;
+    uint16_t ebudTx2Cur;
+    uint16_t ebudRxCur;
 }batt_ctrl_block_t;
 
 void App_Batt_Init(void );

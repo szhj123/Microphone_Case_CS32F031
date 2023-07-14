@@ -36,3 +36,41 @@ uint16_t Drv_Batt_Get_Vol(void )
     return battVol;
 }
 
+uint16_t Drv_Ebud_Get_Tx1_Cur(void )
+{
+    uint32_t adcVal = 0;
+    uint16_t ebudCur = 0;
+        
+    adcVal = Hal_Batt_Adc_Get_SampleVal(ADC_CONV_CHANNEL_6);
+    
+    ebudCur =  ((adcVal * ADC_REF_VOL * 10) >> 12);
+
+    return ebudCur;
+}
+
+uint16_t Drv_Ebud_Get_Tx2_Cur(void )
+{
+    uint32_t adcVal = 0;
+    uint16_t ebudCur = 0;
+        
+    adcVal = Hal_Batt_Adc_Get_SampleVal(ADC_CONV_CHANNEL_8);
+    
+    ebudCur =  ((adcVal * ADC_REF_VOL * 10) >> 12);
+
+    return ebudCur;
+}
+
+uint16_t Drv_Ebud_Get_Rx_Cur(void )
+{
+    uint32_t adcVal = 0;
+    uint16_t ebudCur = 0;
+        
+    adcVal = Hal_Batt_Adc_Get_SampleVal(ADC_CONV_CHANNEL_7);
+    
+    ebudCur =  ((adcVal * ADC_REF_VOL * 10) >> 12);
+
+    return ebudCur;
+}
+
+
+

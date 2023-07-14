@@ -352,6 +352,41 @@ void App_Com_Case_Tx_Close(uint8_t devType )
     }
 }
 
+void App_Com_Ebud_Chrg_Off(uint8_t devType, uint8_t ebudChrgOffReason)
+{
+    uint8_t txBuf[12] = {0};
+    uint8_t checkSum = 0;
+    uint8_t i;
+
+    txBuf[0] = 0x05;
+    txBuf[1] = 0x5a;
+    txBuf[2] = 0x08;
+    txBuf[3] = 0x00;
+    txBuf[4] = 0x00;
+    txBuf[5] = 0x20;
+    txBuf[6] = 0x01;
+    txBuf[7] = CMD_CHRG_OFF;
+    txBuf[8] = devType;
+    txBuf[9] = (uint8_t )App_Batt_Get_Level();
+    txBuf[10] = ebudChrgOffReason;
+    
+    for(i=0;i<sizeof(txBuf)-4;i++)
+    {
+        checkSum += txBuf[i+4];
+    }
+
+    txBuf[11] = checkSum;
+
+    if(devType == DEVICE_LEFT)
+    {
+        Drv_Tx_Queue_Put(COM1, txBuf, sizeof(txBuf));
+    }
+    else if(devType == DEVICE_RIGHT)
+    {
+        Drv_Tx_Queue_Put(COM2, txBuf, sizeof(txBuf));
+    }
+}
+
 void App_Com_Upg_Tx_FwVer(void )
 {
     uint8_t txBuf[8] = {0};

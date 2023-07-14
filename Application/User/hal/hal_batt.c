@@ -35,12 +35,16 @@ void Hal_Batt_Init(void )
 static void Hal_Batt_Adc_Init(void )
 {
     adc_config_t   adc_config_struct;
-    
+
+    __RCU_AHB_CLK_ENABLE(RCU_AHB_PERI_GPIOA);
     __RCU_AHB_CLK_ENABLE(RCU_AHB_PERI_GPIOB);
     __RCU_APB2_CLK_ENABLE(RCU_APB2_PERI_ADC);   
     
-    //Configure ADC CH0 GPIO as analog input.
-    gpio_mode_set(GPIOB, GPIO_PIN_1, GPIO_MODE_ANALOG);
+    //Configure ADC CH0 GPIO as analog input.    
+    gpio_mode_set(GPIOA, GPIO_PIN_7, GPIO_MODE_ANALOG); //out-_rx
+    gpio_mode_set(GPIOA, GPIO_PIN_6, GPIO_MODE_ANALOG); //out-_tx1
+    gpio_mode_set(GPIOB, GPIO_PIN_1, GPIO_MODE_ANALOG); //bat_adc
+    gpio_mode_set(GPIOB, GPIO_PIN_0, GPIO_MODE_ANALOG); //out-_tx2
     
     adc_def_init(ADC1);   
     adc_config_struct_init(&adc_config_struct);  
@@ -58,18 +62,31 @@ uint16_t Hal_Batt_Adc_Get_SampleVal(uint32_t channel )
 {
     uint16_t sampleBuf[16];
     uint8_t i;
-    
+
+    adc_conversion_stop(ADC1);
+
+    ADC1->CHANSEL = 0;
     // Set the ADC1 CH0 with 239.5 Cycles
     adc_channel_config(ADC1, channel , ADC_SAMPLE_TIMES_239_5); 
     adc_calibration_value_get(ADC1);    // ADC Calibration.  
     __ADC_ENABLE(ADC1);                     // Enable the ADC.    
     
     while(!__ADC_FLAG_STATUS_GET(ADC1, EOI)); // Wait the EOI flag.    
-    adc_conversion_start(ADC1);         //ADC1 regular Software Start Conv. 
+    adc_conversion_start(ADC1);         //ADC1 regular Software Start Conv.
+
+    for(i=0;i<3;i++)
+    {
+        adc_conversion_start(ADC1);         //ADC1 regular Software Start Conv. 
+        while(__ADC_FLAG_STATUS_GET(ADC1, EOC) == RESET); // Check EOC flag   
+        __ADC_FLAG_CLEAR(ADC1, ADC_FLAG_EOC);
+    }
 
     for(i=0;i<sizeof(sampleBuf)/sizeof(uint16_t );i++)
     {
-        while(__ADC_FLAG_STATUS_GET(ADC1, EOC) == RESET); // Check EOC flag     
+        adc_conversion_start(ADC1);         //ADC1 regular Software Start Conv. 
+        while(__ADC_FLAG_STATUS_GET(ADC1, EOC) == RESET); // Check EOC flag 
+        __ADC_FLAG_CLEAR(ADC1, ADC_FLAG_EOC);
+        
         sampleBuf[i] = __ADC_CONV_VALUE_GET(ADC1);  
     }
 

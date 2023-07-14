@@ -23,6 +23,7 @@
 static void App_Event_Handler(void *arg );
 static void App_Event_Case_Handler(uint8_t *buf, uint8_t length );
 static void App_Event_Upg_Handler(uint8_t *buf, uint8_t length );
+static void App_Event_Send_Sleep(void *arg );
 
 /* Private variables ------------------------------------*/
 
@@ -66,6 +67,37 @@ static void App_Event_Handler(void *arg )
             {
                 App_Led_Flash_BattLevel(battLevel);
             }
+
+            if(Drv_Chrg_Get_Usb_State() == USB_PLUG_OUT)
+            {
+                if(battLevel == BATT_LEVEL_0)
+                {
+                    uint8_t ebudChrgOffReason = REASON_BATT_LOW;
+                    
+                    App_Com_Ebud_Chrg_Off(DEVICE_LEFT, ebudChrgOffReason);
+                    
+                    App_Com_Ebud_Chrg_Off(DEVICE_RIGHT, ebudChrgOffReason);
+
+                    Drv_Timer_Regist_Oneshot(App_Event_Send_Sleep, 250, NULL);
+                }
+            }
+            
+            break;
+        }
+        case APP_EVENT_EBUD_TX1_CHRG_OFF:
+        {
+            uint8_t ebudChrgOffReason = msg.data[0];
+            
+            App_Com_Ebud_Chrg_Off(DEVICE_LEFT, ebudChrgOffReason);
+            
+            break;
+        }
+        case APP_EVENT_EBUD_TX2_CHRG_OFF:
+        {
+            uint8_t ebudChrgOffReason = msg.data[0];
+            
+            App_Com_Ebud_Chrg_Off(DEVICE_RIGHT, ebudChrgOffReason);
+            
             break;
         }
         case APP_EVENT_HALL_STATE:
@@ -202,4 +234,8 @@ void App_Event_Upg_Handler(uint8_t *buf, uint8_t length )
     }
 }
 
+static void App_Event_Send_Sleep(void *arg )
+{
+    Drv_Msg_Put(APP_EVENT_SYS_SLEEP, NULL, 0);
+}
 
