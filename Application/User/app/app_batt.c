@@ -290,6 +290,10 @@ static void App_Ebud_Chrg_Handler(void )
             if(battCtrl.ebudRxCur <= 7)
             {
                 battCtrl.ebudRxStat = EBUD_CHRG_DONE;
+
+                battCtrl.ebudRxChrgOffReason = REASON_CHRG_FULL;
+
+                Drv_Msg_Put(APP_EVENT_EBUD_RX_CHRG_OFF, (const uint8_t *)&battCtrl.ebudRxChrgOffReason, 1);
             }
         }
         else
@@ -299,7 +303,6 @@ static void App_Ebud_Chrg_Handler(void )
                 battCtrl.ebudRxStat = EBUD_CHRG_PROCESS;
             }
         }
-
     }
 }
 
@@ -482,6 +485,22 @@ batt_level_t App_Batt_Cal_Level(uint16_t battVol )
 batt_level_t App_Batt_Get_Level(void )
 {
 	return battCtrl.battLevel;
+}
+
+ebud_charging_stat_t App_Ebud_Get_Chrg_State(void )
+{
+    ebud_charging_stat_t retVal;
+    
+    if(battCtrl.ebudTx1Stat == EBUD_CHRG_DONE && battCtrl.ebudTx2Stat == EBUD_CHRG_DONE && battCtrl.ebudRxStat == EBUD_CHRG_DONE)
+    {
+        retVal = EBUD_CHRG_DONE;
+    }
+    else
+    {
+        retVal = EBUD_CHRG_PROCESS;
+    }
+
+    return retVal;
 }
 
 

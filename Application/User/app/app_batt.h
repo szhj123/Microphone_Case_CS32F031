@@ -93,6 +93,7 @@ void App_Batt_Init(void );
 uint16_t App_Batt_Get_Vol(void );
 batt_level_t App_Batt_Cal_Level(uint16_t battVol );
 batt_level_t App_Batt_Get_Level(void );
+ebud_charging_stat_t App_Ebud_Get_Chrg_State(void );
 
 #endif 
 
