@@ -20,6 +20,13 @@
 #define CMD_CHRG_OFF                      0x04
 #define CMD_CHRG_KEY                      0x05
 #define CMD_EARBUD_BATT_LEVEL             0x06
+#define CMD_GET_SIRK                      0x10
+#define CMD_SET_SIRK                      0x11
+#define CMD_GET_RANDOM_SIRK               0x12
+#define CMD_GET_FW_SIZE                   0x13
+#define CMD_GET_FW_DATA                   0x14
+#define CMD_GET_FW_CRC                    0x15
+#define CMD_GET_FW_VER                    0x16
 
 #define CMD_MCU_TO_PC                     0x80
 #define CMD_PC_TO_MCU                     0x00
@@ -45,29 +52,48 @@ typedef enum _com_state_t
     COM_STAT_ERR    
 }com_state_t;
 
-typedef struct _rx_response_t
+typedef struct _cmd_case_open_t
 {
-    uint8_t cmd;
     uint8_t devType;
-    uint8_t devBattLevel;    
-}rx_response_t;
+    uint8_t ebudBattLevel;    
+    uint8_t bldVer;
+    uint8_t appVer;
+    uint8_t hwVer;
+}cmd_case_open_t;
 
 typedef struct _com_ctrl_block_t
 {
     com_state_t comState;
-    com_data_t comData;
-    uint16_t delayCnt;
-    uint8_t  txCnt;
-    uint8_t  rxDoneFlag;
+    com_data_t  comData;
+    uint16_t    delayCnt;
+    uint8_t     txCnt;
+    uint8_t     rxDoneFlag;   
 }com_ctrl_block_t;
 
+typedef struct _com_para_t
+{
+    uint8_t ebudLBattLevel;
+    uint8_t ebudRBattLevel;
+    uint8_t ebudMBattLevel;
+    uint8_t bldVer;
+    uint8_t appVer;
+    uint8_t hwVer;
+    uint8_t ebudLSirkBuf[8];
+    uint8_t ebudRSirkBuf[8];
+    uint8_t ebudMSirkBuf[8];
+    uint8_t randomSirkBuf[8];
+    
+}com_para_t;
+
 void App_Com_Init(void );
-void App_Com_Set_Rx_Response(rx_response_t rxResponse );
 void App_Com_Case_Tx_Open(uint8_t devType );
 void App_Com_Case_Tx_Close(uint8_t devType );
 void App_Com_Ebud_Chrg_Off(uint8_t devType, uint8_t ebudChrgOffReason);
 void App_Com_Upg_Tx_FwVer(void );
 void App_Com_Upg_Tx_Ack(void );
+
+void App_Com_Case_Open_Response(uint8_t *buf, uint8_t length );
+
 
 #endif 
 

@@ -30,6 +30,8 @@ static com_ctrl_block_t com1Ctrl;
 static com_ctrl_block_t com2Ctrl;
 static com_ctrl_block_t com6Ctrl;
 
+static com_para_t comPara;
+
 static uint8_t txFlag;
 
 void App_Com_Init(void )
@@ -257,22 +259,36 @@ static void App_Com6_Handler(void *arg )
     }
 }
 
-void App_Com_Set_Rx_Response(rx_response_t rxResponse )
+void App_Com_Case_Open_Response(uint8_t *buf, uint8_t length )
 {
-    switch(rxResponse.devType)
+    uint8_t i;
+    cmd_case_open_t cmdCaseOpen;
+
+    for(i=0;i<length;i++)
     {
-        case DEVICE_RIGHT:
-        {
-            com2Ctrl.rxDoneFlag = 1;
-            break;
-        }
+        *(uint8_t *)&cmdCaseOpen++ = buf[i];
+    }
+    
+    switch(cmdCaseOpen.devType)
+    {
         case DEVICE_LEFT:
         {
+            comPara.ebudLBattLevel = cmdCaseOpen.ebudBattLevel;
+            
             com1Ctrl.rxDoneFlag = 1;
             break;
         }
+        case DEVICE_RIGHT:
+        {
+            comPara.ebudRBattLevel = cmdCaseOpen.ebudBattLevel;
+            
+            com2Ctrl.rxDoneFlag = 1;
+            break;
+        }
+        
         case DEVICE_MIDDLE:
         {
+            comPara.ebudMBattLevel = cmdCaseOpen.ebudBattLevel;
             break;
         }
         default: break;

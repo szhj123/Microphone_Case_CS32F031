@@ -145,7 +145,7 @@ static void Drv_Com_Rx_Isr_Handler(rx_ctrl_block_t *rxCtrl, uint8_t recvVal )
 
                 if(comCaseEventCallback != NULL)
                 {
-                    comCaseEventCallback(rxCtrl->dataBuf, 4+rxCtrl->dataLength);
+                    comCaseEventCallback(&rxCtrl->dataBuf[7], rxCtrl->dataLength-4);
                 }
             }
             

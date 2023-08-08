@@ -159,7 +159,8 @@ static void App_Event_Handler(void *arg )
 
 void App_Event_Case_Handler(uint8_t *buf, uint8_t length )
 {
-    rx_response_t rxResponse;
+    #if 0
+    cmd_case_open_t rxResponse;
     uint8_t i;
 
     for(i=0;i<length-8;i++)
@@ -167,7 +168,20 @@ void App_Event_Case_Handler(uint8_t *buf, uint8_t length )
         *((uint8_t *)&rxResponse + i) = buf[7+i];
     }
     
-    App_Com_Set_Rx_Response(rxResponse);
+    App_Com_Case_Open_Response(rxResponse);
+    #else
+    uint8_t cmd = buf[0];
+
+    switch(cmd )
+    {
+        case CMD_CASE_OPEN: 
+        {
+            App_Com_Case_Open_Response(buf, length);
+            break;
+        }
+        default: break;
+    }
+    #endif 
 }
 
 void App_Event_Upg_Handler(uint8_t *buf, uint8_t length )
