@@ -54,12 +54,20 @@ typedef enum _com_state_t
 
 typedef struct _cmd_case_open_t
 {
+    uint8_t cmd;
+    uint8_t devType;
+    uint8_t ebudBattLevel;    
+}cmd_case_open_t;
+
+typedef struct _cmd_ver_t
+{
+    uint8_t cmd;
     uint8_t devType;
     uint8_t ebudBattLevel;    
     uint8_t bldVer;
     uint8_t appVer;
     uint8_t hwVer;
-}cmd_case_open_t;
+}cmd_ver_t;
 
 typedef struct _com_ctrl_block_t
 {
@@ -94,7 +102,8 @@ void App_Com_Tx_Cmd_Get_Ver(void );
 void App_Com_Upg_Tx_FwVer(void );
 void App_Com_Upg_Tx_Ack(void );
 
-void App_Com_Case_Open_Response(uint8_t *buf, uint8_t length );
+void App_Com_Cmd_Case_Open_Response(uint8_t *buf, uint8_t length );
+void App_Com_Cmd_Get_Ver_Response(uint8_t *buf, uint8_t length );
 
 
 #endif 

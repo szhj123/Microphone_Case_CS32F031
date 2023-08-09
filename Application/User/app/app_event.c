@@ -168,7 +168,7 @@ void App_Event_Case_Handler(uint8_t *buf, uint8_t length )
         *((uint8_t *)&rxResponse + i) = buf[7+i];
     }
     
-    App_Com_Case_Open_Response(rxResponse);
+    App_Com_Cmd_Case_Open_Response(rxResponse);
     #else
     uint8_t cmd = buf[0];
 
@@ -176,8 +176,12 @@ void App_Event_Case_Handler(uint8_t *buf, uint8_t length )
     {
         case CMD_CASE_OPEN: 
         {
-            App_Com_Case_Open_Response(buf, length);
+            App_Com_Cmd_Case_Open_Response(buf, length);
             break;
+        }
+        case CMD_GET_FW_VER:
+        {
+            App_Com_Cmd_Get_Ver_Response(buf, length );
         }
         default: break;
     }

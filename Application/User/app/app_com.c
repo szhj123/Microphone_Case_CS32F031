@@ -259,7 +259,7 @@ static void App_Com6_Handler(void *arg )
     }
 }
 
-void App_Com_Case_Open_Response(uint8_t *buf, uint8_t length )
+void App_Com_Cmd_Case_Open_Response(uint8_t *buf, uint8_t length )
 {
     uint8_t i;
     cmd_case_open_t cmdCaseOpen;
@@ -268,8 +268,6 @@ void App_Com_Case_Open_Response(uint8_t *buf, uint8_t length )
     {
         *((uint8_t *)&cmdCaseOpen +i)  = buf[i];
     }
-
-    App_Upg_Set_Ver(cmdCaseOpen.bldVer, cmdCaseOpen.appVer, cmdCaseOpen.hwVer);
 
     App_Ebud_Set_Level(cmdCaseOpen.devType, cmdCaseOpen.ebudBattLevel);
     
@@ -292,6 +290,19 @@ void App_Com_Case_Open_Response(uint8_t *buf, uint8_t length )
         }
         default: break;
     }
+}
+
+void App_Com_Cmd_Get_Ver_Response(uint8_t *buf, uint8_t length )
+{
+    uint8_t i;
+    cmd_ver_t cmdVer;
+
+    for(i=0;i<length;i++)
+    {
+        *((uint8_t *)&cmdVer +i)  = buf[i];
+    }
+    
+    App_Upg_Set_Ver(cmdVer.bldVer, cmdVer.appVer, cmdVer.hwVer);
 }
 
 

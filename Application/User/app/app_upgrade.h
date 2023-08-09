@@ -8,8 +8,8 @@
 typedef enum _upg_stat_t
 {
     UPG_STAT_GET_VER = 0,
-    UPG_STAT_DET_CASE_CLOSE,
-    UPG_STAT_DELAY_3_MIN,
+    UPG_STAT_COMPARE_VER,
+    UPG_STAT_START,
     UPG_STAT_GET_FW_INFO,
     UPG_STAT_GET_DATA,    
 }upg_stat_t;

@@ -18,8 +18,7 @@
 #include "app_batt.h"
 #include "app_hall.h"
 #include "app_com.h"
-
-#include "drv_flash.h"
+#include "app_flash.h"
 /* Private typedef --------------------------------------*/
 /* Private define ------------------ --------------------*/
 /* Private macro ----------------------------------------*/
@@ -31,6 +30,8 @@ int main(void )
     Drv_Task_Init();
 
     Drv_Timer_Init();
+
+    App_Flash_Init();
 
     App_Com_Init();
 

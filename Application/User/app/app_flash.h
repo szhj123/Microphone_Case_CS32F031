@@ -22,17 +22,28 @@ typedef struct _flash_ctrl_block_t
 
 typedef struct _user_data_t
 {
-    uint8_t upgEn;
+    uint8_t  upgEn;
     uint32_t fwSize;
+    uint8_t  bldVer;
+    uint8_t  appVer;
+    uint8_t  hwVer;
 }user_data_t;
 
+void App_Flash_Init(void );
 void App_Flash_Erase_App2(void );
 void App_Flash_Write_App2(uint32_t offset, uint8_t *buf, uint8_t length );
-void App_Flash_Set_Fw_Size(uint32_t fwSize );
 void App_Flash_Dleay(void );
 uint16_t App_Flash_Cal_Fw_Checksum(void );
 void App_Flash_Upg_Enable(void );
-void App_Flash_Save_User_Data(void );
+void App_Flash_Write_User_Data(void );
+void App_Flash_Read_User_Data(void );
+
+void App_Flash_Set_Fw_Size(uint32_t fwSize );
+uint8_t App_Flash_Get_Bld_Ver(void );
+uint8_t App_Flash_Get_App_Ver(void );
+uint8_t App_Flash_Get_Hw_Ver(void );
+
+
 void App_Jump_to_Bld(void);
 
 #endif 
