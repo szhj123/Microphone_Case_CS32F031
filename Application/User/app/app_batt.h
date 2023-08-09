@@ -87,6 +87,10 @@ typedef struct _batt_ctrl_block_t
     uint16_t ebudTx1Cur;
     uint16_t ebudTx2Cur;
     uint16_t ebudRxCur;
+
+    uint8_t  ebudTx1Level;
+    uint8_t  ebudTx2Level;
+    uint8_t  ebudRxLevel;
 }batt_ctrl_block_t;
 
 void App_Batt_Init(void );
@@ -94,6 +98,7 @@ uint16_t App_Batt_Get_Vol(void );
 batt_level_t App_Batt_Cal_Level(uint16_t battVol );
 batt_level_t App_Batt_Get_Level(void );
 ebud_charging_stat_t App_Ebud_Get_Chrg_State(void );
+void App_Ebud_Set_Level(uint8_t devType, uint8_t level );
 
 #endif 
 

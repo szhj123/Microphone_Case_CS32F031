@@ -12,6 +12,7 @@
 /* Includes ---------------------------------------------*/
 #include "app_batt.h"
 #include "app_event.h"
+#include "app_com.h"
 /* Private typedef --------------------------------------*/
 /* Private define ------------------ --------------------*/
 /* Private macro ----------------------------------------*/
@@ -501,6 +502,17 @@ ebud_charging_stat_t App_Ebud_Get_Chrg_State(void )
     }
 
     return retVal;
+}
+
+void App_Ebud_Set_Level(uint8_t devType, uint8_t level )
+{
+    switch(devType)
+    {
+        case DEVICE_LEFT: battCtrl.ebudTx1Level = level; break;
+        case DEVICE_RIGHT: battCtrl.ebudTx2Level = level; break;
+        case DEVICE_MIDDLE: battCtrl.ebudRxLevel = level; break;
+        default: break;
+    }
 }
 
 

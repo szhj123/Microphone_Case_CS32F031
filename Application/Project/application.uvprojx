@@ -498,6 +498,11 @@
               <FileType>1</FileType>
               <FilePath>..\User\app\app_flash.c</FilePath>
             </File>
+            <File>
+              <FileName>app_upgrade.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\app\app_upgrade.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

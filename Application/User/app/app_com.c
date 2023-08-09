@@ -13,7 +13,7 @@
 #include "app_com.h"
 #include "app_event.h"
 #include "app_batt.h"
-#include "app_com.h"
+#include "app_upgrade.h"
 /* Private typedef --------------------------------------*/
 /* Private define ------------------ --------------------*/
 /* Private macro ----------------------------------------*/
@@ -266,29 +266,28 @@ void App_Com_Case_Open_Response(uint8_t *buf, uint8_t length )
 
     for(i=0;i<length;i++)
     {
-        *(uint8_t *)&cmdCaseOpen++ = buf[i];
+        *((uint8_t *)&cmdCaseOpen +i)  = buf[i];
     }
+
+    App_Upg_Set_Ver(cmdCaseOpen.bldVer, cmdCaseOpen.appVer, cmdCaseOpen.hwVer);
+
+    App_Ebud_Set_Level(cmdCaseOpen.devType, cmdCaseOpen.ebudBattLevel);
     
     switch(cmdCaseOpen.devType)
     {
         case DEVICE_LEFT:
-        {
-            comPara.ebudLBattLevel = cmdCaseOpen.ebudBattLevel;
-            
+        {            
             com1Ctrl.rxDoneFlag = 1;
             break;
         }
         case DEVICE_RIGHT:
-        {
-            comPara.ebudRBattLevel = cmdCaseOpen.ebudBattLevel;
-            
+        {            
             com2Ctrl.rxDoneFlag = 1;
             break;
         }
         
         case DEVICE_MIDDLE:
         {
-            comPara.ebudMBattLevel = cmdCaseOpen.ebudBattLevel;
             break;
         }
         default: break;
@@ -296,7 +295,7 @@ void App_Com_Case_Open_Response(uint8_t *buf, uint8_t length )
 }
 
 
-void App_Com_Case_Tx_Open(uint8_t devType )
+void App_Com_Tx_Cmd_Case_Open(uint8_t devType )
 {
     uint8_t txBuf[15] = {0};
     uint8_t checkSum = 0;
@@ -334,7 +333,7 @@ void App_Com_Case_Tx_Open(uint8_t devType )
     }
 }
 
-void App_Com_Case_Tx_Close(uint8_t devType )
+void App_Com_Tx_Cmd_Case_Close(uint8_t devType )
 {
     uint8_t txBuf[11] = {0};
     uint8_t checkSum = 0;
@@ -368,7 +367,7 @@ void App_Com_Case_Tx_Close(uint8_t devType )
     }
 }
 
-void App_Com_Ebud_Chrg_Off(uint8_t devType, uint8_t ebudChrgOffReason)
+void App_Com_Tx_Cmd_Chrg_Off(uint8_t devType, uint8_t ebudChrgOffReason)
 {
     uint8_t txBuf[12] = {0};
     uint8_t checkSum = 0;
@@ -401,6 +400,36 @@ void App_Com_Ebud_Chrg_Off(uint8_t devType, uint8_t ebudChrgOffReason)
     {
         Drv_Tx_Queue_Put(COM2, txBuf, sizeof(txBuf));
     }
+}
+
+void App_Com_Tx_Cmd_Get_Ver(void )
+{
+    uint8_t txBuf[14] = {0};
+    uint8_t checkSum = 0;
+    uint8_t i;
+
+    txBuf[0] = 0x05;
+    txBuf[1] = 0x5a;
+    txBuf[2] = 0x0a;
+    txBuf[3] = 0x00;
+    txBuf[4] = 0x00;
+    txBuf[5] = 0x20;
+    txBuf[6] = 0x01;
+    txBuf[7] = CMD_GET_FW_VER;
+    txBuf[8] = 0x00;
+    txBuf[9] = (uint8_t )App_Batt_Get_Level();
+    txBuf[10] = VER_BLD;
+    txBuf[11] = VER_APP;
+    txBuf[12] = VER_HARDWARE;
+    
+    for(i=0;i<sizeof(txBuf)-4;i++)
+    {
+        checkSum += txBuf[i+4];
+    }
+
+    txBuf[13] = checkSum;
+
+    Drv_Tx_Queue_Put(COM1, txBuf, sizeof(txBuf));
 }
 
 void App_Com_Upg_Tx_FwVer(void )

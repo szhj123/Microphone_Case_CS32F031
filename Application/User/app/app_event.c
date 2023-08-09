@@ -74,9 +74,9 @@ static void App_Event_Handler(void *arg )
                 {
                     uint8_t ebudChrgOffReason = REASON_BATT_LOW;
                     
-                    App_Com_Ebud_Chrg_Off(DEVICE_LEFT, ebudChrgOffReason);
+                    App_Com_Tx_Cmd_Chrg_Off(DEVICE_LEFT, ebudChrgOffReason);
                     
-                    App_Com_Ebud_Chrg_Off(DEVICE_RIGHT, ebudChrgOffReason);
+                    App_Com_Tx_Cmd_Chrg_Off(DEVICE_RIGHT, ebudChrgOffReason);
 
                     Drv_Timer_Regist_Oneshot(App_Event_Send_Sleep, 250, NULL);
                 }
@@ -88,7 +88,7 @@ static void App_Event_Handler(void *arg )
         {
             uint8_t ebudChrgOffReason = msg.data[0];
             
-            App_Com_Ebud_Chrg_Off(DEVICE_LEFT, ebudChrgOffReason);
+            App_Com_Tx_Cmd_Chrg_Off(DEVICE_LEFT, ebudChrgOffReason);
 
             if(App_Ebud_Get_Chrg_State() == EBUD_CHRG_DONE)
             {
@@ -101,7 +101,7 @@ static void App_Event_Handler(void *arg )
         {
             uint8_t ebudChrgOffReason = msg.data[0];
             
-            App_Com_Ebud_Chrg_Off(DEVICE_RIGHT, ebudChrgOffReason);
+            App_Com_Tx_Cmd_Chrg_Off(DEVICE_RIGHT, ebudChrgOffReason);
 
             if(App_Ebud_Get_Chrg_State() == EBUD_CHRG_DONE)
             {
@@ -122,15 +122,15 @@ static void App_Event_Handler(void *arg )
                 {
                     App_Led_Hall_Open(battLevel);
                     
-                    App_Com_Case_Tx_Open(DEVICE_LEFT);
+                    App_Com_Tx_Cmd_Case_Open(DEVICE_LEFT);
                     
-                    App_Com_Case_Tx_Open(DEVICE_RIGHT);
+                    App_Com_Tx_Cmd_Case_Open(DEVICE_RIGHT);
                 }
                 else
                 {
-                    App_Com_Case_Tx_Close(DEVICE_LEFT);
+                    App_Com_Tx_Cmd_Case_Close(DEVICE_LEFT);
                     
-                    App_Com_Case_Tx_Close(DEVICE_RIGHT);
+                    App_Com_Tx_Cmd_Case_Close(DEVICE_RIGHT);
                     
                     App_Led_Hall_Close();
                 }

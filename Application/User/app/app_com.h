@@ -7,9 +7,9 @@
 #include "drv_event.h"
 #include "drv_flash.h"
 
-#define VER_BLD                           0x01
-#define VER_APP                           0x01
-#define VER_HARDWARE                      0x01
+#define VER_BLD                           0x00
+#define VER_APP                           0x00
+#define VER_HARDWARE                      0x00
 
 #define FW_BUILD_VER                      0x02
 #define FW_MINOR_VER                      0x00
@@ -86,9 +86,11 @@ typedef struct _com_para_t
 }com_para_t;
 
 void App_Com_Init(void );
-void App_Com_Case_Tx_Open(uint8_t devType );
-void App_Com_Case_Tx_Close(uint8_t devType );
-void App_Com_Ebud_Chrg_Off(uint8_t devType, uint8_t ebudChrgOffReason);
+void App_Com_Tx_Cmd_Case_Open(uint8_t devType );
+void App_Com_Tx_Cmd_Case_Close(uint8_t devType );
+void App_Com_Tx_Cmd_Chrg_Off(uint8_t devType, uint8_t ebudChrgOffReason);
+void App_Com_Tx_Cmd_Get_Ver(void );
+
 void App_Com_Upg_Tx_FwVer(void );
 void App_Com_Upg_Tx_Ack(void );
 
