@@ -159,18 +159,10 @@ static void App_Event_Handler(void *arg )
 
 void App_Event_Case_Handler(uint8_t *buf, uint8_t length )
 {
-    #if 0
-    cmd_case_open_t rxResponse;
-    uint8_t i;
-
-    for(i=0;i<length-8;i++)
-    {
-        *((uint8_t *)&rxResponse + i) = buf[7+i];
-    }
-    
-    App_Com_Cmd_Case_Open_Response(rxResponse);
-    #else
     uint8_t cmd = buf[0];
+    uint8_t devType = buf[1];
+    
+    App_Com_Set_Rx_Stat(devType);
 
     switch(cmd )
     {
@@ -181,11 +173,26 @@ void App_Event_Case_Handler(uint8_t *buf, uint8_t length )
         }
         case CMD_GET_FW_VER:
         {
-            App_Com_Cmd_Get_Ver_Response(buf, length );
+            App_Com_Cmd_Fw_Ver_Response(buf, length );
+            break;
+        }
+        case CMD_GET_FW_INFO:
+        {
+            App_Com_Cmd_Fw_Info_Response(buf, length );
+            break;
+        }
+        case CMD_GET_FW_DATA:
+        {
+            App_Com_Cmd_Fw_Data_Response(buf, length );
+            break;
+        }
+        case CMD_GET_FW_CRC:
+        {
+            App_Com_Cmd_Fw_CRC_Response(buf, length );
+            break;
         }
         default: break;
     }
-    #endif 
 }
 
 void App_Event_Upg_Handler(uint8_t *buf, uint8_t length )

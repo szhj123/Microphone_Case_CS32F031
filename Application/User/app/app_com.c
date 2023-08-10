@@ -66,6 +66,8 @@ static void App_ComTx1_Handler(void *arg )
                 Drv_Com_Tx_Enable(COM1);
 
                 com1Ctrl.txCnt = 0;
+                
+                com1Ctrl.rxDoneFlag = 0;
 
                 com1Ctrl.comState = COM_STAT_TX;
             }
@@ -96,8 +98,6 @@ static void App_ComTx1_Handler(void *arg )
         {
             if(com1Ctrl.rxDoneFlag)
             {
-                com1Ctrl.rxDoneFlag = 0;
-
                 com1Ctrl.delayCnt = 0;
 
                 com1Ctrl.txCnt = 0;
@@ -151,6 +151,8 @@ static void App_ComTx2_Handler(void *arg )
 
                 com2Ctrl.txCnt = 0;
 
+                com2Ctrl.rxDoneFlag = 0;
+
                 com2Ctrl.comState = COM_STAT_TX;
             }
             break;
@@ -180,8 +182,6 @@ static void App_ComTx2_Handler(void *arg )
         {
             if(com2Ctrl.rxDoneFlag)
             {
-                com2Ctrl.rxDoneFlag = 0;
-
                 com2Ctrl.delayCnt = 0;
 
                 com2Ctrl.txCnt = 0;
@@ -259,6 +259,21 @@ static void App_Com6_Handler(void *arg )
     }
 }
 
+void App_Com_Set_Rx_Stat(uint8_t devType )
+{
+    if(devType == DEVICE_LEFT)
+    {
+        com1Ctrl.rxDoneFlag = 1;
+    }
+    else if(devType == DEVICE_RIGHT)
+    {
+        com2Ctrl.rxDoneFlag = 1;
+    }
+    else if(devType == DEVICE_MIDDLE)
+    {
+    }
+}
+
 void App_Com_Cmd_Case_Open_Response(uint8_t *buf, uint8_t length )
 {
     uint8_t i;
@@ -271,40 +286,53 @@ void App_Com_Cmd_Case_Open_Response(uint8_t *buf, uint8_t length )
 
     App_Ebud_Set_Level(cmdCaseOpen.devType, cmdCaseOpen.ebudBattLevel);
     
-    switch(cmdCaseOpen.devType)
-    {
-        case DEVICE_LEFT:
-        {            
-            com1Ctrl.rxDoneFlag = 1;
-            break;
-        }
-        case DEVICE_RIGHT:
-        {            
-            com2Ctrl.rxDoneFlag = 1;
-            break;
-        }
-        
-        case DEVICE_MIDDLE:
-        {
-            break;
-        }
-        default: break;
-    }
 }
 
-void App_Com_Cmd_Get_Ver_Response(uint8_t *buf, uint8_t length )
+void App_Com_Cmd_Fw_Ver_Response(uint8_t *buf, uint8_t length )
 {
     uint8_t i;
-    cmd_ver_t cmdVer;
+    cmd_fw_ver_t cmdFwVer;
 
     for(i=0;i<length;i++)
     {
-        *((uint8_t *)&cmdVer +i)  = buf[i];
+        *((uint8_t *)&cmdFwVer +i)  = buf[i];
     }
     
-    App_Upg_Set_Ver(cmdVer.bldVer, cmdVer.appVer, cmdVer.hwVer);
+    App_Upg_Set_Fw_Ver(cmdFwVer.bldVer, cmdFwVer.appVer, cmdFwVer.hwVer);
 }
 
+void App_Com_Cmd_Fw_Info_Response(uint8_t *buf, uint8_t length )
+{
+    uint8_t i;
+    word_t fwSize;
+    cmd_fw_info_t cmdFwInfo;
+    
+    for(i=0;i<length;i++)
+    {
+        *((uint8_t *)&cmdFwInfo +i)  = buf[i];
+    }
+
+    fwSize.byte_t.byte0 = cmdFwInfo.fwSizeByte0;
+    fwSize.byte_t.byte1 = cmdFwInfo.fwSizeByte1;
+    fwSize.byte_t.byte2 = cmdFwInfo.fwSizeByte2;
+    fwSize.byte_t.byte3 = cmdFwInfo.fwSizeByte3;
+    
+    App_Upg_Set_Fw_Size(fwSize.val);
+}
+
+void App_Com_Cmd_Fw_Data_Response(uint8_t *buf, uint8_t length )
+{
+    App_Upg_Set_Fw_Data(&buf[3], length - 3);
+}
+
+void App_Com_Cmd_Fw_CRC_Response(uint8_t *buf, uint8_t length )
+{
+    uint16_t crc = 0;
+
+    crc = (uint16_t )buf[4] << 8 | buf[3];
+    
+    App_Upg_Set_Fw_CRC(crc);
+}
 
 void App_Com_Tx_Cmd_Case_Open(uint8_t devType )
 {
@@ -327,7 +355,7 @@ void App_Com_Tx_Cmd_Case_Open(uint8_t devType )
     txBuf[12] = VER_HARDWARE;
     txBuf[13] = 0x00;
     
-    for(i=0;i<sizeof(txBuf)-4;i++)
+    for(i=0;i<sizeof(txBuf)-5;i++)
     {
         checkSum += txBuf[i+4];
     }
@@ -352,7 +380,7 @@ void App_Com_Tx_Cmd_Case_Close(uint8_t devType )
 
     txBuf[0] = 0x05;
     txBuf[1] = 0x5a;
-    txBuf[2] = 0x06;
+    txBuf[2] = 0x07;
     txBuf[3] = 0x00;
     txBuf[4] = 0x00;
     txBuf[5] = 0x20;
@@ -361,7 +389,7 @@ void App_Com_Tx_Cmd_Case_Close(uint8_t devType )
     txBuf[8] = devType;
     txBuf[9] = (uint8_t )App_Batt_Get_Level();
     
-    for(i=0;i<sizeof(txBuf)-4;i++)
+    for(i=0;i<sizeof(txBuf)-5;i++)
     {
         checkSum += txBuf[i+4];
     }
@@ -396,7 +424,7 @@ void App_Com_Tx_Cmd_Chrg_Off(uint8_t devType, uint8_t ebudChrgOffReason)
     txBuf[9] = (uint8_t )App_Batt_Get_Level();
     txBuf[10] = ebudChrgOffReason;
     
-    for(i=0;i<sizeof(txBuf)-4;i++)
+    for(i=0;i<sizeof(txBuf)-5;i++)
     {
         checkSum += txBuf[i+4];
     }
@@ -413,7 +441,7 @@ void App_Com_Tx_Cmd_Chrg_Off(uint8_t devType, uint8_t ebudChrgOffReason)
     }
 }
 
-void App_Com_Tx_Cmd_Get_Ver(void )
+void App_Com_Tx_Cmd_Get_Fw_Ver(void )
 {
     uint8_t txBuf[14] = {0};
     uint8_t checkSum = 0;
@@ -433,12 +461,101 @@ void App_Com_Tx_Cmd_Get_Ver(void )
     txBuf[11] = VER_APP;
     txBuf[12] = VER_HARDWARE;
     
-    for(i=0;i<sizeof(txBuf)-4;i++)
+    for(i=0;i<sizeof(txBuf)-5;i++)
     {
         checkSum += txBuf[i+4];
     }
 
     txBuf[13] = checkSum;
+
+    Drv_Tx_Queue_Put(COM1, txBuf, sizeof(txBuf));
+}
+
+void App_Com_Tx_Cmd_Get_Fw_Info(void )
+{
+    uint8_t txBuf[11] = {0};
+    uint8_t checkSum = 0;
+    uint8_t i;
+
+    txBuf[0] = 0x05;
+    txBuf[1] = 0x5a;
+    txBuf[2] = 0x07;
+    txBuf[3] = 0x00;
+    txBuf[4] = 0x00;
+    txBuf[5] = 0x20;
+    txBuf[6] = 0x01;
+    txBuf[7] = CMD_GET_FW_INFO;
+    txBuf[8] = 0x00;
+    txBuf[9] = (uint8_t )App_Batt_Get_Level();
+    
+    for(i=0;i<sizeof(txBuf)-5;i++)
+    {
+        checkSum += txBuf[i+4];
+    }
+
+    txBuf[10] = checkSum;
+
+    Drv_Tx_Queue_Put(COM1, txBuf, sizeof(txBuf));
+}
+
+void App_Com_Tx_Cmd_Get_Fw_Data(uint32_t fwOffset, uint32_t fwLen)
+{
+    uint8_t txBuf[19] = {0};
+    uint8_t checkSum = 0;
+    uint8_t i;
+
+    txBuf[0] = 0x05;
+    txBuf[1] = 0x5a;
+    txBuf[2] = 0x0f;
+    txBuf[3] = 0x00;
+    txBuf[4] = 0x00;
+    txBuf[5] = 0x20;
+    txBuf[6] = 0x01;
+    txBuf[7] = CMD_GET_FW_DATA;
+    txBuf[8] = 0x00;
+    txBuf[9] = (uint8_t )App_Batt_Get_Level();
+    txBuf[10]= (uint8_t )fwOffset;
+    txBuf[11]= (uint8_t )(fwOffset >> 8);
+    txBuf[12]= (uint8_t )(fwOffset >> 16);
+    txBuf[13]= (uint8_t )(fwOffset >> 24);
+    txBuf[14]= (uint8_t )(fwLen);
+    txBuf[15]= (uint8_t )(fwLen >>8 );
+    txBuf[16]= (uint8_t )(fwLen >> 16);
+    txBuf[17]= (uint8_t )(fwLen >> 24);
+    
+    for(i=0;i<sizeof(txBuf)-5;i++)
+    {
+        checkSum += txBuf[i+4];
+    }
+
+    txBuf[18] = checkSum;
+
+    Drv_Tx_Queue_Put(COM1, txBuf, sizeof(txBuf));
+}
+
+void App_Com_Tx_Cmd_Get_Fw_CRC(void )
+{
+    uint8_t txBuf[11] = {0};
+    uint8_t checkSum = 0;
+    uint8_t i;
+
+    txBuf[0] = 0x05;
+    txBuf[1] = 0x5a;
+    txBuf[2] = 0x07;
+    txBuf[3] = 0x00;
+    txBuf[4] = 0x00;
+    txBuf[5] = 0x20;
+    txBuf[6] = 0x01;
+    txBuf[7] = CMD_GET_FW_CRC;
+    txBuf[8] = 0x00;
+    txBuf[9] = (uint8_t )App_Batt_Get_Level();
+    
+    for(i=0;i<sizeof(txBuf)-5;i++)
+    {
+        checkSum += txBuf[i+4];
+    }
+
+    txBuf[10] = checkSum;
 
     Drv_Tx_Queue_Put(COM1, txBuf, sizeof(txBuf));
 }

@@ -13,6 +13,7 @@
 #include "app_upgrade.h"
 #include "app_com.h"
 #include "app_hall.h"
+#include "app_flash.h"
 /* Private typedef --------------------------------------*/
 /* Private define ------------------ --------------------*/
 /* Private macro ----------------------------------------*/
@@ -23,7 +24,6 @@ static upg_para_t upgPara;
 
 void App_Upg_Init(void )
 {
-
     Drv_Task_Regist_Period(App_Upg_Handler, 0, 1, NULL);
 }
 
@@ -42,7 +42,7 @@ static void App_Upg_Handler(void *arg )
             {
                 upgPara.appVer = 0;
                 
-                App_Com_Tx_Cmd_Get_Ver();
+                App_Com_Tx_Cmd_Get_Fw_Ver();
 
                 upgPara.delayCnt = 0;
                 
@@ -55,21 +55,26 @@ static void App_Upg_Handler(void *arg )
             if(upgPara.delayCnt > 500)
             {
                 upgPara.delayCnt = 0;
-                
-                if(upgPara.appVer != 0)
+
+                if(upgPara.responseFlag)
                 {
-                    if(upgPara.appVer != App_Flash_Get_App_Ver())
+                    upgPara.responseFlag = 0;
+                    
+                    if(upgPara.appVer != 0)
                     {
-                        upgPara.stat = UPG_STAT_START;
+                        if(upgPara.appVer != App_Flash_Get_App_Ver())
+                        {
+                            upgPara.stat = UPG_STAT_START;
+                        }
+                        else
+                        {
+                            upgPara.stat = UPG_STAT_EXIT;
+                        }
                     }
                     else
                     {
-                        upgPara.stat = UPG_STAT_EXIT;
+                        upgPara.stat = UPG_STAT_GET_VER;
                     }
-                }
-                else
-                {
-                    upgPara.stat = UPG_STAT_GET_VER;
                 }
             }
             break;
@@ -83,6 +88,7 @@ static void App_Upg_Handler(void *arg )
                     upgPara.delayCnt = 0;
 
                     //Todo: get firmware information from earbud
+                    App_Com_Tx_Cmd_Get_Fw_Info();
                     
                     upgPara.stat = UPG_STAT_GET_FW_INFO;
                 }
@@ -95,16 +101,120 @@ static void App_Upg_Handler(void *arg )
         }
         case UPG_STAT_GET_FW_INFO:
         {
+            if(upgPara.responseFlag)
+            {
+                upgPara.responseFlag = 0;
+
+                App_Flash_Set_Fw_Size(upgPara.fwSize);
+                
+                App_Flash_Erase_App2();
+
+                upgPara.fwOffset = 0;
+
+                App_Com_Tx_Cmd_Get_Fw_Data(upgPara.fwOffset, FW_DATA_PACK_MAX_SIZE);
+
+                upgPara.stat = UPG_STAT_GET_FW_DATA;
+            }
+            break;
+        }
+        case UPG_STAT_GET_FW_DATA:
+        {
+            if(upgPara.responseFlag)
+            {
+                upgPara.responseFlag = 0;
+                
+                App_Flash_Write_App2(upgPara.fwOffset, upgPara.fwDataBuf, upgPara.fwDataLen);
+
+                if(upgPara.fwOffset < upgPara.fwSize)
+                {
+                    upgPara.fwOffset += FW_DATA_PACK_MAX_SIZE;
+                
+                    if((upgPara.fwSize - upgPara.fwOffset) > FW_DATA_PACK_MAX_SIZE)
+                    {
+                        App_Com_Tx_Cmd_Get_Fw_Data(upgPara.fwOffset, FW_DATA_PACK_MAX_SIZE);
+                    }
+                    else
+                    {
+                        App_Com_Tx_Cmd_Get_Fw_Data(upgPara.fwOffset, upgPara.fwSize - upgPara.fwOffset);
+
+                        upgPara.fwOffset = upgPara.fwSize;
+                    }
+                }
+                else
+                {
+                    App_Com_Tx_Cmd_Get_Fw_CRC();
+                    
+                    upgPara.stat = UPG_STAT_GET_FW_CRC;
+                }
+                
+            }
+            break;
+        }
+        case UPG_STAT_GET_FW_CRC:
+        {
+            if(upgPara.responseFlag)
+            {
+                upgPara.responseFlag = 0;
+
+                uint16_t calFwCrc = App_Flash_Cal_Fw_Checksum();
+
+                if(upgPara.fwCrc == calFwCrc)
+                {
+                    App_Flash_Upg_Enable();
+
+                    App_Jump_to_Bld();
+                }
+
+                upgPara.stat = UPG_STAT_EXIT;
+            }
+            break;
+        }
+        case UPG_STAT_EXIT:
+        {
+            if(App_Hall_Get_State() == HALL_CLOSE)
+            {
+                upgPara.stat = UPG_STAT_GET_VER;
+            }
             break;
         }
         default: break;
     }
 }
 
-void App_Upg_Set_Ver(uint8_t bldVer, uint8_t appVer, uint8_t hwVer )
+void App_Upg_Set_Fw_Ver(uint8_t bldVer, uint8_t appVer, uint8_t hwVer )
 {
     upgPara.bldVer = bldVer;
     upgPara.appVer = appVer;
     upgPara.hwVer  = hwVer;
+
+    upgPara.responseFlag = 1;
+}
+
+void App_Upg_Set_Fw_Size(uint32_t fwSize )
+{
+    upgPara.fwSize = fwSize;
+
+    upgPara.responseFlag = 1;
+}
+
+void App_Upg_Set_Fw_Data(uint8_t *buf, uint8_t length )
+{
+    uint8_t i;
+
+    for(i=0;i<length;i++)
+    {
+        upgPara.fwDataBuf[i] = buf[i];
+    }
+
+    upgPara.fwDataLen = length;
+
+    upgPara.responseFlag = 1;
+}
+
+void App_Upg_Set_Fw_CRC(uint16_t fwCrc )
+{
+    upgPara.fwCrc = fwCrc;
+
+    upgPara.responseFlag = 1;
 }
 
