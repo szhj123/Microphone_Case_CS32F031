@@ -19,7 +19,7 @@
 #define CMD_CASE_CLOSE                    0x03
 #define CMD_CHRG_OFF                      0x04
 #define CMD_CHRG_KEY                      0x05
-#define CMD_EARBUD_BATT_LEVEL             0x06
+#define CMD_CASE_BATT                     0x06
 #define CMD_GET_SIRK                      0x10
 #define CMD_SET_SIRK                      0x11
 #define CMD_GET_RANDOM_SIRK               0x12

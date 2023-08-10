@@ -67,7 +67,7 @@ static void App_ComTx1_Handler(void *arg )
 
                 com1Ctrl.txCnt = 0;
                 
-                com1Ctrl.rxDoneFlag = 0;
+                com1Ctrl.delayCnt = 0;
 
                 com1Ctrl.comState = COM_STAT_TX;
             }
@@ -75,9 +75,14 @@ static void App_ComTx1_Handler(void *arg )
         }
         case COM_STAT_TX:
         {
-            Drv_Com_Tx_Send(COM1, com1Ctrl.comData.data, com1Ctrl.comData.length);
+            if(++com1Ctrl.delayCnt >= 5)
+            {
+                com1Ctrl.delayCnt = 0;
+                
+                Drv_Com_Tx_Send(COM1, com1Ctrl.comData.data, com1Ctrl.comData.length);
 
-            com1Ctrl.comState = COM_STAT_TX_WATI_DONE;
+                com1Ctrl.comState = COM_STAT_TX_WATI_DONE;
+            }
 
             break;
         }
@@ -98,12 +103,15 @@ static void App_ComTx1_Handler(void *arg )
         {
             if(com1Ctrl.rxDoneFlag)
             {
+                com1Ctrl.rxDoneFlag = 0;
+                
                 com1Ctrl.delayCnt = 0;
 
                 com1Ctrl.txCnt = 0;
 
                 com1Ctrl.comState = COM_STAT_INIT;
             }
+            #if 0
             else
             {
                 if(++com1Ctrl.delayCnt >= 100)
@@ -120,6 +128,7 @@ static void App_ComTx1_Handler(void *arg )
                     }
                 }
             }
+            #endif 
             break;
         }
         case COM_STAT_ERR:
@@ -150,8 +159,8 @@ static void App_ComTx2_Handler(void *arg )
                 Drv_Com_Tx_Enable(COM2);
 
                 com2Ctrl.txCnt = 0;
-
-                com2Ctrl.rxDoneFlag = 0;
+                
+                com2Ctrl.delayCnt = 0;
 
                 com2Ctrl.comState = COM_STAT_TX;
             }
@@ -159,10 +168,12 @@ static void App_ComTx2_Handler(void *arg )
         }
         case COM_STAT_TX:
         {
-            Drv_Com_Tx_Send(COM2, com2Ctrl.comData.data, com2Ctrl.comData.length);
+            if(++com2Ctrl.delayCnt >= 5)
+            {
+                Drv_Com_Tx_Send(COM2, com2Ctrl.comData.data, com2Ctrl.comData.length);
 
-            com2Ctrl.comState = COM_STAT_TX_WATI_DONE;
-
+                com2Ctrl.comState = COM_STAT_TX_WATI_DONE;
+            }
             break;
         }
         case COM_STAT_TX_WATI_DONE:
@@ -182,6 +193,8 @@ static void App_ComTx2_Handler(void *arg )
         {
             if(com2Ctrl.rxDoneFlag)
             {
+                com2Ctrl.rxDoneFlag = 0;
+                
                 com2Ctrl.delayCnt = 0;
 
                 com2Ctrl.txCnt = 0;

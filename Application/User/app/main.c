@@ -19,6 +19,7 @@
 #include "app_hall.h"
 #include "app_com.h"
 #include "app_flash.h"
+#include "app_upgrade.h"
 /* Private typedef --------------------------------------*/
 /* Private define ------------------ --------------------*/
 /* Private macro ----------------------------------------*/
@@ -40,6 +41,8 @@ int main(void )
     App_Batt_Init();
 
     App_Led_Init();
+
+    App_Upg_Init();
 
     App_Event_Init();
     

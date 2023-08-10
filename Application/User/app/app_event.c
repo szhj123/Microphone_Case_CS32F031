@@ -167,6 +167,9 @@ void App_Event_Case_Handler(uint8_t *buf, uint8_t length )
     switch(cmd )
     {
         case CMD_CASE_OPEN: 
+        case CMD_CASE_CLOSE:
+        case CMD_CHRG_OFF:
+        case CMD_CASE_BATT:
         {
             App_Com_Cmd_Case_Open_Response(buf, length);
             break;

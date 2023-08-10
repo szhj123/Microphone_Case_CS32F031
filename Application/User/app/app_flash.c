@@ -24,7 +24,7 @@ static user_data_t userData;
 void App_Flash_Init(void )
 {
     App_Flash_Read_User_Data();
-
+    
     if(userData.appVer == 0xff)
     {
         userData.bldVer = 0;

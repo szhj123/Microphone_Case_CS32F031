@@ -56,6 +56,8 @@ static void Hal_Batt_Adc_Init(void )
     adc_config_struct.data_align = ADC_DATA_ALIGN_RIGHT;
     adc_config_struct.scan_direction = ADC_SCAN_DIR_UPWARD;
     adc_init(ADC1, &adc_config_struct); 
+
+    adc_calibration_value_get(ADC1);    // ADC Calibration.  
 }
 
 uint16_t Hal_Batt_Adc_Get_SampleVal(uint32_t channel )
@@ -68,7 +70,7 @@ uint16_t Hal_Batt_Adc_Get_SampleVal(uint32_t channel )
     ADC1->CHANSEL = 0;
     // Set the ADC1 CH0 with 239.5 Cycles
     adc_channel_config(ADC1, channel , ADC_SAMPLE_TIMES_239_5); 
-    adc_calibration_value_get(ADC1);    // ADC Calibration.  
+    //adc_calibration_value_get(ADC1);    // ADC Calibration.  
     __ADC_ENABLE(ADC1);                     // Enable the ADC.    
     
     while(!__ADC_FLAG_STATUS_GET(ADC1, EOI)); // Wait the EOI flag.    
