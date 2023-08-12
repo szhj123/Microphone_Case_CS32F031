@@ -9,14 +9,14 @@
 
 **********************************************************/
 
-/* Includes ---------------------------------------------*/
+/* Includes -----------------------------------------------*/
 #include "app_upgrade.h"
 #include "app_com.h"
 #include "app_hall.h"
 #include "app_flash.h"
 /* Private typedef --------------------------------------*/
-/* Private define ------------------ --------------------*/
-/* Private macro ----------------------------------------*/
+/* Private define ----------------------------------------*/
+/* Private macro ---------------------------------------*/
 /* Private function -------------------------------------*/
 static void App_Upg_Handler(void *arg );
 /* Private variables ------------------------------------*/
@@ -40,10 +40,10 @@ static void App_Upg_Handler(void *arg )
         {
             if(App_Hall_Get_State() == HALL_OPEN)
             {
-                upgPara.appVer = 0;
+                upgPara.appVer = VER_APP;
                 
                 App_Com_Tx_Cmd_Get_Fw_Ver();
-
+           
                 upgPara.delayCnt = 0;
                 
                 upgPara.stat = UPG_STAT_COMPARE_VER;
@@ -62,8 +62,8 @@ static void App_Upg_Handler(void *arg )
                     
                     if(upgPara.appVer != 0)
                     {
-                        if(upgPara.appVer != App_Flash_Get_App_Ver())
-                        {
+                        if(upgPara.appVer != VER_APP)
+                        {                            
                             upgPara.stat = UPG_STAT_START;
                         }
                         else
@@ -83,7 +83,7 @@ static void App_Upg_Handler(void *arg )
         {
             if(App_Hall_Get_State() == HALL_CLOSE)
             {
-                if(upgPara.delayCnt > 30000)
+                if(upgPara.delayCnt > 300)
                 {
                     upgPara.delayCnt = 0;
 
@@ -96,6 +96,8 @@ static void App_Upg_Handler(void *arg )
             else
             {
                 upgPara.delayCnt = 0;
+
+                upgPara.stat = UPG_STAT_GET_VER;
             }
             break;
         }
@@ -105,15 +107,27 @@ static void App_Upg_Handler(void *arg )
             {
                 upgPara.responseFlag = 0;
 
-                App_Flash_Set_Fw_Size(upgPara.fwSize);
-                
-                App_Flash_Erase_App2();
+                if(upgPara.fwSize)
+                {
+                    App_Flash_Set_Fw_Size(upgPara.fwSize);
+                    
+                    App_Flash_Erase_App2();
 
-                upgPara.fwOffset = 0;
+                    upgPara.fwOffset = 0;
 
-                App_Com_Tx_Cmd_Get_Fw_Data(upgPara.fwOffset, FW_DATA_PACK_MAX_SIZE);
+                    App_Com_Tx_Cmd_Get_Fw_Data(upgPara.fwOffset, FW_DATA_PACK_MAX_SIZE);
 
-                upgPara.stat = UPG_STAT_GET_FW_DATA;
+                    upgPara.stat = UPG_STAT_GET_FW_DATA;
+                }
+            }
+            else 
+            {
+                if(App_Hall_Get_State() == HALL_OPEN)
+                {
+                    upgPara.delayCnt = 0;
+                    
+                    upgPara.stat = UPG_STAT_GET_VER;
+                }
             }
             break;
         }
@@ -125,10 +139,10 @@ static void App_Upg_Handler(void *arg )
                 
                 App_Flash_Write_App2(upgPara.fwOffset, upgPara.fwDataBuf, upgPara.fwDataLen);
 
+                upgPara.fwOffset += FW_DATA_PACK_MAX_SIZE;
+
                 if(upgPara.fwOffset < upgPara.fwSize)
                 {
-                    upgPara.fwOffset += FW_DATA_PACK_MAX_SIZE;
-                
                     if((upgPara.fwSize - upgPara.fwOffset) > FW_DATA_PACK_MAX_SIZE)
                     {
                         App_Com_Tx_Cmd_Get_Fw_Data(upgPara.fwOffset, FW_DATA_PACK_MAX_SIZE);
@@ -136,17 +150,25 @@ static void App_Upg_Handler(void *arg )
                     else
                     {
                         App_Com_Tx_Cmd_Get_Fw_Data(upgPara.fwOffset, upgPara.fwSize - upgPara.fwOffset);
-
-                        upgPara.fwOffset = upgPara.fwSize;
                     }
                 }
                 else
-                {
+                {                    
+                    upgPara.fwOffset = upgPara.fwSize;
+                    
                     App_Com_Tx_Cmd_Get_Fw_CRC();
                     
                     upgPara.stat = UPG_STAT_GET_FW_CRC;
                 }
-                
+            }
+            else 
+            {
+                if(App_Hall_Get_State() == HALL_OPEN)
+                {
+                    upgPara.delayCnt = 0;
+                    
+                    upgPara.stat = UPG_STAT_GET_VER;
+                }
             }
             break;
         }
@@ -167,11 +189,20 @@ static void App_Upg_Handler(void *arg )
 
                 upgPara.stat = UPG_STAT_EXIT;
             }
+            else 
+            {
+                if(App_Hall_Get_State() == HALL_OPEN)
+                {
+                    upgPara.delayCnt = 0;
+                    
+                    upgPara.stat = UPG_STAT_GET_VER;
+                }
+            }
             break;
         }
         case UPG_STAT_EXIT:
         {
-            if(App_Hall_Get_State() == HALL_CLOSE)
+            if(App_Hall_Get_State() == HALL_OPEN)
             {
                 upgPara.stat = UPG_STAT_GET_VER;
             }

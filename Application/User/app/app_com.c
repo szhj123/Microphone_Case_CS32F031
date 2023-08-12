@@ -75,7 +75,7 @@ static void App_ComTx1_Handler(void *arg )
         }
         case COM_STAT_TX:
         {
-            if(++com1Ctrl.delayCnt >= 5)
+            if(++com1Ctrl.delayCnt >= 10)
             {
                 com1Ctrl.delayCnt = 0;
                 
@@ -111,10 +111,10 @@ static void App_ComTx1_Handler(void *arg )
 
                 com1Ctrl.comState = COM_STAT_INIT;
             }
-            #if 0
+            #if 1
             else
             {
-                if(++com1Ctrl.delayCnt >= 100)
+                if(++com1Ctrl.delayCnt >= 500)
                 {
                     com1Ctrl.delayCnt = 0;
 
@@ -365,7 +365,7 @@ void App_Com_Tx_Cmd_Case_Open(uint8_t devType )
     txBuf[9] = (uint8_t )App_Batt_Get_Level();
     txBuf[10] = VER_BLD;
     txBuf[11] = VER_APP;
-    txBuf[12] = VER_HARDWARE;
+    txBuf[12] = VER_HW;
     txBuf[13] = 0x00;
     
     for(i=0;i<sizeof(txBuf)-5;i++)
@@ -472,7 +472,7 @@ void App_Com_Tx_Cmd_Get_Fw_Ver(void )
     txBuf[9] = (uint8_t )App_Batt_Get_Level();
     txBuf[10] = VER_BLD;
     txBuf[11] = VER_APP;
-    txBuf[12] = VER_HARDWARE;
+    txBuf[12] = VER_HW;
     
     for(i=0;i<sizeof(txBuf)-5;i++)
     {
@@ -513,13 +513,13 @@ void App_Com_Tx_Cmd_Get_Fw_Info(void )
 
 void App_Com_Tx_Cmd_Get_Fw_Data(uint32_t fwOffset, uint32_t fwLen)
 {
-    uint8_t txBuf[19] = {0};
+    uint8_t txBuf[15] = {0};
     uint8_t checkSum = 0;
     uint8_t i;
 
     txBuf[0] = 0x05;
     txBuf[1] = 0x5a;
-    txBuf[2] = 0x0f;
+    txBuf[2] = 0x0b;
     txBuf[3] = 0x00;
     txBuf[4] = 0x00;
     txBuf[5] = 0x20;
@@ -527,6 +527,7 @@ void App_Com_Tx_Cmd_Get_Fw_Data(uint32_t fwOffset, uint32_t fwLen)
     txBuf[7] = CMD_GET_FW_DATA;
     txBuf[8] = 0x00;
     txBuf[9] = (uint8_t )App_Batt_Get_Level();
+    #if 0
     txBuf[10]= (uint8_t )fwOffset;
     txBuf[11]= (uint8_t )(fwOffset >> 8);
     txBuf[12]= (uint8_t )(fwOffset >> 16);
@@ -535,13 +536,19 @@ void App_Com_Tx_Cmd_Get_Fw_Data(uint32_t fwOffset, uint32_t fwLen)
     txBuf[15]= (uint8_t )(fwLen >>8 );
     txBuf[16]= (uint8_t )(fwLen >> 16);
     txBuf[17]= (uint8_t )(fwLen >> 24);
+    #else
+    txBuf[10]= (uint8_t )fwOffset;
+    txBuf[11]= (uint8_t )(fwOffset >> 8);
+    txBuf[12]= (uint8_t )(fwLen);
+    txBuf[13]= (uint8_t )(fwLen >>8 );
+    #endif 
     
     for(i=0;i<sizeof(txBuf)-5;i++)
     {
         checkSum += txBuf[i+4];
     }
 
-    txBuf[18] = checkSum;
+    txBuf[14] = checkSum;
 
     Drv_Tx_Queue_Put(COM1, txBuf, sizeof(txBuf));
 }

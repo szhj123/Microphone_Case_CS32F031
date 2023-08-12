@@ -182,7 +182,7 @@ bool MySerialPort::Serial_Port_Get_Opened()
 
 void MySerialPort::Serial_Port_Case_Open()
 {
-    char txBuf[11] = {0};
+    uint8_t txBuf[11] = {0};
     uint8_t checkSum = 0;
     uint8_t i;
 
@@ -204,12 +204,12 @@ void MySerialPort::Serial_Port_Case_Open()
 
     txBuf[10] = checkSum;
 
-    Serial_Port_Send_Data(txBuf, sizeof(txBuf));
+    Serial_Port_Send_Data((char *)txBuf, sizeof(txBuf));
 }
 
 void MySerialPort::Serial_Port_Case_Close()
 {
-    char txBuf[11] = {0};
+    uint8_t txBuf[11] = {0};
     uint8_t checkSum = 0;
     uint8_t i;
 
@@ -231,12 +231,12 @@ void MySerialPort::Serial_Port_Case_Close()
 
     txBuf[10] = checkSum;
 
-    Serial_Port_Send_Data(txBuf, sizeof(txBuf));
+    Serial_Port_Send_Data((char *)txBuf, sizeof(txBuf));
 }
 
 void MySerialPort::Serial_Port_Fw_Ver(void )
 {
-    char txBuf[14] = {0};
+    uint8_t txBuf[14] = {0};
     uint8_t checkSum = 0;
     uint8_t i;
 
@@ -261,12 +261,12 @@ void MySerialPort::Serial_Port_Fw_Ver(void )
 
     txBuf[13] = checkSum;
 
-    Serial_Port_Send_Data(txBuf, sizeof(txBuf));
+    Serial_Port_Send_Data((char *)txBuf, sizeof(txBuf));
 }
 
 void MySerialPort::Serial_Port_Chrg_Off()
 {
-    char txBuf[11] = {0};
+    uint8_t txBuf[11] = {0};
     uint8_t checkSum = 0;
     uint8_t i;
 
@@ -288,12 +288,12 @@ void MySerialPort::Serial_Port_Chrg_Off()
 
     txBuf[10] = checkSum;
 
-    Serial_Port_Send_Data(txBuf, sizeof(txBuf));
+    Serial_Port_Send_Data((char *)txBuf, sizeof(txBuf));
 }
 
 void MySerialPort::Serial_Port_Case_Batt()
 {
-    char txBuf[11] = {0};
+    uint8_t txBuf[11] = {0};
     uint8_t checkSum = 0;
     uint8_t i;
 
@@ -315,12 +315,12 @@ void MySerialPort::Serial_Port_Case_Batt()
 
     txBuf[10] = checkSum;
 
-    Serial_Port_Send_Data(txBuf, sizeof(txBuf));
+    Serial_Port_Send_Data((char *)txBuf, sizeof(txBuf));
 }
 
 void MySerialPort::Serial_Port_Fw_Size(int fwSize)
 {
-    char txBuf[15] = {0};
+    uint8_t txBuf[15] = {0};
     uint8_t checkSum = 0;
     uint8_t i;
 
@@ -334,10 +334,10 @@ void MySerialPort::Serial_Port_Fw_Size(int fwSize)
     txBuf[7] = CDM_FW_SIZE;
     txBuf[8] = 0x00;
     txBuf[9] = 0x32;
-    txBuf[10] = (char )fwSize;
-    txBuf[11] = (char )(fwSize >> 8);
-    txBuf[12] = (char )(fwSize >> 16);
-    txBuf[13] = (char )(fwSize >> 24);
+    txBuf[10] = (uint8_t )fwSize;
+    txBuf[11] = (uint8_t )(fwSize >> 8);
+    txBuf[12] = (uint8_t )(fwSize >> 16);
+    txBuf[13] = (uint8_t )(fwSize >> 24);
 
     for(i=0;i<sizeof(txBuf)-5;i++)
     {
@@ -346,12 +346,12 @@ void MySerialPort::Serial_Port_Fw_Size(int fwSize)
 
     txBuf[14] = checkSum;
 
-    Serial_Port_Send_Data(txBuf, sizeof(txBuf));
+    Serial_Port_Send_Data((char *)txBuf, sizeof(txBuf));
 }
 
-void MySerialPort::Serial_Port_Fw_Data(char *buf, int length)
+void MySerialPort::Serial_Port_Fw_Data(uint8_t *buf, int length)
 {
-    char txBuf[75] = {0};
+    uint8_t txBuf[75] = {0};
     uint8_t checkSum = 0;
     uint8_t i;
 
@@ -371,19 +371,48 @@ void MySerialPort::Serial_Port_Fw_Data(char *buf, int length)
         txBuf[i+10] = buf[i];
     }
 
-    for(i=0;i<length-1;i++)
+    for(i=0;i<length+6;i++)
     {
         checkSum += txBuf[i+4];
     }
 
     txBuf[length+10] = checkSum;
 
-    Serial_Port_Send_Data(txBuf, length+11);
+    Serial_Port_Send_Data((char *)txBuf, length+11);
+}
+
+void MySerialPort:: Serial_Port_Fw_Crc(uint16_t fwCrc )
+{
+    uint8_t txBuf[13] = {0};
+    uint8_t checkSum = 0;
+    uint8_t i;
+
+    txBuf[0] = 0x05;
+    txBuf[1] = 0x5b;
+    txBuf[2] = 0x09;
+    txBuf[3] = 0x00;
+    txBuf[4] = 0x00;
+    txBuf[5] = 0x20;
+    txBuf[6] = 0x01;
+    txBuf[7] = CMD_FW_CRC;
+    txBuf[8] = 0x00;
+    txBuf[9] = 0x32;
+    txBuf[10] = (uint8_t )fwCrc;
+    txBuf[11] = (uint8_t )(fwCrc >> 8);
+
+    for(i=0;i<sizeof(txBuf)-5;i++)
+    {
+        checkSum += txBuf[i+4];
+    }
+
+    txBuf[12] = checkSum;
+
+    Serial_Port_Send_Data((char *)txBuf, sizeof(txBuf));
 }
 
 void MySerialPort::Serial_Port_Timeout_ReadyRead()
 {
-    pTimerRecv->start(500);
+    pTimerRecv->start(50);
 }
 
 

@@ -6,6 +6,7 @@
 #include "drv_flash.h"
 
 #define FW_DATA_PACK_MAX_SIZE               64
+#define UPG_TIMER_OUT                       1000
 
 
 typedef enum _upg_stat_t

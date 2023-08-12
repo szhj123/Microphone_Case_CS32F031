@@ -3,10 +3,11 @@
 #define UPG_INTERVAL_TIME                 15//ms
 #define UPG_ERASE_TIMEOUT                5000 //ms
 
-
 MyUpgrade::MyUpgrade(QWidget *parent) : QWidget(parent)
 {
     this->fwVerRecvFlag = false;
+
+    fwInfo.fwSize = 0;
 }
 
 void MyUpgrade::Upg_Init(Ui::MainWindow *ui, MySerialPort *serialPort)
@@ -99,20 +100,20 @@ void MyUpgrade::on_btnAddFw_Clicked(void )
 
         fwInfo.fwSize = readFileInfo.size();
 
-        static char *pBuf;
+        static uint8_t *pBuf;
 
         if(pBuf != nullptr)
         {
             delete []  pBuf;
         }
 
-        pBuf = new char[fwInfo.fwSize];
+        pBuf = new uint8_t[fwInfo.fwSize];
 
-        binFileData.readRawData(pBuf, static_cast<int>(fwInfo.fwSize));
+        binFileData.readRawData((char *)pBuf, static_cast<int>(fwInfo.fwSize));
 
-        fwInfo.fwArray = QByteArray(pBuf, static_cast<int>(fwInfo.fwSize));
+        fwInfo.fwArray = QByteArray((char *)pBuf, static_cast<int>(fwInfo.fwSize));
 
-        fwInfo.fwBuf = (char *)fwInfo.fwArray.data();
+        fwInfo.fwBuf = (uint8_t *)fwInfo.fwArray.data();
 
         fwInfo.fwOffset = 0;
 
@@ -144,24 +145,27 @@ void MyUpgrade::Upg_Handler(uint8_t *buf, uint16_t length)
 
     switch(cmd)
     {
-        case CMD_CASE_OPEN:  serialPort->Serial_Port_Case_Open();break;
-        case CMD_CASE_CLOSE: serialPort->Serial_Port_Case_Close();break;
-        case CMD_CHAG_OFF:   serialPort->Serial_Port_Chrg_Off();break;
-        case CMD_CASE_BATT:  serialPort->Serial_Port_Case_Batt();break;
-        case CDM_FW_SIZE:    serialPort->Serial_Port_Fw_Size(fwInfo.fwSize);break;
+        case CMD_CASE_OPEN:  serialPort->Serial_Port_Case_Open(); qDebug()<<"cmd case open!";break;
+        case CMD_CASE_CLOSE: serialPort->Serial_Port_Case_Close();qDebug()<<"cmd case close!";break;
+        case CMD_CHAG_OFF:   serialPort->Serial_Port_Chrg_Off();qDebug()<<"cmd chrg off!";break;
+        case CMD_CASE_BATT:  serialPort->Serial_Port_Case_Batt();qDebug()<<"cmd case batt!";break;
+        case CDM_FW_SIZE:    serialPort->Serial_Port_Fw_Size(fwInfo.fwSize);qDebug()<<"cmd fw size!";break;
         case CMD_FW_DATA:
         {
+            #if 0
             int offset = (int)buf[6] << 24 | (int)buf[5] << 16 | (int)buf[4] << 8 | (int)buf[3];
             int length = (int)buf[10] << 24 | (int)buf[9] << 16 | (int)buf[8] << 8 | (int)buf[7];
+            #else
+            uint16_t fwOffset = (uint16_t)buf[4] << 8 | buf[3];
+            uint16_t fwLength = (uint16_t)buf[6] << 8 | buf[5];
+            #endif
 
-            if(offset != fwInfo.fwOffset)
+            if(fwOffset != fwInfo.fwOffset)
             {
-                fwInfo.fwOffset = offset;
-
-                fwInfo.fwBuf += offset;
+                fwInfo.fwOffset = fwOffset;
             }
 
-            serialPort->Serial_Port_Fw_Data(fwInfo.fwBuf, length);
+            serialPort->Serial_Port_Fw_Data(fwInfo.fwBuf+fwInfo.fwOffset, fwLength);
 
             uint8_t progressVal = fwInfo.fwOffset *100 / fwInfo.fwArray.length();
 
@@ -176,8 +180,16 @@ void MyUpgrade::Upg_Handler(uint8_t *buf, uint16_t length)
 
             break;
         }
-        case CMD_FW_CRC: break;
-        case CMD_FW_VER: serialPort->Serial_Port_Fw_Ver();break;
+        case CMD_FW_CRC:
+        {
+            uint16_t fwCrc = Upg_Cal_Checksum(fwInfo.fwBuf, fwInfo.fwSize);
+
+            serialPort->Serial_Port_Fw_Crc(fwCrc);
+
+            qDebug()<<"cmd fw crc!";
+            break;
+        }
+    case CMD_FW_VER: serialPort->Serial_Port_Fw_Ver();qDebug()<<"cmd fw version";break;
         default:break;
     }
 }

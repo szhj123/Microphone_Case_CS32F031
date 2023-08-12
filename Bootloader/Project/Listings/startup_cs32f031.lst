@@ -361,10 +361,10 @@ ARM Macro Assembler    Page 6
               00000000 
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M0 --apcs=interw
-ork --depend=.\objects\startup_cs32f031.d -o.\objects\startup_cs32f031.o -IC:\K
-eil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include -IC:\Keil_v5\ARM\CMS
+ork --depend=.\objects\startup_cs32f031.d -o.\objects\startup_cs32f031.o -Id:\K
+eil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include -Id:\Keil_v5\ARM\CMS
 IS\Include --predefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 
-536" --predefine="CS32F031 SETA 1" --list=.\listings\startup_cs32f031.lst ..\..
+535" --predefine="CS32F031 SETA 1" --list=.\listings\startup_cs32f031.lst ..\..
 \Device\Source\ARM\startup_cs32f031.S
 
 

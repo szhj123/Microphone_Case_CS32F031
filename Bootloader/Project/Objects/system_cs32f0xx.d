@@ -1,6 +1,6 @@
 .\objects\system_cs32f0xx.o: ..\..\Device\Source\system_cs32f0xx.c
 .\objects\system_cs32f0xx.o: ..\..\Device\Include\cs32f0xx.h
-.\objects\system_cs32f0xx.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\system_cs32f0xx.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\system_cs32f0xx.o: ..\User\RTE_Components.h
 .\objects\system_cs32f0xx.o: ..\..\Device\Include\core_cm0.h
 .\objects\system_cs32f0xx.o: ..\..\Device\Include\cmsis_version.h

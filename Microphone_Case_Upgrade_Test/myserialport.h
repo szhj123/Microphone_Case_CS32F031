@@ -35,7 +35,8 @@ public:
     void Serial_Port_Chrg_Off(void );
     void Serial_Port_Case_Batt(void );
     void Serial_Port_Fw_Size(int fwSize);
-    void Serial_Port_Fw_Data(char *buf, int length );
+    void Serial_Port_Fw_Data(uint8_t *buf, int length );
+    void Serial_Port_Fw_Crc(uint16_t fwCrc );
     void Serial_Port_Fw_Ver(void);
 private:
     Ui::MainWindow *ui;

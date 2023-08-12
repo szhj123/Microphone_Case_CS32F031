@@ -24,15 +24,6 @@ static user_data_t userData;
 void App_Flash_Init(void )
 {
     App_Flash_Read_User_Data();
-    
-    if(userData.appVer == 0xff)
-    {
-        userData.bldVer = 0;
-        userData.appVer = 0;
-        userData.hwVer = 0;
-
-        App_Flash_Write_User_Data();
-    }
 }
 
 void App_Flash_Erase_App2(void )
@@ -125,23 +116,6 @@ void App_Flash_Read_User_Data(void )
     {
         *((uint8_t *)&userData + i) = *((uint8_t *)USER_START_ADDR + i);
     }
-}
-
-
-
-uint8_t App_Flash_Get_Bld_Ver(void )
-{
-    return userData.bldVer;
-}
-
-uint8_t App_Flash_Get_App_Ver(void )
-{
-    return userData.appVer;
-}
-
-uint8_t App_Flash_Get_Hw_Ver(void )
-{
-    return userData.hwVer;
 }
 
 void App_Flash_Set_Fw_Size(uint32_t fwSize )

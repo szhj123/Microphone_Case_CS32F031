@@ -22,21 +22,21 @@
 #define CMD_FW_VER          0x16
 
 #define VER_BLD             0
-#define VER_APP             1
+#define VER_APP             2
 #define VER_HW              0
 
 typedef struct _fw_info_t
 {
     int fwSize;
     int fwOffset;
-    char *fwBuf;
+    uint8_t *fwBuf;
     int fwTxLength;
     int fwTxTimeoutCnt;
     int fwTxErrCnt;
 
-    uint8_t buildVer;
-    uint8_t minorVer;
-    uint8_t majorVer;
+    uint8_t bldVer;
+    uint8_t appVer;
+    uint8_t hwVer;
     QByteArray fwArray;
 }fw_info_t;
 Q_DECLARE_METATYPE(fw_info_t)
