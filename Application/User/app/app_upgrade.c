@@ -76,6 +76,10 @@ static void App_Upg_Handler(void *arg )
                         upgPara.stat = UPG_STAT_GET_VER;
                     }
                 }
+                else
+                {
+                    App_Com_Tx_Cmd_Get_Fw_Ver();
+                }
             }
             break;
         }

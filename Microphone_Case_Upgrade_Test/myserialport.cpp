@@ -234,7 +234,7 @@ void MySerialPort::Serial_Port_Case_Close()
     Serial_Port_Send_Data((char *)txBuf, sizeof(txBuf));
 }
 
-void MySerialPort::Serial_Port_Fw_Ver(void )
+void MySerialPort::Serial_Port_Fw_Ver(uint8_t bldVer, uint8_t appVer, uint8_t hwVer )
 {
     uint8_t txBuf[14] = {0};
     uint8_t checkSum = 0;
@@ -250,9 +250,9 @@ void MySerialPort::Serial_Port_Fw_Ver(void )
     txBuf[7] = CMD_FW_VER;
     txBuf[8] = 0x00;
     txBuf[9] = 0x32;
-    txBuf[10] = VER_BLD;
-    txBuf[11] = VER_APP;
-    txBuf[12] = VER_HW;
+    txBuf[10] = bldVer;
+    txBuf[11] = appVer;
+    txBuf[12] = hwVer;
 
     for(i=0;i<sizeof(txBuf)-5;i++)
     {

@@ -35,8 +35,6 @@ void MyUpgrade::Upg_Set_Ver(char fwBuildVer, char fwMinorVer, char fwMajorVer)
     ui->labelFwVer->setText(str);
 }
 
-
-
 void InvertUint16(uint16_t *poly )
 {
     uint8_t i;
@@ -115,6 +113,12 @@ void MyUpgrade::on_btnAddFw_Clicked(void )
 
         fwInfo.fwBuf = (uint8_t *)fwInfo.fwArray.data();
 
+        fwInfo.bldVer = fwInfo.fwBuf[0xb8];
+
+        fwInfo.appVer = fwInfo.fwBuf[0xb9];
+
+        fwInfo.hwVer = fwInfo.fwBuf[0xba];
+
         fwInfo.fwOffset = 0;
 
         ui->upgProgressBar->Update_Val(0);
@@ -167,7 +171,7 @@ void MyUpgrade::Upg_Handler(uint8_t *buf, uint16_t length)
 
             serialPort->Serial_Port_Fw_Data(fwInfo.fwBuf+fwInfo.fwOffset, fwLength);
 
-            uint8_t progressVal = fwInfo.fwOffset *100 / fwInfo.fwArray.length();
+            progressVal = fwInfo.fwOffset *100 / fwInfo.fwArray.length();
 
             if(progressVal >= 100)
             {
@@ -189,7 +193,30 @@ void MyUpgrade::Upg_Handler(uint8_t *buf, uint16_t length)
             qDebug()<<"cmd fw crc!";
             break;
         }
-    case CMD_FW_VER: serialPort->Serial_Port_Fw_Ver();qDebug()<<"cmd fw version";break;
+    case CMD_FW_VER:
+        {
+            uint8_t tmpAppVer = buf[4];
+
+            serialPort->Serial_Port_Fw_Ver(fwInfo.bldVer, fwInfo.appVer, fwInfo.hwVer);
+
+            if(tmpAppVer == fwInfo.appVer)
+            {
+                if(progressVal == 99)
+                {
+                    progressVal = 100;
+
+                    qDebug() << QString().sprintf("firmware data offset:%d", fwInfo.fwOffset);
+
+                    ui->upgProgressBar->Update_Val(progressVal);
+
+                    Upg_Set_Ver(fwInfo.bldVer, fwInfo.appVer, fwInfo.hwVer);
+                }
+            }
+
+            qDebug()<<"cmd fw version";
+
+            break;
+        }
         default:break;
     }
 }

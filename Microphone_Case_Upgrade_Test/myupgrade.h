@@ -55,6 +55,7 @@ private:
     Ui::MainWindow  *ui;
     MySerialPort *serialPort;
     fw_info_t fwInfo;
+    uint8_t progressVal;
     bool fwVerRecvFlag;
 signals:
 private slots:

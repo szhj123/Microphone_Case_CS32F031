@@ -37,7 +37,7 @@ public:
     void Serial_Port_Fw_Size(int fwSize);
     void Serial_Port_Fw_Data(uint8_t *buf, int length );
     void Serial_Port_Fw_Crc(uint16_t fwCrc );
-    void Serial_Port_Fw_Ver(void);
+    void Serial_Port_Fw_Ver(uint8_t bldVer, uint8_t appVer, uint8_t hwVer);
 private:
     Ui::MainWindow *ui;
     QSerialPort *serialPort;

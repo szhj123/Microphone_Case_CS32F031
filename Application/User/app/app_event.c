@@ -125,6 +125,8 @@ static void App_Event_Handler(void *arg )
                     App_Com_Tx_Cmd_Case_Open(DEVICE_LEFT);
                     
                     App_Com_Tx_Cmd_Case_Open(DEVICE_RIGHT);
+
+                    //App_Com_Tx_Cmd_Get_Fw_Ver();
                 }
                 else
                 {

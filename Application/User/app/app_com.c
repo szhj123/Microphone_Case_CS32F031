@@ -17,6 +17,7 @@
 /* Private typedef --------------------------------------*/
 /* Private define ------------------ --------------------*/
 /* Private macro ----------------------------------------*/
+const uint8_t fwVer[3] __attribute__((at(0x080010b8))) = {VER_BLD, VER_APP, VER_HW};
 /* Private function -------------------------------------*/
 static void App_ComTx1_Handler(void *arg );
 static void App_ComTx2_Handler(void *arg );
@@ -43,6 +44,8 @@ void App_Com_Init(void )
     Drv_Task_Regist_Period(App_ComTx2_Handler, 0, 1, NULL);
 
     Drv_Task_Regist_Period(App_Com6_Handler, 0, 1, NULL);
+
+    App_Com_Tx_Cmd_Get_Fw_Ver();
 }
 
 static void App_Com_Send_Case_Msg(uint8_t *buf, uint8_t length )
