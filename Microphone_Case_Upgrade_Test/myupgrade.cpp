@@ -7,6 +7,9 @@ MyUpgrade::MyUpgrade(QWidget *parent) : QWidget(parent)
 {
     this->fwVerRecvFlag = false;
 
+    fwInfo.bldVer = 0;
+    fwInfo.appVer = 0;
+    fwInfo.hwVer  = 0;
     fwInfo.fwSize = 0;
 }
 
@@ -17,10 +20,9 @@ void MyUpgrade::Upg_Init(Ui::MainWindow *ui, MySerialPort *serialPort)
 
     connect(ui->btnAddFw, SIGNAL(clicked()), this, SLOT(on_btnAddFw_Clicked()));
     connect(ui->btnUpgEN, SIGNAL(clicked()), this, SLOT(on_btnUpgEn_Clicked()));
-    connect(ui->btnGetFw, SIGNAL(clicked()), this, SLOT(on_btnGetFw_Clicked()));
 }
 
-void MyUpgrade::Upg_Set_Ver(char fwBuildVer, char fwMinorVer, char fwMajorVer)
+void MyUpgrade::Upg_Set_Ver(QLabel *label, char fwBuildVer, char fwMinorVer, char fwMajorVer)
 {
     QString str = "0.0.0";
 
@@ -32,7 +34,7 @@ void MyUpgrade::Upg_Set_Ver(char fwBuildVer, char fwMinorVer, char fwMajorVer)
 
     qDebug() << str;
 
-    ui->labelFwVer->setText(str);
+    label->setText(str);
 }
 
 void InvertUint16(uint16_t *poly )
@@ -138,11 +140,6 @@ void MyUpgrade::on_btnUpgEn_Clicked()
 
 }
 
-void MyUpgrade::on_btnGetFw_Clicked(void )
-{
-
-}
-
 void MyUpgrade::Upg_Handler(uint8_t *buf, uint16_t length)
 {
     uint8_t cmd = buf[0];
@@ -190,7 +187,7 @@ void MyUpgrade::Upg_Handler(uint8_t *buf, uint16_t length)
 
             serialPort->Serial_Port_Fw_Crc(fwCrc);
 
-            qDebug()<<"cmd fw crc!";
+            qDebug()<<QString().sprintf("firmware crc:%d", fwCrc);
             break;
         }
     case CMD_FW_VER:
@@ -208,10 +205,12 @@ void MyUpgrade::Upg_Handler(uint8_t *buf, uint16_t length)
                     qDebug() << QString().sprintf("firmware data offset:%d", fwInfo.fwOffset);
 
                     ui->upgProgressBar->Update_Val(progressVal);
-
-                    Upg_Set_Ver(fwInfo.bldVer, fwInfo.appVer, fwInfo.hwVer);
                 }
             }
+
+            Upg_Set_Ver(ui->labelFwVerOldVal, buf[3], buf[4], buf[5]);
+
+            Upg_Set_Ver(ui->labelFwVerNewVal,fwInfo.bldVer, fwInfo.appVer, fwInfo.hwVer);
 
             qDebug()<<"cmd fw version";
 

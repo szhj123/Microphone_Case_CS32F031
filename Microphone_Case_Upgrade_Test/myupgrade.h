@@ -48,7 +48,7 @@ public:
     explicit MyUpgrade(QWidget *parent = nullptr);
 
     void Upg_Init(Ui::MainWindow *ui, MySerialPort *serialPort);
-    void Upg_Set_Ver(char fwBuildVer, char fwMinorVer, char fwMajorVer);
+    void Upg_Set_Ver(QLabel *label, char fwBuildVer, char fwMinorVer, char fwMajorVer);
     uint16_t Upg_Cal_Checksum(uint8_t *buf, uint32_t length );
     void Upg_Handler(uint8_t *buf, uint16_t length );
 private:
@@ -61,7 +61,6 @@ signals:
 private slots:
     void on_btnAddFw_Clicked(void );
     void on_btnUpgEn_Clicked(void );
-    void on_btnGetFw_Clicked(void );
 };
 
 #endif // MYUPGRADE_H

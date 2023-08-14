@@ -190,7 +190,7 @@ void MySerialPort::Serial_Port_Case_Open()
     txBuf[1] = 0x5b;
     txBuf[2] = 0x07;
     txBuf[3] = 0x00;
-    txBuf[4] = 0x00;
+    txBuf[4] = 0x20;
     txBuf[5] = 0x20;
     txBuf[6] = 0x01;
     txBuf[7] = CMD_CASE_OPEN;
@@ -217,7 +217,7 @@ void MySerialPort::Serial_Port_Case_Close()
     txBuf[1] = 0x5b;
     txBuf[2] = 0x07;
     txBuf[3] = 0x00;
-    txBuf[4] = 0x00;
+    txBuf[4] = 0x20;
     txBuf[5] = 0x20;
     txBuf[6] = 0x01;
     txBuf[7] = CMD_CASE_CLOSE;
@@ -244,7 +244,7 @@ void MySerialPort::Serial_Port_Fw_Ver(uint8_t bldVer, uint8_t appVer, uint8_t hw
     txBuf[1] = 0x5b;
     txBuf[2] = 0x0a;
     txBuf[3] = 0x00;
-    txBuf[4] = 0x00;
+    txBuf[4] = 0x20;
     txBuf[5] = 0x20;
     txBuf[6] = 0x01;
     txBuf[7] = CMD_FW_VER;
@@ -274,7 +274,7 @@ void MySerialPort::Serial_Port_Chrg_Off()
     txBuf[1] = 0x5b;
     txBuf[2] = 0x07;
     txBuf[3] = 0x00;
-    txBuf[4] = 0x00;
+    txBuf[4] = 0x20;
     txBuf[5] = 0x20;
     txBuf[6] = 0x01;
     txBuf[7] = CMD_CHAG_OFF;
@@ -301,7 +301,7 @@ void MySerialPort::Serial_Port_Case_Batt()
     txBuf[1] = 0x5b;
     txBuf[2] = 0x07;
     txBuf[3] = 0x00;
-    txBuf[4] = 0x00;
+    txBuf[4] = 0x20;
     txBuf[5] = 0x20;
     txBuf[6] = 0x01;
     txBuf[7] = CMD_CASE_BATT;
@@ -320,15 +320,15 @@ void MySerialPort::Serial_Port_Case_Batt()
 
 void MySerialPort::Serial_Port_Fw_Size(int fwSize)
 {
-    uint8_t txBuf[15] = {0};
+    uint8_t txBuf[13] = {0};
     uint8_t checkSum = 0;
     uint8_t i;
 
     txBuf[0] = 0x05;
     txBuf[1] = 0x5b;
-    txBuf[2] = 0x0b;
+    txBuf[2] = 0x09;
     txBuf[3] = 0x00;
-    txBuf[4] = 0x00;
+    txBuf[4] = 0x20;
     txBuf[5] = 0x20;
     txBuf[6] = 0x01;
     txBuf[7] = CDM_FW_SIZE;
@@ -336,15 +336,13 @@ void MySerialPort::Serial_Port_Fw_Size(int fwSize)
     txBuf[9] = 0x32;
     txBuf[10] = (uint8_t )fwSize;
     txBuf[11] = (uint8_t )(fwSize >> 8);
-    txBuf[12] = (uint8_t )(fwSize >> 16);
-    txBuf[13] = (uint8_t )(fwSize >> 24);
 
     for(i=0;i<sizeof(txBuf)-5;i++)
     {
         checkSum += txBuf[i+4];
     }
 
-    txBuf[14] = checkSum;
+    txBuf[12] = checkSum;
 
     Serial_Port_Send_Data((char *)txBuf, sizeof(txBuf));
 }
@@ -359,7 +357,7 @@ void MySerialPort::Serial_Port_Fw_Data(uint8_t *buf, int length)
     txBuf[1] = 0x5b;
     txBuf[2] = length + 7;
     txBuf[3] = 0x00;
-    txBuf[4] = 0x00;
+    txBuf[4] = 0x20;
     txBuf[5] = 0x20;
     txBuf[6] = 0x01;
     txBuf[7] = CMD_FW_DATA;
@@ -391,7 +389,7 @@ void MySerialPort:: Serial_Port_Fw_Crc(uint16_t fwCrc )
     txBuf[1] = 0x5b;
     txBuf[2] = 0x09;
     txBuf[3] = 0x00;
-    txBuf[4] = 0x00;
+    txBuf[4] = 0x20;
     txBuf[5] = 0x20;
     txBuf[6] = 0x01;
     txBuf[7] = CMD_FW_CRC;

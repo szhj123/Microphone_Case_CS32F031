@@ -95,7 +95,5 @@ void USART2_IRQHandler(void )
 void USART6_8_IRQHandler(void )
 {
     Hal_Com_Tx2_Isr_Handler();
-    
-    Hal_Com_Tx6_Isr_Handler();
 }
 

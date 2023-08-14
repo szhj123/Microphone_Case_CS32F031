@@ -19,11 +19,9 @@
 /* Private function -------------------------------------*/
 static void Drv_Com_Tx1_Done_Callback(void );
 static void Drv_Com_Tx2_Done_Callback(void );
-static void Drv_Com_Tx6_Done_Callback(void );
 static void Drv_Com_Rx0_Isr_Handler(uint8_t recvVal );
 static void Drv_Com_Rx1_Isr_Handler(uint8_t recvVal );
 static void Drv_Com_Rx2_Isr_Handler(uint8_t recvVal );
-static void Drv_Com_Rx6_Isr_Handler(uint8_t recvVal );
 static void Drv_Com_Rx_Isr_Handler(rx_ctrl_block_t *rxCtrl, uint8_t recvVal );
 static uint8_t Drv_Com_Cal_Checksum(uint8_t *buf, uint8_t length );
 
@@ -36,23 +34,19 @@ static tx_queue_t tx6Queue;
 static rx_ctrl_block_t rx0Ctrl;
 static rx_ctrl_block_t rx1Ctrl;
 static rx_ctrl_block_t rx2Ctrl;
-static rx_ctrl_block_t rx6Ctrl;
 
 static com_event_callback_t comCaseEventCallback = NULL;
-static com_event_callback_t comUpgEventCallback = NULL;
 static uint8_t tx1DoneFlag;
 static uint8_t tx2DoneFlag;
-static uint8_t tx6DoneFlag;
 
-void Drv_Com_Init(com_event_callback_t comCaseCallback, com_event_callback_t comUpgCallback )
+void Drv_Com_Init(com_event_callback_t comCaseCallback)
 {
     Hal_Com_Init();
 
-    Hal_Com_Regist_Rx_Isr_Callback(Drv_Com_Rx0_Isr_Handler, Drv_Com_Rx1_Isr_Handler, Drv_Com_Rx2_Isr_Handler, Drv_Com_Rx6_Isr_Handler);
+    Hal_Com_Regist_Rx_Isr_Callback(Drv_Com_Rx0_Isr_Handler, Drv_Com_Rx1_Isr_Handler, Drv_Com_Rx2_Isr_Handler);
 
     comCaseEventCallback = comCaseCallback;
 
-    comUpgEventCallback = comUpgCallback;
 }
 
 static void Drv_Com_Rx0_Isr_Handler(uint8_t recvVal )
@@ -153,82 +147,6 @@ static void Drv_Com_Rx_Isr_Handler(rx_ctrl_block_t *rxCtrl, uint8_t recvVal )
             rxCtrl->dataLength = 0;
             rxCtrl->lengthIndex = 0;
             rxCtrl->stat = RX_STAT_HEADER;
-            
-            break;
-        }
-        default: break;
-    }
-}
-
-static void Drv_Com_Rx6_Isr_Handler(uint8_t recvVal )
-{
-    switch(rx6Ctrl.stat)
-    {
-        case RX_STAT_HEADER:
-        {
-            if(recvVal == 0x5a)
-            {
-                rx6Ctrl.dataCnt++;
-            }
-            else 
-            {
-                rx6Ctrl.dataCnt = 0;
-            }
-
-            if(rx6Ctrl.dataCnt == 2)
-            {
-                rx6Ctrl.dataCnt = 0;
-
-                rx6Ctrl.checkSum = 0;
-                
-                rx6Ctrl.stat = RX_STAT_LENGTH;
-            }
-            
-            break;
-        }
-        case RX_STAT_LENGTH:
-        {
-            rx6Ctrl.dataLength = recvVal;
-
-            rx6Ctrl.dataBuf[rx6Ctrl.dataCnt++] = rx6Ctrl.dataLength;
-
-            rx6Ctrl.checkSum += rx6Ctrl.dataLength;
-            
-            rx6Ctrl.stat = RX_STAT_DATA;
-
-            break;
-        }
-        case RX_STAT_DATA:
-        {
-            if(rx6Ctrl.dataCnt < (rx6Ctrl.dataLength - 1))
-            {
-                rx6Ctrl.dataBuf[rx6Ctrl.dataCnt++] = recvVal;
-
-                rx6Ctrl.checkSum += recvVal;
-            }
-
-            if(rx6Ctrl.dataCnt == (rx6Ctrl.dataLength -1))
-            {
-                rx6Ctrl.stat = RX_STAT_CHECKSUM;
-            }
-
-            break;
-        }
-        case RX_STAT_CHECKSUM:
-        {
-            if(rx6Ctrl.checkSum == recvVal)
-            {
-                while ((__USART_FLAG_STATUS_GET(USART6, TC) == RESET));
-                
-                if(comUpgEventCallback != NULL)
-                {
-                    comUpgEventCallback(&rx6Ctrl.dataBuf[1], rx6Ctrl.dataLength - 2);
-                }
-            }
-
-            rx6Ctrl.dataCnt = 0;
-            
-            rx6Ctrl.stat = RX_STAT_HEADER;
             
             break;
         }
@@ -350,7 +268,6 @@ void Drv_Com_Tx_Send(com_port_t com, uint8_t *buf, uint16_t length )
     }
     else if(com == COM6)
     {
-        Hal_Com_Tx6_Send(buf, length, Drv_Com_Tx6_Done_Callback);
     }
 }
 
@@ -368,7 +285,6 @@ uint8_t Drv_Com_Tx_Get_State(com_port_t com )
     }
     else if(com == COM6)
     {
-        retVal = tx6DoneFlag;
     }
     
     return retVal;
@@ -386,7 +302,6 @@ void Drv_Com_Tx_Clr_State(com_port_t com )
     }
     else if(com == COM6)
     {
-        tx6DoneFlag = 0;
     }
 }
 
@@ -399,12 +314,6 @@ static void Drv_Com_Tx2_Done_Callback(void )
 {
     tx2DoneFlag = 1;
 }
-
-static void Drv_Com_Tx6_Done_Callback(void )
-{
-    tx6DoneFlag = 1;
-}
-
 
 /************************************************************/
 

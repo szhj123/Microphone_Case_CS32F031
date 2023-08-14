@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>640</width>
-    <height>350</height>
+    <width>764</width>
+    <height>478</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -83,27 +83,19 @@
        <string>更新固件</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="btnGetFw">
+     <widget class="QLabel" name="labelFwVerNewVal">
       <property name="geometry">
        <rect>
-        <x>310</x>
-        <y>220</y>
-        <width>65</width>
-        <height>30</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>固件版本</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="labelFwVer">
-      <property name="geometry">
-       <rect>
-        <x>380</x>
+        <x>389</x>
         <y>220</y>
         <width>71</width>
-        <height>30</height>
+        <height>25</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Microsoft JhengHei UI</family>
+       </font>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(255, 255, 255);</string>
@@ -135,6 +127,76 @@
       </property>
       <property name="text">
        <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelFwVerOld">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>180</y>
+        <width>80</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Microsoft JhengHei UI</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 255, 255);</string>
+      </property>
+      <property name="text">
+       <string>固件旧版本</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelFwVerNew">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>220</y>
+        <width>80</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Microsoft JhengHei UI</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 255, 255);</string>
+      </property>
+      <property name="text">
+       <string>固件新版本</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelFwVerOldVal">
+      <property name="geometry">
+       <rect>
+        <x>390</x>
+        <y>180</y>
+        <width>71</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Microsoft YaHei UI</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 255, 255);</string>
+      </property>
+      <property name="text">
+       <string>0.0.0</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -552,8 +614,8 @@ font: 8pt &quot;Microsoft YaHei UI&quot;;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>640</width>
-     <height>21</height>
+     <width>764</width>
+     <height>25</height>
     </rect>
    </property>
   </widget>

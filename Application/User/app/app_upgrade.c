@@ -92,7 +92,7 @@ static void App_Upg_Handler(void *arg )
                     upgPara.delayCnt = 0;
 
                     //Todo: get firmware information from earbud
-                    App_Com_Tx_Cmd_Get_Fw_Info();
+                    App_Com_Tx_Cmd_Get_Fw_Size();
                     
                     upgPara.stat = UPG_STAT_GET_FW_INFO;
                 }

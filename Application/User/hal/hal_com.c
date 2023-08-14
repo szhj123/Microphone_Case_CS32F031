@@ -54,7 +54,6 @@ static void Hal_Com_Uart6_Init(void );
 static hal_com_rx_callback_t hal_rx0_isr_callback = NULL;
 static hal_com_rx_callback_t hal_rx1_isr_callback = NULL;
 static hal_com_rx_callback_t hal_rx2_isr_callback = NULL;
-static hal_com_rx_callback_t hal_rx6_isr_callback = NULL;
 
 static hal_isr_callback_t hal_tx1_isr_callback = NULL;
 static uint8_t *pTx1Buf = NULL;
@@ -63,11 +62,6 @@ static uint16_t tx1Length;
 static hal_isr_callback_t hal_tx2_isr_callback = NULL;
 static uint8_t *pTx2Buf = NULL;
 static uint16_t tx2Length;
-
-static hal_isr_callback_t hal_tx6_isr_callback = NULL;
-static uint8_t *pTx6Buf = NULL;
-static uint16_t tx6Length;
-
 
 void Hal_Com_Init(void )
 {
@@ -80,17 +74,17 @@ void Hal_Com_Init(void )
     Hal_Com_Uart3_Init();
 
     Hal_Com_Uart6_Init();
+
+    printf("USART Printf the C library printf function. \r\n");
 }
 
-void Hal_Com_Regist_Rx_Isr_Callback(hal_com_rx_callback_t rx0Callback, hal_com_rx_callback_t rx1Callback, hal_com_rx_callback_t rx2Callback , hal_com_rx_callback_t rx6Callback )
+void Hal_Com_Regist_Rx_Isr_Callback(hal_com_rx_callback_t rx0Callback, hal_com_rx_callback_t rx1Callback, hal_com_rx_callback_t rx2Callback )
 {
     hal_rx0_isr_callback = rx0Callback;
     
     hal_rx1_isr_callback = rx1Callback;
     
     hal_rx2_isr_callback = rx2Callback;
-
-    hal_rx6_isr_callback = rx6Callback;
 }
 
 
@@ -265,9 +259,11 @@ void Hal_Com_Uart6_Init(void )
     nvic_config_struct.enable_flag = ENABLE;
     nvic_init(&nvic_config_struct);
 
-    __USART_ENABLE(USART6); // Enable USART
+    __USART_INTR_DISABLE(USART6, RXNE); // Enable the USART Receive interrupt
 
-    __USART_INTR_ENABLE(USART6, RXNE); // Enable the USART Receive interrupt
+    __USART_INTR_DISABLE(USART6, TXE);
+    
+    __USART_ENABLE(USART6); // Enable USART
 }
 
 
@@ -438,65 +434,15 @@ void Hal_Com_Tx2_Isr_Handler(void )
     }
 }
 
-void Hal_Com_Tx6_Send(uint8_t *buf, uint16_t length, hal_isr_callback_t callback )
+int fputc(int ch, FILE *f)
 {
-    pTx6Buf = buf;
-    
-    tx6Length = length;
-
-    hal_tx6_isr_callback = callback;
-
-    __USART_INTR_ENABLE(USART6, TXE); // Enable the USART transmit  interrupt
-
-    __USART_INTR_DISABLE(USART6, RXNE);
+  /* Place your implementation of fputc here */
+  /* e.g. write a character to the EVAL_COM1 and Loop until the end of transmission */
+    __USART_DATA_SEND(USART6, (uint8_t) ch);
+    while(__USART_FLAG_STATUS_GET(USART6, TXE) == RESET);
+    return ch;
 }
 
-
-void Hal_Com_Tx6_Isr_Handler(void )
-{
-    if (__USART_FLAG_STATUS_GET(USART6, TXE) == SET)
-    {   
-        if(tx6Length > 0)
-        {
-            __USART_DATA_SEND(USART6, *pTx6Buf);
-
-            pTx6Buf++;
-            
-            tx6Length--;
-        }
-        else 
-        {
-            while ((__USART_FLAG_STATUS_GET(USART6, TC) == RESET));
-            
-            __USART_INTR_DISABLE(USART6, TXE);
-
-            __USART_INTR_ENABLE(USART6, RXNE);
-            
-            pTx6Buf = NULL;
-
-            if(hal_tx6_isr_callback != NULL)
-            {
-                hal_tx6_isr_callback();
-
-                hal_tx6_isr_callback = NULL;
-            }
-            /* Disable the USART transmit data register empty interrupt */
-            
-        }
-    }
-
-    if (__USART_FLAG_STATUS_GET(USART6, RXNE) == SET)
-    {
-        uint8_t recvVal  = 0;
-        
-        recvVal = (uint8_t)__USART_DATA_RECV(USART6);
-
-        if(hal_rx6_isr_callback != NULL)
-        {
-            hal_rx6_isr_callback(recvVal);
-        }
-    }
-}
 
 
 

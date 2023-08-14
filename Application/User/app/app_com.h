@@ -8,7 +8,7 @@
 #include "drv_flash.h"
 
 #define VER_BLD                           0x01
-#define VER_APP                           0x02
+#define VER_APP                           0x01
 #define VER_HW                            0x01
 
 #define FW_BUILD_VER                      0x02
@@ -23,7 +23,7 @@
 #define CMD_GET_SIRK                      0x10
 #define CMD_SET_SIRK                      0x11
 #define CMD_GET_RANDOM_SIRK               0x12
-#define CMD_GET_FW_INFO                   0x13
+#define CMD_GET_FW_SIZE                   0x13
 #define CMD_GET_FW_DATA                   0x14
 #define CMD_GET_FW_CRC                    0x15
 #define CMD_GET_FW_VER                    0x16
@@ -74,10 +74,8 @@ typedef struct _cmd_fw_info_t
     uint8_t cmd;
     uint8_t devType;
     uint8_t ebudBattLevel;
-    uint8_t fwSizeByte0;
-    uint8_t fwSizeByte1;
-    uint8_t fwSizeByte2;
-    uint8_t fwSizeByte3;    
+    uint8_t fwSizeByte_L;
+    uint8_t fwSizeByte_H;
 }cmd_fw_info_t;
 
 typedef struct _com_ctrl_block_t
@@ -109,19 +107,16 @@ void App_Com_Tx_Cmd_Case_Open(uint8_t devType );
 void App_Com_Tx_Cmd_Case_Close(uint8_t devType );
 void App_Com_Tx_Cmd_Chrg_Off(uint8_t devType, uint8_t ebudChrgOffReason);
 void App_Com_Tx_Cmd_Get_Fw_Ver(void );
-void App_Com_Tx_Cmd_Get_Fw_Info(void );
+void App_Com_Tx_Cmd_Get_Fw_Size(void );
 void App_Com_Tx_Cmd_Get_Fw_Data(uint32_t fwOffset, uint32_t fwLen);
 void App_Com_Tx_Cmd_Get_Fw_CRC(void );
 
 
 void App_Com_Set_Rx_Stat(uint8_t devType );
 
-void App_Com_Upg_Tx_FwVer(void );
-void App_Com_Upg_Tx_Ack(void );
-
 void App_Com_Cmd_Case_Open_Response(uint8_t *buf, uint8_t length );
 void App_Com_Cmd_Fw_Ver_Response(uint8_t *buf, uint8_t length );
-void App_Com_Cmd_Fw_Info_Response(uint8_t *buf, uint8_t length );
+void App_Com_Cmd_Fw_Size_Response(uint8_t *buf, uint8_t length );
 void App_Com_Cmd_Fw_Data_Response(uint8_t *buf, uint8_t length );
 void App_Com_Cmd_Fw_CRC_Response(uint8_t *buf, uint8_t length );
 

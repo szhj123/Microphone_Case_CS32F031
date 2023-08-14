@@ -21,29 +21,22 @@ const uint8_t fwVer[3] __attribute__((at(0x080010b8))) = {VER_BLD, VER_APP, VER_
 /* Private function -------------------------------------*/
 static void App_ComTx1_Handler(void *arg );
 static void App_ComTx2_Handler(void *arg );
-static void App_Com6_Handler(void *arg );
 static void App_Com_Send_Case_Msg(uint8_t *buf, uint8_t length );
-static void App_Com_Send_Upg_Msg(uint8_t *buf, uint8_t length );
 /* Private variables ------------------------------------*/
 
 static com_ctrl_block_t com0Ctrl;
 static com_ctrl_block_t com1Ctrl;
 static com_ctrl_block_t com2Ctrl;
-static com_ctrl_block_t com6Ctrl;
 
 static com_para_t comPara;
 
-static uint8_t txFlag;
-
 void App_Com_Init(void )
 {
-    Drv_Com_Init(App_Com_Send_Case_Msg, App_Com_Send_Upg_Msg);
+    Drv_Com_Init(App_Com_Send_Case_Msg);
 
     Drv_Task_Regist_Period(App_ComTx1_Handler, 0, 1, NULL);
     
     Drv_Task_Regist_Period(App_ComTx2_Handler, 0, 1, NULL);
-
-    Drv_Task_Regist_Period(App_Com6_Handler, 0, 1, NULL);
 
     App_Com_Tx_Cmd_Get_Fw_Ver();
 }
@@ -51,11 +44,6 @@ void App_Com_Init(void )
 static void App_Com_Send_Case_Msg(uint8_t *buf, uint8_t length )
 {
     Drv_Msg_Put(APP_EVENT_COM_CASE, buf, length);
-}
-
-static void App_Com_Send_Upg_Msg(uint8_t *buf, uint8_t length )
-{
-    Drv_Msg_Put(APP_EVENT_COM_UPG, buf, length);
 }
 
 static void App_ComTx1_Handler(void *arg )
@@ -239,42 +227,6 @@ static void App_ComTx2_Handler(void *arg )
     }
 }
 
-static void App_Com6_Handler(void *arg )
-{    
-    switch(com6Ctrl.comState)
-    {
-        case COM_STAT_INIT:
-        {
-            if(Drv_Tx_Queue_Get(COM6, &com6Ctrl.comData) == COM_QUEUE_OK)
-            {                
-                com6Ctrl.delayCnt = 0;
-                com6Ctrl.comState = COM_STAT_TX;
-            }
-            break;
-        }
-        case COM_STAT_TX:
-        {
-            Drv_Com_Tx_Send(COM6, com6Ctrl.comData.data, com6Ctrl.comData.length);
-            
-            com6Ctrl.comState = COM_STAT_TX_WATI_DONE;
-
-            break;
-        }
-        case COM_STAT_TX_WATI_DONE:
-        {
-            if(Drv_Com_Tx_Get_State(COM6))
-            {
-                Drv_Com_Tx_Clr_State(COM6);
-
-                com6Ctrl.comState = COM_STAT_INIT;
-
-                break;
-            }
-        }
-        default: break;
-    }
-}
-
 void App_Com_Set_Rx_Stat(uint8_t devType )
 {
     if(devType == DEVICE_LEFT)
@@ -317,10 +269,10 @@ void App_Com_Cmd_Fw_Ver_Response(uint8_t *buf, uint8_t length )
     App_Upg_Set_Fw_Ver(cmdFwVer.bldVer, cmdFwVer.appVer, cmdFwVer.hwVer);
 }
 
-void App_Com_Cmd_Fw_Info_Response(uint8_t *buf, uint8_t length )
+void App_Com_Cmd_Fw_Size_Response(uint8_t *buf, uint8_t length )
 {
     uint8_t i;
-    word_t fwSize;
+    uint16_t fwSize;
     cmd_fw_info_t cmdFwInfo;
     
     for(i=0;i<length;i++)
@@ -328,12 +280,9 @@ void App_Com_Cmd_Fw_Info_Response(uint8_t *buf, uint8_t length )
         *((uint8_t *)&cmdFwInfo +i)  = buf[i];
     }
 
-    fwSize.byte_t.byte0 = cmdFwInfo.fwSizeByte0;
-    fwSize.byte_t.byte1 = cmdFwInfo.fwSizeByte1;
-    fwSize.byte_t.byte2 = cmdFwInfo.fwSizeByte2;
-    fwSize.byte_t.byte3 = cmdFwInfo.fwSizeByte3;
-    
-    App_Upg_Set_Fw_Size(fwSize.val);
+    fwSize = (uint16_t )cmdFwInfo.fwSizeByte_H <<8 | cmdFwInfo.fwSizeByte_L;
+
+    App_Upg_Set_Fw_Size(fwSize);
 }
 
 void App_Com_Cmd_Fw_Data_Response(uint8_t *buf, uint8_t length )
@@ -360,7 +309,7 @@ void App_Com_Tx_Cmd_Case_Open(uint8_t devType )
     txBuf[1] = 0x5a;
     txBuf[2] = 0x0b;
     txBuf[3] = 0x00;
-    txBuf[4] = 0x00;
+    txBuf[4] = 0x20;
     txBuf[5] = 0x20;
     txBuf[6] = 0x01;
     txBuf[7] = CMD_CASE_OPEN;
@@ -398,7 +347,7 @@ void App_Com_Tx_Cmd_Case_Close(uint8_t devType )
     txBuf[1] = 0x5a;
     txBuf[2] = 0x07;
     txBuf[3] = 0x00;
-    txBuf[4] = 0x00;
+    txBuf[4] = 0x20;
     txBuf[5] = 0x20;
     txBuf[6] = 0x01;
     txBuf[7] = CMD_CASE_CLOSE;
@@ -432,7 +381,7 @@ void App_Com_Tx_Cmd_Chrg_Off(uint8_t devType, uint8_t ebudChrgOffReason)
     txBuf[1] = 0x5a;
     txBuf[2] = 0x08;
     txBuf[3] = 0x00;
-    txBuf[4] = 0x00;
+    txBuf[4] = 0x20;
     txBuf[5] = 0x20;
     txBuf[6] = 0x01;
     txBuf[7] = CMD_CHRG_OFF;
@@ -467,7 +416,7 @@ void App_Com_Tx_Cmd_Get_Fw_Ver(void )
     txBuf[1] = 0x5a;
     txBuf[2] = 0x0a;
     txBuf[3] = 0x00;
-    txBuf[4] = 0x00;
+    txBuf[4] = 0x20;
     txBuf[5] = 0x20;
     txBuf[6] = 0x01;
     txBuf[7] = CMD_GET_FW_VER;
@@ -487,7 +436,7 @@ void App_Com_Tx_Cmd_Get_Fw_Ver(void )
     Drv_Tx_Queue_Put(COM1, txBuf, sizeof(txBuf));
 }
 
-void App_Com_Tx_Cmd_Get_Fw_Info(void )
+void App_Com_Tx_Cmd_Get_Fw_Size(void )
 {
     uint8_t txBuf[11] = {0};
     uint8_t checkSum = 0;
@@ -497,10 +446,10 @@ void App_Com_Tx_Cmd_Get_Fw_Info(void )
     txBuf[1] = 0x5a;
     txBuf[2] = 0x07;
     txBuf[3] = 0x00;
-    txBuf[4] = 0x00;
+    txBuf[4] = 0x20;
     txBuf[5] = 0x20;
     txBuf[6] = 0x01;
-    txBuf[7] = CMD_GET_FW_INFO;
+    txBuf[7] = CMD_GET_FW_SIZE;
     txBuf[8] = 0x00;
     txBuf[9] = (uint8_t )App_Batt_Get_Level();
     
@@ -524,27 +473,16 @@ void App_Com_Tx_Cmd_Get_Fw_Data(uint32_t fwOffset, uint32_t fwLen)
     txBuf[1] = 0x5a;
     txBuf[2] = 0x0b;
     txBuf[3] = 0x00;
-    txBuf[4] = 0x00;
+    txBuf[4] = 0x20;
     txBuf[5] = 0x20;
     txBuf[6] = 0x01;
     txBuf[7] = CMD_GET_FW_DATA;
     txBuf[8] = 0x00;
     txBuf[9] = (uint8_t )App_Batt_Get_Level();
-    #if 0
-    txBuf[10]= (uint8_t )fwOffset;
-    txBuf[11]= (uint8_t )(fwOffset >> 8);
-    txBuf[12]= (uint8_t )(fwOffset >> 16);
-    txBuf[13]= (uint8_t )(fwOffset >> 24);
-    txBuf[14]= (uint8_t )(fwLen);
-    txBuf[15]= (uint8_t )(fwLen >>8 );
-    txBuf[16]= (uint8_t )(fwLen >> 16);
-    txBuf[17]= (uint8_t )(fwLen >> 24);
-    #else
     txBuf[10]= (uint8_t )fwOffset;
     txBuf[11]= (uint8_t )(fwOffset >> 8);
     txBuf[12]= (uint8_t )(fwLen);
     txBuf[13]= (uint8_t )(fwLen >>8 );
-    #endif 
     
     for(i=0;i<sizeof(txBuf)-5;i++)
     {
@@ -566,7 +504,7 @@ void App_Com_Tx_Cmd_Get_Fw_CRC(void )
     txBuf[1] = 0x5a;
     txBuf[2] = 0x07;
     txBuf[3] = 0x00;
-    txBuf[4] = 0x00;
+    txBuf[4] = 0x20;
     txBuf[5] = 0x20;
     txBuf[6] = 0x01;
     txBuf[7] = CMD_GET_FW_CRC;
@@ -581,49 +519,5 @@ void App_Com_Tx_Cmd_Get_Fw_CRC(void )
     txBuf[10] = checkSum;
 
     Drv_Tx_Queue_Put(COM1, txBuf, sizeof(txBuf));
-}
-
-void App_Com_Upg_Tx_FwVer(void )
-{
-    uint8_t txBuf[8] = {0};
-    uint8_t checksum = 0;
-
-    txBuf[0] = 0x5a;
-    txBuf[1] = 0x5a;
-    txBuf[2] = 0x06;
-    txBuf[3] = CMD_FW_VERSION | CMD_MCU_TO_PC;
-    txBuf[4] = FW_MAJOR_VER;
-    txBuf[5] = FW_MINOR_VER;
-    txBuf[6] = FW_BUILD_VER;
-
-    for(int i = 0;i<txBuf[2]-1;i++)
-    {
-        checksum += txBuf[i+2];
-    }
-
-    txBuf[7] = (char)checksum;
-
-    Drv_Tx_Queue_Put(COM6, txBuf, sizeof(txBuf));
-}
-
-
-void App_Com_Upg_Tx_Ack(void )
-{
-    uint8_t txBuf[5] = {0};
-    uint8_t checksum = 0;
-
-    txBuf[0] = 0x5a;
-    txBuf[1] = 0x5a;
-    txBuf[2] = 0x03;
-    txBuf[3] = CDM_FW_ACK | CMD_MCU_TO_PC;
-
-    for(int i = 0;i<txBuf[2]-1;i++)
-    {
-        checksum += txBuf[i+2];
-    }
-
-    txBuf[4] = (char)checksum;
-
-    Drv_Tx_Queue_Put(COM6, txBuf, sizeof(txBuf));
 }
 

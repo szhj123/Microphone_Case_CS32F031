@@ -22,7 +22,6 @@
 /* Private function -------------------------------------*/
 static void App_Event_Handler(void *arg );
 static void App_Event_Case_Handler(uint8_t *buf, uint8_t length );
-static void App_Event_Upg_Handler(uint8_t *buf, uint8_t length );
 static void App_Event_Send_Sleep(void *arg );
 
 /* Private variables ------------------------------------*/
@@ -145,11 +144,6 @@ static void App_Event_Handler(void *arg )
             
             break;
         }
-        case APP_EVENT_COM_UPG:
-        {
-            App_Event_Upg_Handler(msg.data, msg.lenght);
-            break;
-        }
         case APP_EVENT_SYS_SLEEP:
         {
             //todo: system sleep
@@ -181,9 +175,9 @@ void App_Event_Case_Handler(uint8_t *buf, uint8_t length )
             App_Com_Cmd_Fw_Ver_Response(buf, length );
             break;
         }
-        case CMD_GET_FW_INFO:
+        case CMD_GET_FW_SIZE:
         {
-            App_Com_Cmd_Fw_Info_Response(buf, length );
+            App_Com_Cmd_Fw_Size_Response(buf, length );
             break;
         }
         case CMD_GET_FW_DATA:
@@ -194,80 +188,6 @@ void App_Event_Case_Handler(uint8_t *buf, uint8_t length )
         case CMD_GET_FW_CRC:
         {
             App_Com_Cmd_Fw_CRC_Response(buf, length );
-            break;
-        }
-        default: break;
-    }
-}
-
-void App_Event_Upg_Handler(uint8_t *buf, uint8_t length )
-{
-    static word_t saveFwOffset;
-    uint8_t cmd = buf[0];
-
-    switch(cmd)
-    {
-        case CMD_FW_ERASE:
-        {
-            word_t fwSize;
-
-            fwSize.byte_t.byte0 = buf[1];
-            fwSize.byte_t.byte1 = buf[2];
-            fwSize.byte_t.byte2 = buf[3];
-            fwSize.byte_t.byte3 = buf[4];
-
-            App_Flash_Set_Fw_Size(fwSize.val);
-                
-            App_Flash_Erase_App2();
-            
-            App_Com_Upg_Tx_Ack();
-
-            saveFwOffset.val = 0xffff;
-            break;
-        }
-        case CMD_FW_DATA:
-        {
-            word_t fwOffset;
-
-            fwOffset.byte_t.byte0 = buf[1];
-            fwOffset.byte_t.byte1 = buf[2];
-            fwOffset.byte_t.byte2 = buf[3];
-            fwOffset.byte_t.byte3 = buf[4];
-
-            if(saveFwOffset.val != fwOffset.val)
-            {
-                saveFwOffset.val = fwOffset.val;
-                
-                App_Flash_Write_App2(fwOffset.val, &buf[5], length-5);
-            }
-
-            App_Com_Upg_Tx_Ack();
-            break;
-        }
-        case CMD_FW_CHECKSUM:
-        {
-            uint16_t fwChecksum = (uint16_t )buf[2] << 8 | buf[1];
-
-            uint16_t calFwChecksum = App_Flash_Cal_Fw_Checksum();
-
-            if(fwChecksum == calFwChecksum)
-            {
-                App_Com_Upg_Tx_Ack();
-            }
-            break;
-        }
-        case CMD_FW_VERSION:
-        {
-            App_Com_Upg_Tx_FwVer();
-            
-            break;
-        }
-        case CMD_FW_RESET:
-        {
-            App_Flash_Upg_Enable();
-
-            App_Jump_to_Bld();
-            
             break;
         }
         default: break;
