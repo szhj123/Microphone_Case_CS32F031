@@ -7,6 +7,14 @@
 #include "cs32f0xx.h"
 #include "cs32f0xx_conf.h"
 
+#define DEBUG_ENABLE        1
+
+#if (defined DEBUG_ENABLE) && (DEBUG_ENABLE == 1)
+    #define DEBUG(fmt, ...)    do{printf(fmt, ##__VA_ARGS__);}while(0)
+#else
+    #define DEBUG(fmt, ...)    
+#endif 
+
 typedef union _word_t
 {
     uint32_t val;

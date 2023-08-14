@@ -124,8 +124,6 @@ static void App_Event_Handler(void *arg )
                     App_Com_Tx_Cmd_Case_Open(DEVICE_LEFT);
                     
                     App_Com_Tx_Cmd_Case_Open(DEVICE_RIGHT);
-
-                    //App_Com_Tx_Cmd_Get_Fw_Ver();
                 }
                 else
                 {
@@ -167,7 +165,7 @@ void App_Event_Case_Handler(uint8_t *buf, uint8_t length )
         case CMD_CHRG_OFF:
         case CMD_CASE_BATT:
         {
-            App_Com_Cmd_Case_Open_Response(buf, length);
+            App_Com_Cmd_Case_Response(buf, length);
             break;
         }
         case CMD_GET_FW_VER:

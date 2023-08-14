@@ -33,6 +33,13 @@ static void App_Upg_Handler(void *arg )
     {
         upgPara.delayCnt++;
     }
+
+    if(upgPara.delayCnt > 250)
+    {
+        upgPara.delayCnt = 0;
+
+        DEBUG("delayCnt test:%d\n", upgPara.delayCnt);
+    }
     
     switch(upgPara.stat)
     {

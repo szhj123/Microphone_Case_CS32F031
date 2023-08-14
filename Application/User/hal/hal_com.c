@@ -74,8 +74,6 @@ void Hal_Com_Init(void )
     Hal_Com_Uart3_Init();
 
     Hal_Com_Uart6_Init();
-
-    printf("USART Printf the C library printf function. \r\n");
 }
 
 void Hal_Com_Regist_Rx_Isr_Callback(hal_com_rx_callback_t rx0Callback, hal_com_rx_callback_t rx1Callback, hal_com_rx_callback_t rx2Callback )

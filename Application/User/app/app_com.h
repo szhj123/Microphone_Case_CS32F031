@@ -52,12 +52,12 @@ typedef enum _com_state_t
     COM_STAT_ERR    
 }com_state_t;
 
-typedef struct _cmd_case_open_t
+typedef struct _cmd_case_t
 {
     uint8_t cmd;
     uint8_t devType;
     uint8_t ebudBattLevel;    
-}cmd_case_open_t;
+}cmd_case_t;
 
 typedef struct _cmd_fw_ver_t
 {
@@ -114,7 +114,7 @@ void App_Com_Tx_Cmd_Get_Fw_CRC(void );
 
 void App_Com_Set_Rx_Stat(uint8_t devType );
 
-void App_Com_Cmd_Case_Open_Response(uint8_t *buf, uint8_t length );
+void App_Com_Cmd_Case_Response(uint8_t *buf, uint8_t length );
 void App_Com_Cmd_Fw_Ver_Response(uint8_t *buf, uint8_t length );
 void App_Com_Cmd_Fw_Size_Response(uint8_t *buf, uint8_t length );
 void App_Com_Cmd_Fw_Data_Response(uint8_t *buf, uint8_t length );

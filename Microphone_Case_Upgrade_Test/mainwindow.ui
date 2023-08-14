@@ -152,7 +152,7 @@
        <string notr="true">color: rgb(255, 255, 255);</string>
       </property>
       <property name="text">
-       <string>固件旧版本</string>
+       <string>固件当前版本</string>
       </property>
      </widget>
      <widget class="QLabel" name="labelFwVerNew">
@@ -175,7 +175,7 @@
        <string notr="true">color: rgb(255, 255, 255);</string>
       </property>
       <property name="text">
-       <string>固件新版本</string>
+       <string>固件升级版本</string>
       </property>
      </widget>
      <widget class="QLabel" name="labelFwVerOldVal">
@@ -615,7 +615,7 @@ font: 8pt &quot;Microsoft YaHei UI&quot;;</string>
      <x>0</x>
      <y>0</y>
      <width>764</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
