@@ -254,7 +254,7 @@ void App_Com_Cmd_Case_Response(uint8_t *buf, uint8_t length )
 
     App_Ebud_Set_Level(cmdCase.devType, cmdCase.ebudBattLevel);
 
-    DEBUG("cmd_case:%d, device type:%d, earbud battery level:%d\n", cmdCase.cmd, cmdCase.devType, cmdCase.ebudBattLevel);
+    DEBUG("response_cmd_case:%d, device type:%d, earbud battery level:%d\n", cmdCase.cmd, cmdCase.devType, cmdCase.ebudBattLevel);
     
 }
 
@@ -270,7 +270,7 @@ void App_Com_Cmd_Fw_Ver_Response(uint8_t *buf, uint8_t length )
     
     App_Upg_Set_Fw_Ver(cmdFwVer.bldVer, cmdFwVer.appVer, cmdFwVer.hwVer);
 
-    DEBUG("cmd_fw_ver:%d, bldVer=%d, appVer=%d, hwVer=%d\n",cmdFwVer.cmd, cmdFwVer.bldVer, cmdFwVer.appVer, cmdFwVer.hwVer);
+    DEBUG("response_cmd_fw_ver:%d, bldVer=%d, appVer=%d, hwVer=%d\n",cmdFwVer.cmd, cmdFwVer.bldVer, cmdFwVer.appVer, cmdFwVer.hwVer);
 }
 
 void App_Com_Cmd_Fw_Size_Response(uint8_t *buf, uint8_t length )
@@ -288,14 +288,14 @@ void App_Com_Cmd_Fw_Size_Response(uint8_t *buf, uint8_t length )
 
     App_Upg_Set_Fw_Size(fwSize);
 
-    DEBUG("cmd_fw_size:%d, fw size:%d\n", cmdFwInfo.cmd, fwSize);
+    DEBUG("response_cmd_fw_size:%d, fw size:%d\n", cmdFwInfo.cmd, fwSize);
 }
 
 void App_Com_Cmd_Fw_Data_Response(uint8_t *buf, uint8_t length )
 {
     App_Upg_Set_Fw_Data(&buf[3], length - 3);
 
-    DEBUG("cmd_fw_data:%d\n", buf[0]);
+    DEBUG("response_cmd_fw_data:%d, fw data: offset:%d, length:%d\n", buf[0], App_Upg_Get_Fw_Data_Offset(), length);
 }
 
 void App_Com_Cmd_Fw_CRC_Response(uint8_t *buf, uint8_t length )
@@ -306,7 +306,7 @@ void App_Com_Cmd_Fw_CRC_Response(uint8_t *buf, uint8_t length )
     
     App_Upg_Set_Fw_CRC(crc);
 
-    DEBUG("cmd_fw_crc:%d, fw crc:%d\n", buf[0], crc);
+    DEBUG("response_cmd_fw_crc:%d, fw crc:%d\n", buf[0], crc);
 }
 
 void App_Com_Tx_Cmd_Case_Open(uint8_t devType )

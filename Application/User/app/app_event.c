@@ -86,8 +86,11 @@ static void App_Event_Handler(void *arg )
         case APP_EVENT_EBUD_TX1_CHRG_OFF:
         {
             uint8_t ebudChrgOffReason = msg.data[0];
-            
-            App_Com_Tx_Cmd_Chrg_Off(DEVICE_LEFT, ebudChrgOffReason);
+
+            if(App_Hall_Get_State() == HALL_CLOSE)
+            {
+                App_Com_Tx_Cmd_Chrg_Off(DEVICE_LEFT, ebudChrgOffReason);
+            }
 
             if(App_Ebud_Get_Chrg_State() == EBUD_CHRG_DONE)
             {
@@ -100,7 +103,10 @@ static void App_Event_Handler(void *arg )
         {
             uint8_t ebudChrgOffReason = msg.data[0];
             
-            App_Com_Tx_Cmd_Chrg_Off(DEVICE_RIGHT, ebudChrgOffReason);
+            if(App_Hall_Get_State() == HALL_CLOSE)
+            {
+                App_Com_Tx_Cmd_Chrg_Off(DEVICE_RIGHT, ebudChrgOffReason);
+            }
 
             if(App_Ebud_Get_Chrg_State() == EBUD_CHRG_DONE)
             {

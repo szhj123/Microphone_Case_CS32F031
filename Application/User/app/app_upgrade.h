@@ -43,6 +43,7 @@ void App_Upg_Set_Fw_Ver(uint8_t bldVer, uint8_t appVer, uint8_t hwVer );
 void App_Upg_Set_Fw_Size(uint32_t fwSize );
 void App_Upg_Set_Fw_Data(uint8_t *buf, uint8_t length );
 void App_Upg_Set_Fw_CRC(uint16_t fwCrc );
+uint16_t App_Upg_Get_Fw_Data_Offset(void );
 
 #endif 
 

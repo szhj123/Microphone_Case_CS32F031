@@ -1,7 +1,7 @@
 .\objects\cs32f0xx_gpio.o: ..\..\Device\HAL_Driver\src\cs32f0xx_gpio.c
 .\objects\cs32f0xx_gpio.o: ..\..\Device\HAL_Driver\inc\cs32f0xx_gpio.h
 .\objects\cs32f0xx_gpio.o: ..\..\Device\Include\cs32f0xx.h
-.\objects\cs32f0xx_gpio.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\cs32f0xx_gpio.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\cs32f0xx_gpio.o: ..\User\RTE_Components.h
 .\objects\cs32f0xx_gpio.o: ..\..\Device\Include\core_cm0.h
 .\objects\cs32f0xx_gpio.o: ..\..\Device\Include\cmsis_version.h

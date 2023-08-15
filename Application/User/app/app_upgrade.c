@@ -33,13 +33,6 @@ static void App_Upg_Handler(void *arg )
     {
         upgPara.delayCnt++;
     }
-
-    if(upgPara.delayCnt > 250)
-    {
-        upgPara.delayCnt = 0;
-
-        DEBUG("delayCnt test:%d\n", upgPara.delayCnt);
-    }
     
     switch(upgPara.stat)
     {
@@ -258,5 +251,10 @@ void App_Upg_Set_Fw_CRC(uint16_t fwCrc )
     upgPara.fwCrc = fwCrc;
 
     upgPara.responseFlag = 1;
+}
+
+uint16_t App_Upg_Get_Fw_Data_Offset(void )
+{
+    return upgPara.fwOffset;
 }
 

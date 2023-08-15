@@ -310,7 +310,7 @@ public:
         MainWindow->setStatusBar(statusbar);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 764, 25));
+        menubar->setGeometry(QRect(0, 0, 764, 21));
         MainWindow->setMenuBar(menubar);
 
         retranslateUi(MainWindow);
@@ -328,8 +328,8 @@ public:
         btnUpgEN->setText(QCoreApplication::translate("MainWindow", "\346\233\264\346\226\260\345\233\272\344\273\266", nullptr));
         labelFwVerNewVal->setText(QCoreApplication::translate("MainWindow", "0.0.0", nullptr));
         label_14->setText(QString());
-        labelFwVerOld->setText(QCoreApplication::translate("MainWindow", "\345\233\272\344\273\266\346\227\247\347\211\210\346\234\254", nullptr));
-        labelFwVerNew->setText(QCoreApplication::translate("MainWindow", "\345\233\272\344\273\266\346\226\260\347\211\210\346\234\254", nullptr));
+        labelFwVerOld->setText(QCoreApplication::translate("MainWindow", "\345\233\272\344\273\266\345\275\223\345\211\215\347\211\210\346\234\254", nullptr));
+        labelFwVerNew->setText(QCoreApplication::translate("MainWindow", "\345\233\272\344\273\266\345\215\207\347\272\247\347\211\210\346\234\254", nullptr));
         labelFwVerOldVal->setText(QCoreApplication::translate("MainWindow", "0.0.0", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tabFwUpgrade), QCoreApplication::translate("MainWindow", "Tab 1", nullptr));
         groupBoxSerialPortSetting->setTitle(QCoreApplication::translate("MainWindow", "\344\270\262\345\217\243\350\256\276\347\275\256", nullptr));

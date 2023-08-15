@@ -1,9 +1,9 @@
 .\objects\main.o: ..\User\main.c
-.\objects\main.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-.\objects\main.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-.\objects\main.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\objects\main.o: ..\..\Device\Include\cs32f0xx.h
-.\objects\main.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\main.o: ..\User\RTE_Components.h
 .\objects\main.o: ..\..\Device\Include\core_cm0.h
 .\objects\main.o: ..\..\Device\Include\cmsis_version.h
@@ -29,4 +29,4 @@
 .\objects\main.o: ..\..\Device\HAL_Driver\inc\cs32f0xx_syscfg.h
 .\objects\main.o: ..\..\Device\HAL_Driver\inc\cs32f0xx_misc.h
 .\objects\main.o: ..\User\user_config.h
-.\objects\main.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
