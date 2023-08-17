@@ -93,7 +93,7 @@ void App_Com_Tx_Cmd_Case_Open(uint8_t devType );
 void App_Com_Tx_Cmd_Case_Close(uint8_t devType );
 void App_Com_Tx_Cmd_Chrg_Off(uint8_t devType, uint8_t ebudChrgOffReason);
 void App_Com_Tx_Cmd_Get_Sirk(uint8_t devType );
-void App_Com_Tx_Cmd_Random_Sirk(void );
+void App_Com_Tx_Cmd_Get_Random_Sirk(void );
 void App_Com_Tx_Cmd_Get_Fw_Ver(void );
 void App_Com_Tx_Cmd_Get_Fw_Size(void );
 void App_Com_Tx_Cmd_Get_Fw_Data(uint32_t fwOffset, uint32_t fwLen);
