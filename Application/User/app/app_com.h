@@ -64,9 +64,9 @@ typedef struct _cmd_fw_ver_t
     uint8_t cmd;
     uint8_t devType;
     uint8_t ebudBattLevel;    
-    uint8_t bldVer;
-    uint8_t appVer;
-    uint8_t hwVer;
+    uint8_t verBld;
+    uint8_t verApp;
+    uint8_t verHw;
 }cmd_fw_ver_t;
 
 typedef struct _cmd_fw_info_t
@@ -80,6 +80,7 @@ typedef struct _cmd_fw_info_t
 
 typedef struct _com_ctrl_block_t
 {
+    com_port_t  comPort;
     com_state_t comState;
     com_data_t  comData;
     uint16_t    delayCnt;
@@ -87,25 +88,12 @@ typedef struct _com_ctrl_block_t
     uint8_t     rxDoneFlag;   
 }com_ctrl_block_t;
 
-typedef struct _com_para_t
-{
-    uint8_t ebudLBattLevel;
-    uint8_t ebudRBattLevel;
-    uint8_t ebudMBattLevel;
-    uint8_t bldVer;
-    uint8_t appVer;
-    uint8_t hwVer;
-    uint8_t ebudLSirkBuf[8];
-    uint8_t ebudRSirkBuf[8];
-    uint8_t ebudMSirkBuf[8];
-    uint8_t randomSirkBuf[8];
-    
-}com_para_t;
-
 void App_Com_Init(void );
 void App_Com_Tx_Cmd_Case_Open(uint8_t devType );
 void App_Com_Tx_Cmd_Case_Close(uint8_t devType );
 void App_Com_Tx_Cmd_Chrg_Off(uint8_t devType, uint8_t ebudChrgOffReason);
+void App_Com_Tx_Cmd_Get_Sirk(uint8_t devType );
+void App_Com_Tx_Cmd_Random_Sirk(void );
 void App_Com_Tx_Cmd_Get_Fw_Ver(void );
 void App_Com_Tx_Cmd_Get_Fw_Size(void );
 void App_Com_Tx_Cmd_Get_Fw_Data(uint32_t fwOffset, uint32_t fwLen);

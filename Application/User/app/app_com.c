@@ -19,24 +19,39 @@
 /* Private macro ----------------------------------------*/
 const uint8_t fwVer[3] __attribute__((at(0x080010b8))) = {VER_BLD, VER_APP, VER_HW};
 /* Private function -------------------------------------*/
-static void App_ComTx1_Handler(void *arg );
-static void App_ComTx2_Handler(void *arg );
+static void App_ComTx_Handler(void *arg );
+
 static void App_Com_Send_Case_Msg(uint8_t *buf, uint8_t length );
 /* Private variables ------------------------------------*/
 
-static com_ctrl_block_t com0Ctrl;
-static com_ctrl_block_t com1Ctrl;
-static com_ctrl_block_t com2Ctrl;
-
-static com_para_t comPara;
+static com_ctrl_block_t com1Ctrl = 
+{
+    .comPort = COM1,
+    .comState = COM_STAT_INIT,
+    .rxDoneFlag = 0,
+};
+static com_ctrl_block_t com2Ctrl =
+{
+    .comPort = COM2,
+    .comState = COM_STAT_INIT,
+    .rxDoneFlag = 0,
+};
+static com_ctrl_block_t com3Ctrl = 
+{
+    .comPort = COM3,
+    .comState = COM_STAT_INIT,
+    .rxDoneFlag = 0,
+};
 
 void App_Com_Init(void )
 {
     Drv_Com_Init(App_Com_Send_Case_Msg);
 
-    Drv_Task_Regist_Period(App_ComTx1_Handler, 0, 1, NULL);
+    Drv_Task_Regist_Period(App_ComTx_Handler, 0, 1, (void *)&com1Ctrl);
     
-    Drv_Task_Regist_Period(App_ComTx2_Handler, 0, 1, NULL);
+    Drv_Task_Regist_Period(App_ComTx_Handler, 0, 1, (void *)&com2Ctrl);
+    
+    Drv_Task_Regist_Period(App_ComTx_Handler, 0, 1, (void *)&com3Ctrl);
 
     App_Com_Tx_Cmd_Get_Fw_Ver();
 }
@@ -46,76 +61,78 @@ static void App_Com_Send_Case_Msg(uint8_t *buf, uint8_t length )
     Drv_Msg_Put(APP_EVENT_COM_CASE, buf, length);
 }
 
-static void App_ComTx1_Handler(void *arg )
+static void App_ComTx_Handler(void *arg )
 {    
-    switch(com1Ctrl.comState)
+    com_ctrl_block_t *comCtrl = (com_ctrl_block_t *)arg;
+    
+    switch(comCtrl->comState)
     {
         case COM_STAT_INIT:
         {
-            if(Drv_Tx_Queue_Get(COM1, &com1Ctrl.comData) == COM_QUEUE_OK)
+            if(Drv_Tx_Queue_Get(comCtrl->comPort, &comCtrl->comData) == COM_QUEUE_OK)
             {
-                Drv_Com_Tx_Enable(COM1);
+                Drv_Com_Tx_Enable(comCtrl->comPort);
 
-                com1Ctrl.txCnt = 0;
+                comCtrl->txCnt = 0;
                 
-                com1Ctrl.delayCnt = 0;
+                comCtrl->delayCnt = 0;
 
-                com1Ctrl.comState = COM_STAT_TX;
+                comCtrl->comState = COM_STAT_TX;
             }
             break;
         }
         case COM_STAT_TX:
         {
-            if(++com1Ctrl.delayCnt >= 10)
+            if(++comCtrl->delayCnt >= 10)
             {
-                com1Ctrl.delayCnt = 0;
+                comCtrl->delayCnt = 0;
                 
-                Drv_Com_Tx_Send(COM1, com1Ctrl.comData.data, com1Ctrl.comData.length);
+                Drv_Com_Tx_Send(comCtrl->comPort, comCtrl->comData.data, comCtrl->comData.length);
 
-                com1Ctrl.comState = COM_STAT_TX_WATI_DONE;
+                comCtrl->comState = COM_STAT_TX_WATI_DONE;
             }
 
             break;
         }
         case COM_STAT_TX_WATI_DONE:
         {
-            if(Drv_Com_Tx_Get_State(COM1))
+            if(Drv_Com_Tx_Get_State(comCtrl->comPort))
             {
-                Drv_Com_Tx_Clr_State(COM1);
+                Drv_Com_Tx_Clr_State(comCtrl->comPort);
 
-                com1Ctrl.delayCnt = 0;
+                comCtrl->delayCnt = 0;
 
-                com1Ctrl.comState = COM_STAT_RX_RESPONSE;
+                comCtrl->comState = COM_STAT_RX_RESPONSE;
 
                 break;
             }
         }
         case COM_STAT_RX_RESPONSE:
         {
-            if(com1Ctrl.rxDoneFlag)
+            if(comCtrl->rxDoneFlag)
             {
-                com1Ctrl.rxDoneFlag = 0;
+                comCtrl->rxDoneFlag = 0;
                 
-                com1Ctrl.delayCnt = 0;
+                comCtrl->delayCnt = 0;
 
-                com1Ctrl.txCnt = 0;
+                comCtrl->txCnt = 0;
 
-                com1Ctrl.comState = COM_STAT_INIT;
+                comCtrl->comState = COM_STAT_INIT;
             }
             #if 1
             else
             {
-                if(++com1Ctrl.delayCnt >= 500)
+                if(++comCtrl->delayCnt >= 500)
                 {
-                    com1Ctrl.delayCnt = 0;
+                    comCtrl->delayCnt = 0;
 
-                    if(++com1Ctrl.txCnt < 3)
+                    if(++comCtrl->txCnt < 3)
                     {
-                        com1Ctrl.comState = COM_STAT_TX;
+                        comCtrl->comState = COM_STAT_TX;
                     }
                     else
                     {
-                        com1Ctrl.comState = COM_STAT_ERR;
+                        comCtrl->comState = COM_STAT_ERR;
                     }
                 }
             }
@@ -124,103 +141,15 @@ static void App_ComTx1_Handler(void *arg )
         }
         case COM_STAT_ERR:
         {
-            Drv_Com_Tx_Disable(COM1);
+            Drv_Com_Tx_Disable(comCtrl->comPort);
             
-            com1Ctrl.rxDoneFlag = 0;
+            comCtrl->rxDoneFlag = 0;
 
-            com1Ctrl.delayCnt = 0;
+            comCtrl->delayCnt = 0;
 
-            com1Ctrl.txCnt = 0;
+            comCtrl->txCnt = 0;
 
-            com1Ctrl.comState = COM_STAT_INIT;
-            break;
-        }
-        default: break;
-    }
-}
-
-static void App_ComTx2_Handler(void *arg )
-{    
-    switch(com2Ctrl.comState)
-    {
-        case COM_STAT_INIT:
-        {
-            if(Drv_Tx_Queue_Get(COM2, &com2Ctrl.comData) == COM_QUEUE_OK)
-            {
-                Drv_Com_Tx_Enable(COM2);
-
-                com2Ctrl.txCnt = 0;
-                
-                com2Ctrl.delayCnt = 0;
-
-                com2Ctrl.comState = COM_STAT_TX;
-            }
-            break;
-        }
-        case COM_STAT_TX:
-        {
-            if(++com2Ctrl.delayCnt >= 5)
-            {
-                Drv_Com_Tx_Send(COM2, com2Ctrl.comData.data, com2Ctrl.comData.length);
-
-                com2Ctrl.comState = COM_STAT_TX_WATI_DONE;
-            }
-            break;
-        }
-        case COM_STAT_TX_WATI_DONE:
-        {
-            if(Drv_Com_Tx_Get_State(COM2))
-            {
-                Drv_Com_Tx_Clr_State(COM2);
-
-                com2Ctrl.delayCnt = 0;
-
-                com2Ctrl.comState = COM_STAT_RX_RESPONSE;
-
-                break;
-            }
-        }
-        case COM_STAT_RX_RESPONSE:
-        {
-            if(com2Ctrl.rxDoneFlag)
-            {
-                com2Ctrl.rxDoneFlag = 0;
-                
-                com2Ctrl.delayCnt = 0;
-
-                com2Ctrl.txCnt = 0;
-
-                com2Ctrl.comState = COM_STAT_INIT;
-            }
-            else
-            {
-                if(++com2Ctrl.delayCnt >= 100)
-                {
-                    com2Ctrl.delayCnt = 0;
-
-                    if(++com2Ctrl.txCnt < 3)
-                    {
-                        com2Ctrl.comState = COM_STAT_TX;
-                    }
-                    else
-                    {
-                        com2Ctrl.comState = COM_STAT_ERR;
-                    }
-                }
-            }
-            break;
-        }
-        case COM_STAT_ERR:
-        {
-            Drv_Com_Tx_Disable(COM2);
-            
-            com2Ctrl.rxDoneFlag = 0;
-
-            com2Ctrl.delayCnt = 0;
-
-            com2Ctrl.txCnt = 0;
-
-            com2Ctrl.comState = COM_STAT_INIT;
+            comCtrl->comState = COM_STAT_INIT;
             break;
         }
         default: break;
@@ -239,6 +168,7 @@ void App_Com_Set_Rx_Stat(uint8_t devType )
     }
     else if(devType == DEVICE_MIDDLE)
     {
+        com3Ctrl.rxDoneFlag = 1;
     }
 }
 
@@ -268,9 +198,9 @@ void App_Com_Cmd_Fw_Ver_Response(uint8_t *buf, uint8_t length )
         *((uint8_t *)&cmdFwVer +i)  = buf[i];
     }
     
-    App_Upg_Set_Fw_Ver(cmdFwVer.bldVer, cmdFwVer.appVer, cmdFwVer.hwVer);
+    App_Upg_Set_Fw_Ver(cmdFwVer.verBld, cmdFwVer.verApp, cmdFwVer.verHw);
 
-    DEBUG("response_cmd_fw_ver:%d, bldVer=%d, appVer=%d, hwVer=%d\n",cmdFwVer.cmd, cmdFwVer.bldVer, cmdFwVer.appVer, cmdFwVer.hwVer);
+    DEBUG("response_cmd_fw_ver:%d, verBld=%d, verApp=%d, verHw=%d\n",cmdFwVer.cmd, cmdFwVer.verBld, cmdFwVer.verApp, cmdFwVer.verHw);
 }
 
 void App_Com_Cmd_Fw_Size_Response(uint8_t *buf, uint8_t length )
@@ -345,6 +275,10 @@ void App_Com_Tx_Cmd_Case_Open(uint8_t devType )
     {
         Drv_Tx_Queue_Put(COM2, txBuf, sizeof(txBuf));
     }
+    else if(devType == DEVICE_MIDDLE)
+    {
+        Drv_Tx_Queue_Put(COM3, txBuf, sizeof(txBuf));
+    }
 }
 
 void App_Com_Tx_Cmd_Case_Close(uint8_t devType )
@@ -378,6 +312,10 @@ void App_Com_Tx_Cmd_Case_Close(uint8_t devType )
     else if(devType == DEVICE_RIGHT)
     {
         Drv_Tx_Queue_Put(COM2, txBuf, sizeof(txBuf));
+    }
+    else if(devType == DEVICE_MIDDLE)
+    {
+        Drv_Tx_Queue_Put(COM3, txBuf, sizeof(txBuf));
     }
 }
 
@@ -414,6 +352,75 @@ void App_Com_Tx_Cmd_Chrg_Off(uint8_t devType, uint8_t ebudChrgOffReason)
     {
         Drv_Tx_Queue_Put(COM2, txBuf, sizeof(txBuf));
     }
+    else if(devType == DEVICE_MIDDLE)
+    {
+        Drv_Tx_Queue_Put(COM2, txBuf, sizeof(txBuf));
+    }
+}
+
+void App_Com_Tx_Cmd_Get_Sirk(uint8_t devType )
+{
+    uint8_t txBuf[11] = {0};
+    uint8_t checkSum = 0;
+    uint8_t i;
+
+    txBuf[0] = 0x05;
+    txBuf[1] = 0x5a;
+    txBuf[2] = 0x07;
+    txBuf[3] = 0x00;
+    txBuf[4] = 0x20;
+    txBuf[5] = 0x20;
+    txBuf[6] = 0x01;
+    txBuf[7] = CMD_GET_SIRK;
+    txBuf[8] = devType;
+    txBuf[9] = (uint8_t )App_Batt_Get_Level();
+    
+    for(i=0;i<sizeof(txBuf)-5;i++)
+    {
+        checkSum += txBuf[i+4];
+    }
+
+    txBuf[10] = checkSum;
+
+    if(devType == DEVICE_LEFT)
+    {
+        Drv_Tx_Queue_Put(COM1, txBuf, sizeof(txBuf));
+    }
+    else if(devType == DEVICE_RIGHT)
+    {
+        Drv_Tx_Queue_Put(COM2, txBuf, sizeof(txBuf));
+    }
+    else if(devType == DEVICE_MIDDLE)
+    {
+        Drv_Tx_Queue_Put(COM3, txBuf, sizeof(txBuf));
+    }
+}
+
+void App_Com_Tx_Cmd_Get_Random_Sirk(void )
+{
+    uint8_t txBuf[11] = {0};
+    uint8_t checkSum = 0;
+    uint8_t i;
+
+    txBuf[0] = 0x05;
+    txBuf[1] = 0x5a;
+    txBuf[2] = 0x07;
+    txBuf[3] = 0x00;
+    txBuf[4] = 0x20;
+    txBuf[5] = 0x20;
+    txBuf[6] = 0x01;
+    txBuf[7] = CMD_GET_RANDOM_SIRK;
+    txBuf[8] = DEVICE_MIDDLE;
+    txBuf[9] = (uint8_t )App_Batt_Get_Level();
+    
+    for(i=0;i<sizeof(txBuf)-5;i++)
+    {
+        checkSum += txBuf[i+4];
+    }
+
+    txBuf[10] = checkSum;
+
+    Drv_Tx_Queue_Put(COM3, txBuf, sizeof(txBuf));
 }
 
 void App_Com_Tx_Cmd_Get_Fw_Ver(void )

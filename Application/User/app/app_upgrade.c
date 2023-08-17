@@ -19,12 +19,16 @@
 /* Private macro ---------------------------------------*/
 /* Private function -------------------------------------*/
 static void App_Upg_Handler(void *arg );
+static void App_Risk_Handler(void *arg );
 /* Private variables ------------------------------------*/
 static upg_para_t upgPara;
+static sirk_para_t sirkPara;
 
 void App_Upg_Init(void )
 {
     Drv_Task_Regist_Period(App_Upg_Handler, 0, 1, NULL);
+
+    Drv_Task_Regist_Period(App_Risk_Handler, 0, 1, NULL);
 }
 
 static void App_Upg_Handler(void *arg )
@@ -40,11 +44,13 @@ static void App_Upg_Handler(void *arg )
         {
             if(App_Hall_Get_State() == HALL_OPEN)
             {
-                upgPara.appVer = VER_APP;
+                upgPara.verApp = VER_APP;
                 
                 App_Com_Tx_Cmd_Get_Fw_Ver();
            
                 upgPara.delayCnt = 0;
+                
+                upgPara.verFlag = 0;
                 
                 upgPara.stat = UPG_STAT_COMPARE_VER;
             }
@@ -59,10 +65,12 @@ static void App_Upg_Handler(void *arg )
                 if(upgPara.responseFlag)
                 {
                     upgPara.responseFlag = 0;
+
+                    upgPara.verFlag = 1;
                     
-                    if(upgPara.appVer != 0)
+                    if(upgPara.verApp != 0)
                     {
-                        if(upgPara.appVer != VER_APP)
+                        if(upgPara.verApp != VER_APP)
                         {                            
                             upgPara.stat = UPG_STAT_START;
                         }
@@ -78,7 +86,7 @@ static void App_Upg_Handler(void *arg )
                 }
                 else
                 {
-                    App_Com_Tx_Cmd_Get_Fw_Ver();
+                    upgPara.stat = UPG_STAT_GET_VER;
                 }
             }
             break;
@@ -216,11 +224,51 @@ static void App_Upg_Handler(void *arg )
     }
 }
 
-void App_Upg_Set_Fw_Ver(uint8_t bldVer, uint8_t appVer, uint8_t hwVer )
+static void App_Risk_Handler(void *arg )
 {
-    upgPara.bldVer = bldVer;
-    upgPara.appVer = appVer;
-    upgPara.hwVer  = hwVer;
+    switch(sirkPara.stat)
+    {
+        case SIRK_STAT_GET:
+        {
+            if(upgPara.verFlag)
+            {
+                sirkPara.sirkResponseLeft = 0;
+                sirkPara.sirkResponseRight = 0;
+                sirkPara.sirkResponseMiddle = 0;
+                
+                App_Com_Tx_Cmd_Get_Sirk(DEVICE_LEFT);
+
+                App_Com_Tx_Cmd_Get_Sirk(DEVICE_RIGHT);
+                
+                App_Com_Tx_Cmd_Get_Sirk(DEVICE_MIDDLE);
+
+                App_Com_Tx_Cmd_Get_Random_Sirk(DEVICE_MIDDLE);
+
+                upgPara.stat = SIRK_STAT_COMPARE;
+            }
+            break;
+        }
+        case SIRK_STAT_COMPARE:
+        {
+            if(App_Hall_Get_State() == HALL_CLOSE)
+            {
+                if(sirkPara.sirkResponseLeft & sirkPara.sirkResponseRight & sirkPara.sirkResponseMiddle)
+                {
+                    
+                }
+            }
+            break;
+        }
+        default: break;
+    }
+}
+
+
+void App_Upg_Set_Fw_Ver(uint8_t verBld, uint8_t verApp, uint8_t verHw )
+{
+    upgPara.verBld = verBld;
+    upgPara.verApp = verApp;
+    upgPara.verHw  = verHw;
 
     upgPara.responseFlag = 1;
 }

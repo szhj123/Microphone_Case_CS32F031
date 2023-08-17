@@ -85,6 +85,7 @@ void EXTI4_15_IRQHandler(void )
 */
 void USART1_IRQHandler(void)
 {
+    Hal_Com_Tx3_Isr_Handler();
 }
 
 void USART2_IRQHandler(void )

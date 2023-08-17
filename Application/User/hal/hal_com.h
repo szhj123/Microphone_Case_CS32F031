@@ -19,5 +19,11 @@ void Hal_Com_Tx2_Disable(void );
 void Hal_Com_Tx2_Send(uint8_t *buf, uint16_t length, hal_isr_callback_t callback );
 void Hal_Com_Tx2_Isr_Handler(void );
 
+void Hal_Com_Tx3_Enable(void );
+void Hal_Com_Tx3_Disable(void );
+void Hal_Com_Tx3_Send(uint8_t *buf, uint16_t length, hal_isr_callback_t callback );
+void Hal_Com_Tx3_Isr_Handler(void );
+
+
 #endif 
 

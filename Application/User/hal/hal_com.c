@@ -51,9 +51,9 @@ static void Hal_Com_Uart2_Init(void );
 static void Hal_Com_Uart3_Init(void );
 static void Hal_Com_Uart6_Init(void );
 /* Private variables ------------------------------------*/
-static hal_com_rx_callback_t hal_rx0_isr_callback = NULL;
 static hal_com_rx_callback_t hal_rx1_isr_callback = NULL;
 static hal_com_rx_callback_t hal_rx2_isr_callback = NULL;
+static hal_com_rx_callback_t hal_rx3_isr_callback = NULL;
 
 static hal_isr_callback_t hal_tx1_isr_callback = NULL;
 static uint8_t *pTx1Buf = NULL;
@@ -62,6 +62,11 @@ static uint16_t tx1Length;
 static hal_isr_callback_t hal_tx2_isr_callback = NULL;
 static uint8_t *pTx2Buf = NULL;
 static uint16_t tx2Length;
+
+static hal_isr_callback_t hal_tx3_isr_callback = NULL;
+static uint8_t *pTx3Buf = NULL;
+static uint16_t tx3Length;
+
 
 void Hal_Com_Init(void )
 {
@@ -76,15 +81,14 @@ void Hal_Com_Init(void )
     Hal_Com_Uart6_Init();
 }
 
-void Hal_Com_Regist_Rx_Isr_Callback(hal_com_rx_callback_t rx0Callback, hal_com_rx_callback_t rx1Callback, hal_com_rx_callback_t rx2Callback )
-{
-    hal_rx0_isr_callback = rx0Callback;
-    
+void Hal_Com_Regist_Rx_Isr_Callback(hal_com_rx_callback_t rx1Callback, hal_com_rx_callback_t rx2Callback, hal_com_rx_callback_t rx3Callback )
+{   
     hal_rx1_isr_callback = rx1Callback;
     
     hal_rx2_isr_callback = rx2Callback;
+    
+    hal_rx3_isr_callback = rx3Callback;
 }
-
 
 static void Hal_Com_Gpio_Init(void )
 {
@@ -431,6 +435,89 @@ void Hal_Com_Tx2_Isr_Handler(void )
         }
     }
 }
+
+void Hal_Com_Tx3_Enable(void )
+{
+    // GPIO MF Config
+    gpio_mf_config(TX3_PORT, TX3_PIN, GPIO_MF_SEL0);
+    
+    gpio_mode_set(TX3_PORT, TX3_PIN, GPIO_MODE_MF_OD_PU(GPIO_SPEED_HIGH));
+    
+    __GPIO_PIN_RESET(TX3_CHRG_SW_PORT, TX3_CHRG_SW_PIN);
+
+    __GPIO_PIN_SET(TX3_PP_PORT, TX3_PP_PIN);
+}
+
+void Hal_Com_Tx3_Disable(void )
+{
+    gpio_mf_config(TX3_PORT, TX3_PIN, GPIO_MF_SEL7);
+    
+    gpio_mode_set(TX3_PORT, TX3_PIN, GPIO_MODE_IN_PU);
+    //__GPIO_PIN_RESET(TX2_SW_PORT, TX2_SW_PIN);
+    
+    __GPIO_PIN_RESET(TX3_PP_PORT, TX3_PP_PIN);
+
+    __GPIO_PIN_SET(TX3_CHRG_SW_PORT, TX3_CHRG_SW_PIN);
+
+    __USART_INTR_DISABLE(USART1, RXNE); // Disable the USART Receive interrupt
+}
+
+void Hal_Com_Tx3_Send(uint8_t *buf, uint16_t length, hal_isr_callback_t callback )
+{
+    pTx3Buf = buf;
+    
+    tx3Length = length;
+
+    hal_tx3_isr_callback = callback;
+
+    __USART_INTR_ENABLE(USART1, TXE); // Enable the USART transmit  interrupt
+    
+    __USART_INTR_DISABLE(USART1, RXNE); // Enable the USART Receive interrupt
+}
+
+void Hal_Com_Tx3_Isr_Handler(void )
+{
+    if (__USART_FLAG_STATUS_GET(USART1, TXE) == SET)
+    {   
+        if(tx3Length > 0)
+        {
+            __USART_DATA_SEND(USART1, *pTx3Buf);
+
+            pTx3Buf++;
+            
+            tx3Length--;
+        }
+        else 
+        {
+            pTx3Buf = NULL;
+
+            if(hal_tx3_isr_callback != NULL)
+            {
+                hal_tx3_isr_callback();
+
+                hal_tx3_isr_callback = NULL;
+            }
+            /* Disable the USART transmit data register empty interrupt */
+            __USART_INTR_DISABLE(USART1, TXE);
+            
+            __USART_INTR_ENABLE(USART1, RXNE); // Enable the USART Receive interrupt
+        }
+    }
+
+    if (__USART_FLAG_STATUS_GET(USART1, RXNE) == SET)
+    {
+        uint8_t recvVal  = 0;
+        
+        recvVal = (uint8_t)__USART_DATA_RECV(USART1);
+
+        if(hal_rx3_isr_callback != NULL)
+        {
+            hal_rx3_isr_callback(recvVal);
+        }
+    }
+}
+
+
 
 int fputc(int ch, FILE *f)
 {
