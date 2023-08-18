@@ -94,6 +94,7 @@ void App_Com_Tx_Cmd_Case_Close(uint8_t devType );
 void App_Com_Tx_Cmd_Chrg_Off(uint8_t devType, uint8_t ebudChrgOffReason);
 void App_Com_Tx_Cmd_Get_Sirk(uint8_t devType );
 void App_Com_Tx_Cmd_Get_Random_Sirk(void );
+void App_Com_Tx_Cmd_Set_Sirk(uint8_t devType, uint8_t *buf, uint8_t length );
 void App_Com_Tx_Cmd_Get_Fw_Ver(void );
 void App_Com_Tx_Cmd_Get_Fw_Size(void );
 void App_Com_Tx_Cmd_Get_Fw_Data(uint32_t fwOffset, uint32_t fwLen);
@@ -103,6 +104,9 @@ void App_Com_Tx_Cmd_Get_Fw_CRC(void );
 void App_Com_Set_Rx_Stat(uint8_t devType );
 
 void App_Com_Cmd_Case_Response(uint8_t *buf, uint8_t length );
+void App_Com_Cmd_Get_Sirk_Response(uint8_t *buf, uint8_t lenght );
+void App_Com_Cmd_Get_Random_Sirk_Response(uint8_t *buf, uint8_t length );
+void App_Com_Cmd_Set_Sirk_Response(uint8_t *buf, uint8_t length );
 void App_Com_Cmd_Fw_Ver_Response(uint8_t *buf, uint8_t length );
 void App_Com_Cmd_Fw_Size_Response(uint8_t *buf, uint8_t length );
 void App_Com_Cmd_Fw_Data_Response(uint8_t *buf, uint8_t length );

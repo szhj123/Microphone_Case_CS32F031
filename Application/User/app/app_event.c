@@ -171,7 +171,22 @@ void App_Event_Case_Handler(uint8_t *buf, uint8_t length )
         case CMD_CHRG_OFF:
         case CMD_CASE_BATT:
         {
-            App_Com_Cmd_Case_Response(buf, length);
+            App_Com_Cmd_Case_Response(buf, length );
+            break;
+        }
+        case CMD_GET_SIRK:
+        {
+            App_Com_Cmd_Get_Sirk_Response(buf, length );
+            break;
+        }
+        case CMD_SET_SIRK:
+        {
+            App_Com_Cmd_Set_Sirk_Response(buf, length );
+            break;
+        }
+        case CMD_GET_RANDOM_SIRK:
+        {
+            App_Com_Cmd_Get_Random_Sirk_Response(buf, length );
             break;
         }
         case CMD_GET_FW_VER:

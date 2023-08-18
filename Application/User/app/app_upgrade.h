@@ -24,9 +24,11 @@ typedef enum _upg_stat_t
 
 typedef enum _sirk_stat_t
 {
-    SIRK_STAT_GET = 0,
-    SIRK_STAT_COMPARE,
-    SIRK_STAT_SET,
+    SIRK_STAT_GET_DATA = 0,
+    SIRK_STAT_WAIT_GET_DATA_END,
+    SIRK_STAT_COMPARE_DATA,
+    SIRK_STAT_SET_DATA,
+    SIRK_STAT_WAIT_SET_DATA_END,
     SIRK_STAT_EXIT
 }sirk_stat_t;
 
@@ -52,18 +54,17 @@ typedef struct _upg_pata_t
 typedef struct _sirk_para_t
 {
     sirk_stat_t stat;
-    uint8_t     sirkBufLeft[SIRK_DATA_PACK_MAX_SIZE];
-    uint8_t     sirkBufRight[SIRK_DATA_PACK_MAX_SIZE];
-    uint8_t     sirkBufMiddle[SIRK_DATA_PACK_MAX_SIZE];
-    uint8_t     sirkBufRandom[SIRK_DATA_PACK_MAX_SIZE];
+    uint8_t     sirkLeftBuf[SIRK_DATA_PACK_MAX_SIZE];
+    uint8_t     sirkRightBuf[SIRK_DATA_PACK_MAX_SIZE];
+    uint8_t     sirkMiddleBuf[SIRK_DATA_PACK_MAX_SIZE];
+    uint8_t     sirkRandomBuf[SIRK_DATA_PACK_MAX_SIZE];
 
-    uint8_t     sirkLeftCrc;
-    uint8_t     sirkRightCrc;
-    uint8_t     sirkMiddleCrc;
+    uint8_t     sirkLeftResponse;
+    uint8_t     sirkRightResponse;
+    uint8_t     sirkMiddleResponse;
+    uint8_t     sirkRandomResponse;
 
-    uint8_t     sirkResponseLeft;
-    uint8_t     sirkResponseRight;
-    uint8_t     sirkResponseMiddle;
+    uint16_t    delayCnt;
 }sirk_para_t;
 
 void App_Upg_Init(void );
@@ -72,6 +73,12 @@ void App_Upg_Set_Fw_Size(uint32_t fwSize );
 void App_Upg_Set_Fw_Data(uint8_t *buf, uint8_t length );
 void App_Upg_Set_Fw_CRC(uint16_t fwCrc );
 uint16_t App_Upg_Get_Fw_Data_Offset(void );
+
+
+void App_Sirk_Save_Data(uint8_t devType, uint8_t *buf, uint8_t length );
+void App_Sirk_Set_Response(uint8_t devType );
+void App_Sirk_Save_Random_Data(uint8_t *buf, uint8_t length );
+uint8_t App_Sirk_Compare_Data(uint8_t *buf1, uint8_t *buf2, uint8_t length );
 
 #endif 
 

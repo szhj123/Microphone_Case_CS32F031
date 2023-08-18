@@ -188,6 +188,25 @@ void App_Com_Cmd_Case_Response(uint8_t *buf, uint8_t length )
     
 }
 
+void App_Com_Cmd_Get_Sirk_Response(uint8_t *buf, uint8_t length )
+{
+    uint8_t devType = buf[1];
+
+    App_Sirk_Save_Data(devType, &buf[3], length - 3);
+}
+
+void App_Com_Cmd_Set_Sirk_Response(uint8_t *buf, uint8_t length )
+{
+    uint8_t devType = buf[1];
+
+    App_Sirk_Set_Response(devType);
+}
+
+void App_Com_Cmd_Get_Random_Sirk_Response(uint8_t *buf, uint8_t length )
+{
+    App_Sirk_Save_Random_Data(&buf[3], length - 3);
+}
+
 void App_Com_Cmd_Fw_Ver_Response(uint8_t *buf, uint8_t length )
 {
     uint8_t i;
@@ -421,6 +440,54 @@ void App_Com_Tx_Cmd_Get_Random_Sirk(void )
     txBuf[10] = checkSum;
 
     Drv_Tx_Queue_Put(COM3, txBuf, sizeof(txBuf));
+}
+
+void App_Com_Tx_Cmd_Set_Sirk(uint8_t devType, uint8_t *buf, uint8_t length )
+{
+    uint8_t txBuf[19] = {0};
+    uint8_t checkSum = 0;
+    uint8_t i;
+
+    if(length > SIRK_DATA_PACK_MAX_SIZE)
+    {
+        return ;
+    }
+
+    txBuf[0] = 0x05;
+    txBuf[1] = 0x5a;
+    txBuf[2] = 0x0f;
+    txBuf[3] = 0x00;
+    txBuf[4] = 0x20;
+    txBuf[5] = 0x20;
+    txBuf[6] = 0x01;
+    txBuf[7] = CMD_SET_SIRK;
+    txBuf[8] = devType;
+    txBuf[9] = (uint8_t )App_Batt_Get_Level();
+
+    for(i=0;i<length;i++)
+    {
+        txBuf[10+i] = buf[i];
+    }
+    
+    for(i=0;i<sizeof(txBuf)-5;i++)
+    {
+        checkSum += txBuf[i+4];
+    }
+
+    txBuf[10+length] = checkSum;
+    
+    if(devType == DEVICE_LEFT)
+    {
+        Drv_Tx_Queue_Put(COM1, txBuf, sizeof(txBuf));
+    }
+    else if(devType == DEVICE_RIGHT)
+    {
+        Drv_Tx_Queue_Put(COM2, txBuf, sizeof(txBuf));
+    }
+    else if(devType == DEVICE_MIDDLE)
+    {
+        Drv_Tx_Queue_Put(COM3, txBuf, sizeof(txBuf));
+    }
 }
 
 void App_Com_Tx_Cmd_Get_Fw_Ver(void )

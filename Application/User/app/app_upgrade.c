@@ -226,15 +226,20 @@ static void App_Upg_Handler(void *arg )
 
 static void App_Risk_Handler(void *arg )
 {
+    if(sirkPara.delayCnt < 0xffff)
+    {
+        sirkPara.delayCnt++;
+    }
+    
     switch(sirkPara.stat)
     {
-        case SIRK_STAT_GET:
+        case SIRK_STAT_GET_DATA:
         {
             if(upgPara.verFlag)
             {
-                sirkPara.sirkResponseLeft = 0;
-                sirkPara.sirkResponseRight = 0;
-                sirkPara.sirkResponseMiddle = 0;
+                sirkPara.sirkLeftResponse = 0;
+                sirkPara.sirkRightResponse = 0;
+                sirkPara.sirkMiddleResponse = 0;
                 
                 App_Com_Tx_Cmd_Get_Sirk(DEVICE_LEFT);
 
@@ -242,20 +247,115 @@ static void App_Risk_Handler(void *arg )
                 
                 App_Com_Tx_Cmd_Get_Sirk(DEVICE_MIDDLE);
 
-                App_Com_Tx_Cmd_Get_Random_Sirk(DEVICE_MIDDLE);
+                App_Com_Tx_Cmd_Get_Random_Sirk();
 
-                upgPara.stat = SIRK_STAT_COMPARE;
+                sirkPara.delayCnt = 0;
+
+                sirkPara.stat = SIRK_STAT_WAIT_GET_DATA_END;
             }
             break;
         }
-        case SIRK_STAT_COMPARE:
+        case SIRK_STAT_WAIT_GET_DATA_END:
+        {
+            if(sirkPara.delayCnt > 250)
+            {
+                if(sirkPara.sirkLeftResponse & sirkPara.sirkRightResponse & sirkPara.sirkMiddleResponse & sirkPara.sirkRandomResponse)
+                {
+                    sirkPara.delayCnt = 0;
+
+                    sirkPara.stat = SIRK_STAT_COMPARE_DATA;
+                }
+                else
+                {
+                    sirkPara.stat = SIRK_STAT_GET_DATA;
+                }
+                
+            }
+            break;
+        }
+        case SIRK_STAT_COMPARE_DATA:
         {
             if(App_Hall_Get_State() == HALL_CLOSE)
             {
-                if(sirkPara.sirkResponseLeft & sirkPara.sirkResponseRight & sirkPara.sirkResponseMiddle)
+                uint8_t retFlag1 = 0; 
+                uint8_t retFlag2 = 0;
+
+                retFlag1 = App_Sirk_Compare_Data(sirkPara.sirkLeftBuf, sirkPara.sirkRightBuf, SIRK_DATA_PACK_MAX_SIZE);
+                
+                retFlag2 = App_Sirk_Compare_Data(sirkPara.sirkLeftBuf, sirkPara.sirkRightBuf, SIRK_DATA_PACK_MAX_SIZE);
+
+                if(retFlag1 | retFlag2)
                 {
-                    
+                    sirkPara.stat = SIRK_STAT_SET_DATA;
                 }
+                else
+                {
+                    sirkPara.stat = SIRK_STAT_EXIT;
+                }
+            }
+            break;
+        }
+        case SIRK_STAT_SET_DATA:
+        {
+            if(App_Hall_Get_State() == HALL_CLOSE)
+            {
+                sirkPara.sirkLeftResponse = 0;
+
+                sirkPara.sirkRightResponse = 0;
+
+                sirkPara.sirkMiddleResponse = 0;
+                
+                App_Com_Tx_Cmd_Set_Sirk(DEVICE_LEFT, sirkPara.sirkRandomBuf, SIRK_DATA_PACK_MAX_SIZE);
+                    
+                App_Com_Tx_Cmd_Set_Sirk(DEVICE_RIGHT, sirkPara.sirkRandomBuf, SIRK_DATA_PACK_MAX_SIZE);
+                    
+                App_Com_Tx_Cmd_Set_Sirk(DEVICE_MIDDLE, sirkPara.sirkRandomBuf, SIRK_DATA_PACK_MAX_SIZE);
+
+                sirkPara.delayCnt = 0;
+                
+                sirkPara.stat = SIRK_STAT_WAIT_SET_DATA_END;
+            }
+            else
+            {
+                upgPara.verFlag = 0;
+                
+                sirkPara.stat = SIRK_STAT_GET_DATA;
+            }
+            break;
+        }
+        case SIRK_STAT_WAIT_SET_DATA_END:
+        {
+            if(App_Hall_Get_State() == HALL_CLOSE)
+            {
+                if(sirkPara.delayCnt > 250)
+                {
+                    if(sirkPara.sirkLeftResponse & sirkPara.sirkRightResponse & sirkPara.sirkMiddleResponse )
+                    {
+                        sirkPara.stat = SIRK_STAT_EXIT;
+                    }
+                    else
+                    {
+                        sirkPara.delayCnt = 0;
+                        
+                        sirkPara.stat = SIRK_STAT_SET_DATA;
+                    }
+                }
+            }
+            else
+            {
+                upgPara.verFlag = 0;
+                
+                sirkPara.stat = SIRK_STAT_GET_DATA;
+            }
+            break;
+        }
+        case SIRK_STAT_EXIT:
+        {
+            if(App_Hall_Get_State() == HALL_OPEN)
+            {
+                upgPara.verFlag = 0;
+                
+                sirkPara.stat = SIRK_STAT_GET_DATA;
             }
             break;
         }
@@ -304,5 +404,81 @@ void App_Upg_Set_Fw_CRC(uint16_t fwCrc )
 uint16_t App_Upg_Get_Fw_Data_Offset(void )
 {
     return upgPara.fwOffset;
+}
+
+void App_Sirk_Save_Data(uint8_t devType, uint8_t *buf, uint8_t length )
+{
+    uint8_t i;
+    uint8_t *dataPtr = NULL;
+
+    if(devType == DEVICE_LEFT)
+    {
+        dataPtr = sirkPara.sirkLeftBuf;
+
+        sirkPara.sirkLeftResponse = 1;
+    }
+    else if(devType == DEVICE_RIGHT)
+    {
+        dataPtr = sirkPara.sirkRightBuf;
+
+        sirkPara.sirkRightResponse = 1;
+    }
+    else if(devType == DEVICE_MIDDLE)
+    {
+        dataPtr = sirkPara.sirkMiddleBuf;
+
+        sirkPara.sirkMiddleResponse = 1;
+    }
+
+    for(i=0;i<length;i++)
+    {
+        *(dataPtr+i) = buf[i];
+    }
+}
+
+void App_Sirk_Set_Response(uint8_t devType )
+{
+    if(devType == DEVICE_LEFT)
+    {
+        sirkPara.sirkLeftResponse = 1;
+    }
+    else if(devType == DEVICE_RIGHT)
+    {
+        sirkPara.sirkRightResponse = 1;
+    }
+    else if(devType == DEVICE_MIDDLE)
+    {
+        sirkPara.sirkMiddleResponse = 1;
+    }
+}
+
+void App_Sirk_Save_Random_Data(uint8_t *buf, uint8_t length )
+{
+    uint8_t i;
+
+    for(i=0;i<length;i++)
+    {
+        sirkPara.sirkRandomBuf[i] = buf[i];
+    }
+
+    sirkPara.sirkRandomResponse = 1;
+}
+
+uint8_t App_Sirk_Compare_Data(uint8_t *buf1, uint8_t *buf2, uint8_t length )
+{
+    uint8_t retVal = 0;
+    uint8_t i;
+
+    for(i=0;i<length;i++)
+    {
+        if(buf1[i] != buf2[i])
+        {
+            retVal = 1;
+
+            break;
+        }
+    }
+
+    return retVal;
 }
 
