@@ -8,7 +8,7 @@
 #include "drv_flash.h"
 
 #define VER_BLD                           0x01
-#define VER_APP                           0x01
+#define VER_APP                           0x02
 #define VER_HW                            0x01
 
 #define FW_BUILD_VER                      0x02
