@@ -78,6 +78,7 @@ uint16_t App_Upg_Get_Fw_Data_Offset(void );
 void App_Sirk_Save_Data(uint8_t devType, uint8_t *buf, uint8_t length );
 void App_Sirk_Set_Response(uint8_t devType );
 void App_Sirk_Save_Random_Data(uint8_t *buf, uint8_t length );
+uint8_t App_Sirk_Check_Empty(uint8_t *buf, uint8_t length );
 uint8_t App_Sirk_Compare_Data(uint8_t *buf1, uint8_t *buf2, uint8_t length );
 
 #endif 

@@ -28,13 +28,24 @@ void Hal_Batt_Chrg_Init(void )
 {
     __RCU_AHB_CLK_ENABLE(RCU_AHB_PERI_GPIOB);
 
-    //boost, pb03, output
+    //boost, pb02, output
     gpio_mode_set(GPIOB, GPIO_PIN_2, GPIO_MODE_OUT_PP(GPIO_SPEED_HIGH));
-    __GPIO_PIN_SET(GPIOB, GPIO_PIN_2); 
+    
+    Hal_Batt_Boost_Enable();
 
     Hal_Chrg_Intp_Init();
 
     Hal_Chrg_I2c_Init();
+}
+
+void Hal_Batt_Boost_Enable(void )
+{
+    __GPIO_PIN_SET(GPIOB, GPIO_PIN_2); 
+}
+
+void Hal_Batt_Boost_Disable(void )
+{
+    __GPIO_PIN_RESET(GPIOB, GPIO_PIN_2); 
 }
 
 static void Hal_Chrg_Intp_Init(void )

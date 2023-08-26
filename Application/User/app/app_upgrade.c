@@ -277,20 +277,20 @@ static void App_Risk_Handler(void *arg )
         {
             if(App_Hall_Get_State() == HALL_CLOSE)
             {
-                uint8_t retFlag1 = 0; 
-                uint8_t retFlag2 = 0;
-
-                retFlag1 = App_Sirk_Compare_Data(sirkPara.sirkLeftBuf, sirkPara.sirkRightBuf, SIRK_DATA_PACK_MAX_SIZE);
-                
-                retFlag2 = App_Sirk_Compare_Data(sirkPara.sirkLeftBuf, sirkPara.sirkRightBuf, SIRK_DATA_PACK_MAX_SIZE);
-
-                if(retFlag1 | retFlag2)
+                if(App_Sirk_Check_Empty(sirkPara.sirkMiddleBuf, SIRK_DATA_PACK_MAX_SIZE))
                 {
                     sirkPara.stat = SIRK_STAT_SET_DATA;
                 }
                 else
                 {
-                    sirkPara.stat = SIRK_STAT_EXIT;
+                    if(App_Sirk_Compare_Data(sirkPara.sirkLeftBuf, sirkPara.sirkRightBuf, SIRK_DATA_PACK_MAX_SIZE))
+                    {
+                        sirkPara.stat = SIRK_STAT_SET_DATA;
+                    }
+                    else
+                    {
+                       sirkPara.stat = SIRK_STAT_EXIT;
+                    }
                 }
             }
             break;
@@ -462,6 +462,29 @@ void App_Sirk_Save_Random_Data(uint8_t *buf, uint8_t length )
     }
 
     sirkPara.sirkRandomResponse = 1;
+}
+
+uint8_t App_Sirk_Check_Empty(uint8_t *buf, uint8_t length )
+{
+    uint8_t i;
+    uint8_t sum = 0;
+    uint8_t retVal = 0;
+
+    for(i=0;i<length;i++)
+    {
+        sum += buf[i];
+    }
+
+    if(sum == 0)
+    {
+        retVal = 1;
+    }
+    else
+    {
+        retVal = 0;
+    }
+		
+		return retVal;
 }
 
 uint8_t App_Sirk_Compare_Data(uint8_t *buf1, uint8_t *buf2, uint8_t length )

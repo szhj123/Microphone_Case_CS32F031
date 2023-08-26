@@ -118,7 +118,7 @@ static void Hal_Com_Gpio_Init(void )
     gpio_mode_set(TX3_CHRG_SW_PORT, TX3_CHRG_SW_PIN, GPIO_MODE_OUT_PP(GPIO_SPEED_HIGH));
 
     __GPIO_PIN_RESET(TX3_PP_PORT, TX3_PP_PIN);
-    __GPIO_PIN_SET(TX3_CHRG_SW_PORT, TX3_CHRG_SW_PIN);
+    __GPIO_PIN_RESET(TX3_CHRG_SW_PORT, TX3_CHRG_SW_PIN);
 }
 
 static void Hal_Com_Uart1_Init(void )
@@ -442,8 +442,9 @@ void Hal_Com_Tx3_Enable(void )
     gpio_mf_config(TX3_PORT, TX3_PIN, GPIO_MF_SEL0);
     
     gpio_mode_set(TX3_PORT, TX3_PIN, GPIO_MODE_MF_OD_PU(GPIO_SPEED_HIGH));
-    
-    __GPIO_PIN_RESET(TX3_CHRG_SW_PORT, TX3_CHRG_SW_PIN);
+
+    gpio_mode_set(TX3_CHRG_SW_PORT, TX3_CHRG_SW_PIN, GPIO_MODE_IN_FLOAT);
+    //__GPIO_PIN_SET(TX3_CHRG_SW_PORT, TX3_CHRG_SW_PIN);
 
     __GPIO_PIN_SET(TX3_PP_PORT, TX3_PP_PIN);
 }
@@ -457,7 +458,9 @@ void Hal_Com_Tx3_Disable(void )
     
     __GPIO_PIN_RESET(TX3_PP_PORT, TX3_PP_PIN);
 
-    __GPIO_PIN_SET(TX3_CHRG_SW_PORT, TX3_CHRG_SW_PIN);
+    gpio_mode_set(TX3_CHRG_SW_PORT, TX3_CHRG_SW_PIN, GPIO_MODE_OUT_PP(GPIO_SPEED_HIGH));
+
+    __GPIO_PIN_RESET(TX3_CHRG_SW_PORT, TX3_CHRG_SW_PIN);
 
     __USART_INTR_DISABLE(USART1, RXNE); // Disable the USART Receive interrupt
 }
