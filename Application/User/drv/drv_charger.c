@@ -90,7 +90,8 @@ static void Drv_Chrg_Intp_Handler(void )
 uint8_t Drv_Chrg_Get_Usb_State(void )
 {
     uint8_t regVal;
-    
+
+    #if 0
     if((vbus_stat_t)chrgCtrl.vbusStat != NO_INPUT)
     {
         regVal = USB_PLUG_IN;
@@ -99,6 +100,16 @@ uint8_t Drv_Chrg_Get_Usb_State(void )
     {
         regVal = USB_PLUG_OUT;
     }
+    #else
+    if(Hal_Chrg_Get_Usb_Stat())
+    {
+        regVal = USB_PLUG_IN;
+    }
+    else
+    {
+        regVal = USB_PLUG_OUT;
+    }
+    #endif 
 
     return regVal;
 }

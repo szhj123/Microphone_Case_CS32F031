@@ -12,6 +12,7 @@
 /* Includes -----------------------------------------------*/
 #include "app_upgrade.h"
 #include "app_com.h"
+#include "app_batt.h"
 #include "app_hall.h"
 #include "app_flash.h"
 /* Private typedef --------------------------------------*/
@@ -44,51 +45,51 @@ static void App_Upg_Handler(void *arg )
         {
             if(App_Hall_Get_State() == HALL_OPEN)
             {
-                upgPara.verApp = VER_APP;
-                
-                App_Com_Tx_Cmd_Get_Fw_Ver();
-           
-                upgPara.delayCnt = 0;
-                
-                upgPara.verFlag = 0;
-                
-                upgPara.stat = UPG_STAT_COMPARE_VER;
+                if(App_Ebud_Get_Rx_Chrg_Stat() != EBUD_CHRG_NONE)
+                {
+                    upgPara.verApp = 0;
+                    
+                    upgPara.delayCnt = 0;
+                                        
+                    App_Com_Tx_Cmd_Get_Fw_Ver();
+                    
+                    upgPara.stat = UPG_STAT_COMPARE_VER;
+                }
             }
             break;
         }
         case UPG_STAT_COMPARE_VER:
         {
-            if(upgPara.delayCnt > 500)
+            if(upgPara.responseFlag)
             {
-                upgPara.delayCnt = 0;
-
-                if(upgPara.responseFlag)
-                {
-                    upgPara.responseFlag = 0;
-
-                    upgPara.verFlag = 1;
-                    
-                    if(upgPara.verApp != 0)
-                    {
-                        if(upgPara.verApp != VER_APP)
-                        {                            
-                            upgPara.stat = UPG_STAT_START;
-                        }
-                        else
-                        {
-                            upgPara.stat = UPG_STAT_EXIT;
-                        }
-                    }
-                    else
-                    {
-                        upgPara.stat = UPG_STAT_GET_VER;
-                    }
+                upgPara.responseFlag = 0;
+                
+                if(upgPara.verApp != VER_APP)
+                {                            
+                    upgPara.stat = UPG_STAT_START;
                 }
-                else
+            }
+            else
+            {
+                if(++upgPara.delayCnt > 500)
                 {
                     upgPara.stat = UPG_STAT_GET_VER;
                 }
             }
+
+            if(upgPara.verApp == VER_APP)
+            {
+                if(App_Hall_Get_State() == HALL_CLOSE)
+                {
+                    upgPara.stat = UPG_STAT_EXIT;
+                }
+            }
+
+            if(App_Ebud_Get_Rx_Chrg_Stat() == EBUD_CHRG_NONE)
+            {
+                upgPara.stat = UPG_STAT_GET_VER;
+            }
+            
             break;
         }
         case UPG_STAT_START:
@@ -235,7 +236,7 @@ static void App_Risk_Handler(void *arg )
     {
         case SIRK_STAT_GET_DATA:
         {
-            if(upgPara.verFlag)
+            if(App_Ebud_Get_Tx1_Chrg_Stat() != EBUD_CHRG_NONE && App_Ebud_Get_Tx2_Chrg_Stat() != EBUD_CHRG_NONE)
             {
                 sirkPara.sirkLeftResponse = 0;
                 sirkPara.sirkRightResponse = 0;

@@ -15,6 +15,7 @@
 #include "app_com.h"
 /* Private typedef --------------------------------------*/
 /* Private define ------------------ --------------------*/
+#define EBUD_CHRG_DONE_MAX_CUR                 7 //mA
 /* Private macro ----------------------------------------*/
 /* Private function -------------------------------------*/
 static void App_Batt_Handler(void *arg );
@@ -248,9 +249,25 @@ static void App_Ebud_Chrg_Handler(void )
         ebudRxCurSum = 0;
         ebudDetCnt = 0;
 
-        if(battCtrl.ebudTx1Stat == EBUD_CHRG_PROCESS)
+        App_Ebud_Set_Tx1_Chrg_Stat();
+        
+        App_Ebud_Set_Tx2_Chrg_Stat();
+
+        App_Ebud_Set_Rx_Chrg_Stat();
+    }
+}
+
+void App_Ebud_Set_Tx1_Chrg_Stat(void )
+{
+    switch(battCtrl.ebudTx1Stat)
+    {
+        case EBUD_CHRG_NONE:
         {
-            if(battCtrl.ebudTx1Cur <= 7)
+            if(battCtrl.ebudTx1Cur > EBUD_CHRG_DONE_MAX_CUR)
+            {
+                battCtrl.ebudTx1Stat = EBUD_CHRG_PROCESS;
+            }
+            else if(battCtrl.ebudTx1Cur > 0 && battCtrl.ebudTx1Cur <= EBUD_CHRG_DONE_MAX_CUR)
             {
                 battCtrl.ebudTx1Stat = EBUD_CHRG_DONE;
 
@@ -258,37 +275,95 @@ static void App_Ebud_Chrg_Handler(void )
 
                 Drv_Msg_Put(APP_EVENT_EBUD_TX1_CHRG_OFF, (const uint8_t *)&battCtrl.ebudTx1ChrgOffReason, 1);
             }
+            break;
         }
-        else
+        case EBUD_CHRG_PROCESS:
         {
-            if(battCtrl.ebudTx1Cur >= 10)
+            if(battCtrl.ebudTx1Cur > 0 && battCtrl.ebudTx1Cur <= EBUD_CHRG_DONE_MAX_CUR)
             {
-                battCtrl.ebudTx1Stat = EBUD_CHRG_PROCESS;
-            }
-        }
+                battCtrl.ebudTx1Stat = EBUD_CHRG_DONE;
 
-        if(battCtrl.ebudTx2Stat == EBUD_CHRG_PROCESS)
-        {
-            if(battCtrl.ebudTx2Cur <= 7)
-            {
-                battCtrl.ebudTx2Stat = EBUD_CHRG_DONE;
-                
-                battCtrl.ebudTx2ChrgOffReason = REASON_CHRG_FULL;
-                
-                Drv_Msg_Put(APP_EVENT_EBUD_TX2_CHRG_OFF, (const uint8_t *)&battCtrl.ebudTx2ChrgOffReason, 1);
+                battCtrl.ebudTx1ChrgOffReason = REASON_CHRG_FULL;
+
+                Drv_Msg_Put(APP_EVENT_EBUD_TX1_CHRG_OFF, (const uint8_t *)&battCtrl.ebudTx1ChrgOffReason, 1);
             }
+            else if(battCtrl.ebudTx1Cur == 0)
+            {
+                battCtrl.ebudTx1Stat = EBUD_CHRG_NONE;
+            }
+            break;
         }
-        else
+        case EBUD_CHRG_DONE:
         {
-            if(battCtrl.ebudTx2Cur >= 10)
+            if(battCtrl.ebudTx1Cur == 0)
+            {
+                battCtrl.ebudTx1Stat = EBUD_CHRG_NONE;
+            }
+            break;
+        }
+        default: break;
+    }
+}
+
+void App_Ebud_Set_Tx2_Chrg_Stat(void )
+{
+    switch(battCtrl.ebudTx2Stat)
+    {
+        case EBUD_CHRG_NONE:
+        {
+            if(battCtrl.ebudTx2Cur > EBUD_CHRG_DONE_MAX_CUR)
             {
                 battCtrl.ebudTx2Stat = EBUD_CHRG_PROCESS;
             }
-        }
+            else if(battCtrl.ebudTx2Cur > 0 && battCtrl.ebudTx2Cur <= EBUD_CHRG_DONE_MAX_CUR)
+            {
+                battCtrl.ebudTx2Stat = EBUD_CHRG_DONE;
 
-        if(battCtrl.ebudRxStat == EBUD_CHRG_PROCESS)
+                battCtrl.ebudTx2ChrgOffReason = REASON_CHRG_FULL;
+
+                Drv_Msg_Put(APP_EVENT_EBUD_TX2_CHRG_OFF, (const uint8_t *)&battCtrl.ebudTx2ChrgOffReason, 1);
+            }
+            break;
+        }
+        case EBUD_CHRG_PROCESS:
         {
-            if(battCtrl.ebudRxCur <= 7)
+            if(battCtrl.ebudTx2Cur > 0 && battCtrl.ebudTx2Cur <= EBUD_CHRG_DONE_MAX_CUR)
+            {
+                battCtrl.ebudTx2Stat = EBUD_CHRG_DONE;
+
+                battCtrl.ebudTx2ChrgOffReason = REASON_CHRG_FULL;
+
+                Drv_Msg_Put(APP_EVENT_EBUD_TX2_CHRG_OFF, (const uint8_t *)&battCtrl.ebudTx2ChrgOffReason, 1);
+            }
+            else if(battCtrl.ebudTx2Cur== 0)
+            {
+                battCtrl.ebudTx2Stat = EBUD_CHRG_NONE;
+            }
+            break;
+        }
+        case EBUD_CHRG_DONE:
+        {
+            if(battCtrl.ebudTx2Cur == 0)
+            {
+                battCtrl.ebudTx2Stat = EBUD_CHRG_NONE;
+            }
+            break;
+        }
+        default: break;
+    }
+}
+
+void App_Ebud_Set_Rx_Chrg_Stat(void )
+{
+    switch(battCtrl.ebudRxStat)
+    {
+        case EBUD_CHRG_NONE:
+        {
+            if(battCtrl.ebudRxCur > EBUD_CHRG_DONE_MAX_CUR)
+            {
+                battCtrl.ebudRxStat = EBUD_CHRG_PROCESS;
+            }
+            else if(battCtrl.ebudRxCur > 0 && battCtrl.ebudRxCur <= EBUD_CHRG_DONE_MAX_CUR)
             {
                 battCtrl.ebudRxStat = EBUD_CHRG_DONE;
 
@@ -296,14 +371,33 @@ static void App_Ebud_Chrg_Handler(void )
 
                 Drv_Msg_Put(APP_EVENT_EBUD_RX_CHRG_OFF, (const uint8_t *)&battCtrl.ebudRxChrgOffReason, 1);
             }
+            break;
         }
-        else
+        case EBUD_CHRG_PROCESS:
         {
-            if(battCtrl.ebudRxCur >= 10)
+            if(battCtrl.ebudRxCur > 0 && battCtrl.ebudRxCur <= 7)
             {
-                battCtrl.ebudRxStat = EBUD_CHRG_PROCESS;
+                battCtrl.ebudRxStat = EBUD_CHRG_DONE;
+
+                battCtrl.ebudRxChrgOffReason = REASON_CHRG_FULL;
+
+                Drv_Msg_Put(APP_EVENT_EBUD_RX_CHRG_OFF, (const uint8_t *)&battCtrl.ebudRxChrgOffReason, 1);
             }
+            else if(battCtrl.ebudRxCur == 0)
+            {
+                battCtrl.ebudRxStat = EBUD_CHRG_NONE;
+            }
+            break;
         }
+        case EBUD_CHRG_DONE:
+        {
+            if(battCtrl.ebudRxCur == 0)
+            {
+                battCtrl.ebudRxStat = EBUD_CHRG_NONE;
+            }
+            break;
+        }
+        default: break;
     }
 }
 
@@ -488,7 +582,22 @@ batt_level_t App_Batt_Get_Level(void )
 	return battCtrl.battLevel;
 }
 
-ebud_charging_stat_t App_Ebud_Get_Chrg_State(void )
+ebud_charging_stat_t  App_Ebud_Get_Tx1_Chrg_Stat(void )
+{
+    return battCtrl.ebudTx1Stat;
+}
+
+ebud_charging_stat_t  App_Ebud_Get_Tx2_Chrg_Stat(void )
+{
+    return battCtrl.ebudTx2Stat;
+}
+
+ebud_charging_stat_t  App_Ebud_Get_Rx_Chrg_Stat(void )
+{
+    return battCtrl.ebudRxStat;
+}
+
+ebud_charging_stat_t App_Ebud_Get_All_Chrg_Stat(void )
 {
     ebud_charging_stat_t retVal;
     

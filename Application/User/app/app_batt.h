@@ -53,7 +53,8 @@ typedef enum _batt_chrg_stat_t
 
 typedef enum _ebud_charging_stat_t
 {
-    EBUD_CHRG_PROCESS = 0,
+    EBUD_CHRG_NONE = 0,
+    EBUD_CHRG_PROCESS,
     EBUD_CHRG_DONE
 }ebud_charging_stat_t;
 
@@ -97,8 +98,16 @@ void App_Batt_Init(void );
 uint16_t App_Batt_Get_Vol(void );
 batt_level_t App_Batt_Cal_Level(uint16_t battVol );
 batt_level_t App_Batt_Get_Level(void );
-ebud_charging_stat_t App_Ebud_Get_Chrg_State(void );
+ebud_charging_stat_t App_Ebud_Get_All_Chrg_Stat(void );
 void App_Ebud_Set_Level(uint8_t devType, uint8_t level );
+
+void App_Ebud_Set_Tx1_Chrg_Stat(void );
+void App_Ebud_Set_Tx2_Chrg_Stat(void );
+void App_Ebud_Set_Rx_Chrg_Stat(void );
+ebud_charging_stat_t  App_Ebud_Get_Tx1_Chrg_Stat(void );
+ebud_charging_stat_t  App_Ebud_Get_Tx2_Chrg_Stat(void );
+ebud_charging_stat_t  App_Ebud_Get_Rx_Chrg_Stat(void );
+
 
 #endif 
 

@@ -30,6 +30,8 @@ void Hal_Batt_Chrg_Init(void )
 
     //boost, pb02, output
     gpio_mode_set(GPIOB, GPIO_PIN_2, GPIO_MODE_OUT_PP(GPIO_SPEED_HIGH));
+
+    gpio_mode_set(GPIOF, GPIO_PIN_1, GPIO_MODE_IN_FLOAT);
     
     Hal_Batt_Boost_Enable();
 
@@ -46,6 +48,11 @@ void Hal_Batt_Boost_Enable(void )
 void Hal_Batt_Boost_Disable(void )
 {
     __GPIO_PIN_RESET(GPIOB, GPIO_PIN_2); 
+}
+
+uint8_t Hal_Chrg_Get_Usb_Stat(void )
+{
+   return (uint8_t)__GPIO_INPUT_PIN_GET(GPIOF, GPIO_PIN_1);
 }
 
 static void Hal_Chrg_Intp_Init(void )

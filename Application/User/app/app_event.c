@@ -92,7 +92,7 @@ static void App_Event_Handler(void *arg )
                 App_Com_Tx_Cmd_Chrg_Off(DEVICE_LEFT, ebudChrgOffReason);
             }
 
-            if(App_Ebud_Get_Chrg_State() == EBUD_CHRG_DONE)
+            if(App_Ebud_Get_All_Chrg_Stat() == EBUD_CHRG_DONE)
             {
                 Drv_Timer_Regist_Oneshot(App_Event_Send_Sleep, 250, NULL);
             }
@@ -108,7 +108,7 @@ static void App_Event_Handler(void *arg )
                 App_Com_Tx_Cmd_Chrg_Off(DEVICE_RIGHT, ebudChrgOffReason);
             }
 
-            if(App_Ebud_Get_Chrg_State() == EBUD_CHRG_DONE)
+            if(App_Ebud_Get_All_Chrg_Stat() == EBUD_CHRG_DONE)
             {
                 Drv_Timer_Regist_Oneshot(App_Event_Send_Sleep, 250, NULL);
             }
