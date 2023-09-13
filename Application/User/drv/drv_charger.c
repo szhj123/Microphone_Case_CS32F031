@@ -54,6 +54,16 @@ inline void Drv_Chrg_Boost_Enable(void )
     BOOST_ENABLE;
 }
 
+void Drv_Chrg_Enter_Ship_Mode(void )
+{
+    Drv_Chrg_Write(0x07, 0x64);    
+}
+
+void Drv_Chrg_Exit_Ship_Mode(void )
+{
+    Drv_Chrg_Write(0x07, 0x4c);    
+}
+
 void Drv_Chrg_Chg_Enable(void )
 {
     Drv_Chrg_Write(0x01, 0x16);

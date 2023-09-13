@@ -18,13 +18,16 @@
 #include "app_flash.h"
 /* Private typedef --------------------------------------*/
 /* Private define ------------------ --------------------*/
+#define SLEEP_OUT              0
+#define SLEEP_IN               (!SLEEP_OUT)
 /* Private macro ----------------------------------------*/
 /* Private function -------------------------------------*/
 static void App_Event_Handler(void *arg );
 static void App_Event_Case_Handler(uint8_t *buf, uint8_t length );
 static void App_Event_Send_Sleep(void *arg );
-
 /* Private variables ------------------------------------*/
+static uint8_t timerSleep = TIMER_NULL;
+static uint8_t sleepStat = SLEEP_OUT;
 
 void App_Event_Init(void )
 {
@@ -73,11 +76,20 @@ static void App_Event_Handler(void *arg )
                 {
                     uint8_t ebudChrgOffReason = REASON_BATT_LOW;
                     
-                    App_Com_Tx_Cmd_Chrg_Off(DEVICE_LEFT, ebudChrgOffReason);
+                    App_Com_Tx_Cmd_Chrg_Off(DEVICE_TX1, ebudChrgOffReason);
                     
-                    App_Com_Tx_Cmd_Chrg_Off(DEVICE_RIGHT, ebudChrgOffReason);
+                    App_Com_Tx_Cmd_Chrg_Off(DEVICE_TX2, ebudChrgOffReason);
 
-                    Drv_Timer_Regist_Oneshot(App_Event_Send_Sleep, 250, NULL);
+                    App_Com_Tx_Cmd_Chrg_Off(DEVICE_RX, ebudChrgOffReason);
+
+                    if(sleepStat == SLEEP_OUT)
+                    {
+                        sleepStat = SLEEP_IN;
+                        
+                        Drv_Timer_Delete(timerSleep);
+                        
+                        timerSleep = Drv_Timer_Regist_Oneshot(App_Event_Send_Sleep, 500, NULL);
+                    }
                 }
             }
             
@@ -87,15 +99,7 @@ static void App_Event_Handler(void *arg )
         {
             uint8_t ebudChrgOffReason = msg.data[0];
 
-            if(App_Hall_Get_State() == HALL_CLOSE)
-            {
-                App_Com_Tx_Cmd_Chrg_Off(DEVICE_LEFT, ebudChrgOffReason);
-            }
-
-            if(App_Ebud_Get_All_Chrg_Stat() == EBUD_CHRG_DONE)
-            {
-                Drv_Timer_Regist_Oneshot(App_Event_Send_Sleep, 250, NULL);
-            }
+            App_Com_Tx_Cmd_Chrg_Off(DEVICE_TX1, ebudChrgOffReason);
             
             break;
         }
@@ -103,15 +107,15 @@ static void App_Event_Handler(void *arg )
         {
             uint8_t ebudChrgOffReason = msg.data[0];
             
-            if(App_Hall_Get_State() == HALL_CLOSE)
-            {
-                App_Com_Tx_Cmd_Chrg_Off(DEVICE_RIGHT, ebudChrgOffReason);
-            }
-
-            if(App_Ebud_Get_All_Chrg_Stat() == EBUD_CHRG_DONE)
-            {
-                Drv_Timer_Regist_Oneshot(App_Event_Send_Sleep, 250, NULL);
-            }
+            App_Com_Tx_Cmd_Chrg_Off(DEVICE_TX2, ebudChrgOffReason);
+            
+            break;
+        }
+        case APP_EVENT_EBUD_RX_CHRG_OFF:
+        {
+            uint8_t ebudChrgOffReason = msg.data[0];
+            
+            App_Com_Tx_Cmd_Chrg_Off(DEVICE_RX, ebudChrgOffReason);
             
             break;
         }
@@ -127,17 +131,23 @@ static void App_Event_Handler(void *arg )
                 {
                     App_Led_Hall_Open(battLevel);
                     
-                    App_Com_Tx_Cmd_Case_Open(DEVICE_LEFT);
+                    App_Com_Tx_Cmd_Case_Open(DEVICE_TX1);
                     
-                    App_Com_Tx_Cmd_Case_Open(DEVICE_RIGHT);
+                    App_Com_Tx_Cmd_Case_Open(DEVICE_TX2);
+
+                    App_Com_Tx_Cmd_Case_Open(DEVICE_RX);
                 }
                 else
                 {
-                    App_Com_Tx_Cmd_Case_Close(DEVICE_LEFT);
+                    App_Com_Tx_Cmd_Case_Close(DEVICE_TX1);
                     
-                    App_Com_Tx_Cmd_Case_Close(DEVICE_RIGHT);
+                    App_Com_Tx_Cmd_Case_Close(DEVICE_TX2);
+                    
+                    App_Com_Tx_Cmd_Case_Close(DEVICE_RX);
                     
                     App_Led_Hall_Close();
+
+                    App_Sleep_Enable();
                 }
             }
             break;
@@ -151,6 +161,7 @@ static void App_Event_Handler(void *arg )
         case APP_EVENT_SYS_SLEEP:
         {
             //todo: system sleep
+            App_Event_Case_Sleep();
             break;
         }
         default: break;
@@ -213,8 +224,88 @@ void App_Event_Case_Handler(uint8_t *buf, uint8_t length )
     }
 }
 
+void App_Sleep_Enable(void )
+{
+    if(Drv_Chrg_Get_Usb_State() == USB_PLUG_OUT)
+    {
+        if(App_Hall_Get_State() == HALL_CLOSE)
+        {
+            if(App_Ebud_Get_All_Chrg_Stat() == EBUD_CHRG_NONE || App_Ebud_Get_All_Chrg_Stat() == EBUD_CHRG_DONE)
+            {   
+                if(sleepStat == SLEEP_OUT)
+                {
+                    sleepStat = SLEEP_IN;
+                    
+                    Drv_Timer_Delete(timerSleep);
+
+                    timerSleep = Drv_Timer_Regist_Oneshot(App_Event_Send_Sleep, 500, NULL);
+                }
+            }
+        }
+    }
+}
+
 static void App_Event_Send_Sleep(void *arg )
 {
-    Drv_Msg_Put(APP_EVENT_SYS_SLEEP, NULL, 0);
+    if(App_Ebud_Get_All_Chrg_Stat() == EBUD_CHRG_NONE || App_Ebud_Get_All_Chrg_Stat() == EBUD_CHRG_DONE || \
+       App_Batt_Get_Level() == BATT_LEVEL_0)
+    {
+        Drv_Msg_Put(APP_EVENT_SYS_SLEEP, NULL, 0);
+    }
 }
+
+void App_Event_Case_Sleep(void )
+{
+    /* Configure all GPIO as analog to reduce current consumption on non used IOs */
+    /* Warning : Reconfiguring all GPIO will close the connetion with the debugger */
+
+	__RCU_AHB_CLK_ENABLE(RCU_AHB_PERI_GPIOA|RCU_AHB_PERI_GPIOB|RCU_AHB_PERI_GPIOF);
+
+    Drv_Chrg_Chg_Boost_Disable();
+    
+    Drv_Chrg_Enter_Ship_Mode();
+
+    App_Led_All_Turn_Off();
+
+    #if 1
+    gpio_mode_set(GPIOA,GPIO_PIN_ALL,GPIO_MODE_ANALOG);
+    gpio_mode_set(GPIOB,GPIO_PIN_ALL,GPIO_MODE_ANALOG);
+    gpio_mode_set(GPIOF,GPIO_PIN_ALL,GPIO_MODE_ANALOG); 
+	
+	__RCU_AHB_CLK_DISABLE(RCU_AHB_PERI_GPIOA|RCU_AHB_PERI_GPIOB|RCU_AHB_PERI_GPIOF);	
+
+    __RCU_APB2_CLK_DISABLE(RCU_APB2_PERI_ADC);   
+    
+	Hal_Hall_Init();
+
+    __RCU_APB1_CLK_ENABLE(RCU_APB1_PERI_PMU); // Enable the PMU clock
+    
+    pmu_deep_sleep_mode_enter(PMU_LDO_LOW_POWER, PMU_DSM_ENTRY_WFI); // enter STOP mode 
+    #endif 
+
+    SystemInit();
+    
+    Hal_Task_Init();
+
+    Hal_Timer_Init();
+
+    Hal_Com_Init();
+
+    Hal_Hall_Init();
+
+    Hal_Batt_Init();
+
+    Hal_Batt_Chrg_Init();
+
+    Drv_Chrg_Exit_Ship_Mode();
+
+    Hal_Led_Init();
+
+
+    sleepStat = SLEEP_OUT;
+        
+}
+
+
+
 

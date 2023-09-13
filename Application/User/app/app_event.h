@@ -20,6 +20,8 @@ typedef enum _app_event_t
 }app_event_t;
 
 void App_Event_Init(void );
+void App_Sleep_Enable(void );
+void App_Event_Case_Sleep(void );
 
 #endif 
 

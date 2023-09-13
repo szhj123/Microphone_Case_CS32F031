@@ -39,9 +39,9 @@
 #define CMD_FW_RESET                      0x7a
 
 
-#define DEVICE_LEFT                       0x00
-#define DEVICE_RIGHT                      0x01
-#define DEVICE_MIDDLE                     0x02
+#define DEVICE_TX1                        0x00
+#define DEVICE_TX2                        0x01
+#define DEVICE_RX                         0x02
 
 typedef enum _com_state_t
 {

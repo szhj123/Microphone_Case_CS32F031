@@ -242,11 +242,11 @@ static void App_Risk_Handler(void *arg )
                 sirkPara.sirkRightResponse = 0;
                 sirkPara.sirkMiddleResponse = 0;
                 
-                App_Com_Tx_Cmd_Get_Sirk(DEVICE_LEFT);
+                App_Com_Tx_Cmd_Get_Sirk(DEVICE_TX1);
 
-                App_Com_Tx_Cmd_Get_Sirk(DEVICE_RIGHT);
+                App_Com_Tx_Cmd_Get_Sirk(DEVICE_TX2);
                 
-                App_Com_Tx_Cmd_Get_Sirk(DEVICE_MIDDLE);
+                App_Com_Tx_Cmd_Get_Sirk(DEVICE_RX);
 
                 App_Com_Tx_Cmd_Get_Random_Sirk();
 
@@ -306,11 +306,11 @@ static void App_Risk_Handler(void *arg )
 
                 sirkPara.sirkMiddleResponse = 0;
                 
-                App_Com_Tx_Cmd_Set_Sirk(DEVICE_LEFT, sirkPara.sirkRandomBuf, SIRK_DATA_PACK_MAX_SIZE);
+                App_Com_Tx_Cmd_Set_Sirk(DEVICE_TX1, sirkPara.sirkRandomBuf, SIRK_DATA_PACK_MAX_SIZE);
                     
-                App_Com_Tx_Cmd_Set_Sirk(DEVICE_RIGHT, sirkPara.sirkRandomBuf, SIRK_DATA_PACK_MAX_SIZE);
+                App_Com_Tx_Cmd_Set_Sirk(DEVICE_TX2, sirkPara.sirkRandomBuf, SIRK_DATA_PACK_MAX_SIZE);
                     
-                App_Com_Tx_Cmd_Set_Sirk(DEVICE_MIDDLE, sirkPara.sirkRandomBuf, SIRK_DATA_PACK_MAX_SIZE);
+                App_Com_Tx_Cmd_Set_Sirk(DEVICE_RX, sirkPara.sirkRandomBuf, SIRK_DATA_PACK_MAX_SIZE);
 
                 sirkPara.delayCnt = 0;
                 
@@ -412,19 +412,19 @@ void App_Sirk_Save_Data(uint8_t devType, uint8_t *buf, uint8_t length )
     uint8_t i;
     uint8_t *dataPtr = NULL;
 
-    if(devType == DEVICE_LEFT)
+    if(devType == DEVICE_TX1)
     {
         dataPtr = sirkPara.sirkLeftBuf;
 
         sirkPara.sirkLeftResponse = 1;
     }
-    else if(devType == DEVICE_RIGHT)
+    else if(devType == DEVICE_TX2)
     {
         dataPtr = sirkPara.sirkRightBuf;
 
         sirkPara.sirkRightResponse = 1;
     }
-    else if(devType == DEVICE_MIDDLE)
+    else if(devType == DEVICE_RX)
     {
         dataPtr = sirkPara.sirkMiddleBuf;
 
@@ -439,15 +439,15 @@ void App_Sirk_Save_Data(uint8_t devType, uint8_t *buf, uint8_t length )
 
 void App_Sirk_Set_Response(uint8_t devType )
 {
-    if(devType == DEVICE_LEFT)
+    if(devType == DEVICE_TX1)
     {
         sirkPara.sirkLeftResponse = 1;
     }
-    else if(devType == DEVICE_RIGHT)
+    else if(devType == DEVICE_TX2)
     {
         sirkPara.sirkRightResponse = 1;
     }
-    else if(devType == DEVICE_MIDDLE)
+    else if(devType == DEVICE_RX)
     {
         sirkPara.sirkMiddleResponse = 1;
     }

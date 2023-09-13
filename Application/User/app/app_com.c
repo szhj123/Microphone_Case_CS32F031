@@ -158,15 +158,15 @@ static void App_ComTx_Handler(void *arg )
 
 void App_Com_Set_Rx_Stat(uint8_t devType )
 {
-    if(devType == DEVICE_LEFT)
+    if(devType == DEVICE_TX1)
     {
         com1Ctrl.rxDoneFlag = 1;
     }
-    else if(devType == DEVICE_RIGHT)
+    else if(devType == DEVICE_TX2)
     {
         com2Ctrl.rxDoneFlag = 1;
     }
-    else if(devType == DEVICE_MIDDLE)
+    else if(devType == DEVICE_RX)
     {
         com3Ctrl.rxDoneFlag = 1;
     }
@@ -292,15 +292,15 @@ void App_Com_Tx_Cmd_Case_Open(uint8_t devType )
 
     txBuf[14] = checkSum;
 
-    if(devType == DEVICE_LEFT)
+    if(devType == DEVICE_TX1)
     {
         Drv_Tx_Queue_Put(COM1, txBuf, sizeof(txBuf));
     }
-    else if(devType == DEVICE_RIGHT)
+    else if(devType == DEVICE_TX2)
     {
         Drv_Tx_Queue_Put(COM2, txBuf, sizeof(txBuf));
     }
-    else if(devType == DEVICE_MIDDLE)
+    else if(devType == DEVICE_RX)
     {
         Drv_Tx_Queue_Put(COM3, txBuf, sizeof(txBuf));
     }
@@ -330,15 +330,15 @@ void App_Com_Tx_Cmd_Case_Close(uint8_t devType )
 
     txBuf[10] = checkSum;
 
-    if(devType == DEVICE_LEFT)
+    if(devType == DEVICE_TX1)
     {
         Drv_Tx_Queue_Put(COM1, txBuf, sizeof(txBuf));
     }
-    else if(devType == DEVICE_RIGHT)
+    else if(devType == DEVICE_TX2)
     {
         Drv_Tx_Queue_Put(COM2, txBuf, sizeof(txBuf));
     }
-    else if(devType == DEVICE_MIDDLE)
+    else if(devType == DEVICE_RX)
     {
         Drv_Tx_Queue_Put(COM3, txBuf, sizeof(txBuf));
     }
@@ -369,15 +369,15 @@ void App_Com_Tx_Cmd_Chrg_Off(uint8_t devType, uint8_t ebudChrgOffReason)
 
     txBuf[11] = checkSum;
 
-    if(devType == DEVICE_LEFT)
+    if(devType == DEVICE_TX1)
     {
         Drv_Tx_Queue_Put(COM1, txBuf, sizeof(txBuf));
     }
-    else if(devType == DEVICE_RIGHT)
+    else if(devType == DEVICE_TX2)
     {
         Drv_Tx_Queue_Put(COM2, txBuf, sizeof(txBuf));
     }
-    else if(devType == DEVICE_MIDDLE)
+    else if(devType == DEVICE_RX)
     {
         Drv_Tx_Queue_Put(COM2, txBuf, sizeof(txBuf));
     }
@@ -407,15 +407,15 @@ void App_Com_Tx_Cmd_Get_Sirk(uint8_t devType )
 
     txBuf[10] = checkSum;
 
-    if(devType == DEVICE_LEFT)
+    if(devType == DEVICE_TX1)
     {
         Drv_Tx_Queue_Put(COM1, txBuf, sizeof(txBuf));
     }
-    else if(devType == DEVICE_RIGHT)
+    else if(devType == DEVICE_TX2)
     {
         Drv_Tx_Queue_Put(COM2, txBuf, sizeof(txBuf));
     }
-    else if(devType == DEVICE_MIDDLE)
+    else if(devType == DEVICE_RX)
     {
         Drv_Tx_Queue_Put(COM3, txBuf, sizeof(txBuf));
     }
@@ -435,7 +435,7 @@ void App_Com_Tx_Cmd_Get_Random_Sirk(void )
     txBuf[5] = 0x20;
     txBuf[6] = 0x01;
     txBuf[7] = CMD_GET_RANDOM_SIRK;
-    txBuf[8] = DEVICE_MIDDLE;
+    txBuf[8] = DEVICE_RX;
     txBuf[9] = (uint8_t )App_Batt_Get_Level();
     
     for(i=0;i<sizeof(txBuf)-5;i++)
@@ -482,15 +482,15 @@ void App_Com_Tx_Cmd_Set_Sirk(uint8_t devType, uint8_t *buf, uint8_t length )
 
     txBuf[10+length] = checkSum;
     
-    if(devType == DEVICE_LEFT)
+    if(devType == DEVICE_TX1)
     {
         Drv_Tx_Queue_Put(COM1, txBuf, sizeof(txBuf));
     }
-    else if(devType == DEVICE_RIGHT)
+    else if(devType == DEVICE_TX2)
     {
         Drv_Tx_Queue_Put(COM2, txBuf, sizeof(txBuf));
     }
-    else if(devType == DEVICE_MIDDLE)
+    else if(devType == DEVICE_RX)
     {
         Drv_Tx_Queue_Put(COM3, txBuf, sizeof(txBuf));
     }
@@ -510,7 +510,7 @@ void App_Com_Tx_Cmd_Get_Fw_Ver(void )
     txBuf[5] = 0x20;
     txBuf[6] = 0x01;
     txBuf[7] = CMD_GET_FW_VER;
-    txBuf[8] = DEVICE_MIDDLE;
+    txBuf[8] = DEVICE_RX;
     txBuf[9] = (uint8_t )App_Batt_Get_Level();
     txBuf[10] = VER_BLD;
     txBuf[11] = VER_APP;
@@ -540,7 +540,7 @@ void App_Com_Tx_Cmd_Get_Fw_Size(void )
     txBuf[5] = 0x20;
     txBuf[6] = 0x01;
     txBuf[7] = CMD_GET_FW_SIZE;
-    txBuf[8] = DEVICE_MIDDLE;
+    txBuf[8] = DEVICE_RX;
     txBuf[9] = (uint8_t )App_Batt_Get_Level();
     
     for(i=0;i<sizeof(txBuf)-5;i++)
@@ -567,7 +567,7 @@ void App_Com_Tx_Cmd_Get_Fw_Data(uint32_t fwOffset, uint32_t fwLen)
     txBuf[5] = 0x20;
     txBuf[6] = 0x01;
     txBuf[7] = CMD_GET_FW_DATA;
-    txBuf[8] = DEVICE_MIDDLE;
+    txBuf[8] = DEVICE_RX;
     txBuf[9] = (uint8_t )App_Batt_Get_Level();
     txBuf[10]= (uint8_t )fwOffset;
     txBuf[11]= (uint8_t )(fwOffset >> 8);
@@ -598,7 +598,7 @@ void App_Com_Tx_Cmd_Get_Fw_CRC(void )
     txBuf[5] = 0x20;
     txBuf[6] = 0x01;
     txBuf[7] = CMD_GET_FW_CRC;
-    txBuf[8] = DEVICE_MIDDLE;
+    txBuf[8] = DEVICE_RX;
     txBuf[9] = (uint8_t )App_Batt_Get_Level();
     
     for(i=0;i<sizeof(txBuf)-5;i++)
