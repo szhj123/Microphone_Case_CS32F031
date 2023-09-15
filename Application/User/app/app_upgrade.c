@@ -60,20 +60,37 @@ static void App_Upg_Handler(void *arg )
         }
         case UPG_STAT_COMPARE_VER:
         {
-            if(upgPara.responseFlag)
+            if(upgPara.delayCnt > 250)
             {
-                upgPara.responseFlag = 0;
+                upgPara.delayCnt = 0;
                 
-                if(upgPara.verApp != VER_APP)
-                {                            
-                    upgPara.stat = UPG_STAT_START;
-                }
-            }
-            else
-            {
-                if(++upgPara.delayCnt > 500)
+                if(upgPara.responseFlag)
                 {
-                    upgPara.stat = UPG_STAT_GET_VER;
+                    upgPara.responseFlag = 0;
+                    
+                    if(upgPara.verApp != VER_APP)
+                    {                            
+                        upgPara.stat = UPG_STAT_START;
+                    }
+                }
+                else
+                {
+                    if(++upgPara.reConnectCnt >= 3)
+                    {
+                        Drv_Com_Tx_Disable(COM3);
+                        
+                        upgPara.reConnectCnt = 0;
+
+                        upgPara.delayCnt = 0;
+                        
+                        upgPara.stat = UPG_STAT_ERR;
+
+                        return ;
+                    }
+                    else
+                    {
+                        upgPara.stat = UPG_STAT_GET_VER;
+                    }
                 }
             }
 
@@ -83,11 +100,6 @@ static void App_Upg_Handler(void *arg )
                 {
                     upgPara.stat = UPG_STAT_EXIT;
                 }
-            }
-
-            if(App_Ebud_Get_Rx_Chrg_Stat() == EBUD_CHRG_NONE)
-            {
-                upgPara.stat = UPG_STAT_GET_VER;
             }
             
             break;
@@ -218,6 +230,17 @@ static void App_Upg_Handler(void *arg )
             if(App_Hall_Get_State() == HALL_OPEN)
             {
                 upgPara.stat = UPG_STAT_GET_VER;
+            }
+            break;
+        }
+        case UPG_STAT_ERR:
+        {
+            if(upgPara.delayCnt > 300)
+            {
+                if(App_Ebud_Get_Rx_Chrg_Stat() == EBUD_CHRG_NONE)
+                {
+                    upgPara.stat = UPG_STAT_GET_VER;
+                }
             }
             break;
         }

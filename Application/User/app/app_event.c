@@ -263,7 +263,7 @@ void App_Event_Case_Sleep(void )
 
     Drv_Chrg_Chg_Boost_Disable();
     
-    Drv_Chrg_Enter_Ship_Mode();
+    //Drv_Chrg_Enter_Ship_Mode();
 
     App_Led_All_Turn_Off();
 

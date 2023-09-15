@@ -20,6 +20,7 @@ typedef enum _upg_stat_t
     UPG_STAT_GET_FW_DATA,    
     UPG_STAT_GET_FW_CRC,
     UPG_STAT_EXIT,
+    UPG_STAT_ERR
 }upg_stat_t;
 
 typedef enum _sirk_stat_t
@@ -42,6 +43,7 @@ typedef struct _upg_pata_t
     uint8_t    verHw;
     uint8_t    verFlag;
 
+    uint8_t    reConnectCnt;
     uint16_t   delayCnt;
 
     uint32_t   fwSize;

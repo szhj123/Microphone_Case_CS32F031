@@ -16,7 +16,8 @@
 #include "app_hall.h"
 /* Private typedef --------------------------------------*/
 /* Private define ------------------ --------------------*/
-#define EBUD_CHRG_DONE_MAX_CUR                 7 //mA
+#define EBUD_CHRG_DONE_CUR                 7 //mA
+#define EBUD_CHRG_MAX_CUR                  600 //mA
 /* Private macro ----------------------------------------*/
 /* Private function -------------------------------------*/
 static void App_Batt_Handler(void *arg );
@@ -97,6 +98,10 @@ static void App_Batt_Dischrg_Handler(void )
                 battCtrl.battSaveVol = battCtrl.battVol;
 
                 battCtrl.battLevel = App_Batt_Cal_Level(battCtrl.battVol);
+
+                DEBUG("batt Vol:%d\n", battCtrl.battVol);
+
+                DEBUG("batt level:%d\n", battCtrl.battLevel);
 
                 if(battCtrl.battLevel < battCtrl.battSaveLevel)
                 {
@@ -245,6 +250,10 @@ static void App_Ebud_Chrg_Handler(void )
         battCtrl.ebudTx2Cur = ebudTx2CurSum / 100;
         battCtrl.ebudRxCur = ebudRxCurSum / 100;
 
+        DEBUG("ebud tx1 current:%d\n", battCtrl.ebudTx1Cur);
+        DEBUG("ebud tx2 current:%d\n", battCtrl.ebudTx2Cur);
+        DEBUG("ebud rx current:%d\n", battCtrl.ebudRxCur);
+
         ebudTx1CurSum = 0;
         ebudTx2CurSum = 0;
         ebudRxCurSum = 0;
@@ -266,11 +275,17 @@ void App_Ebud_Set_Tx1_Chrg_Stat(void )
     {
         case EBUD_CHRG_NONE:
         {
-            if(battCtrl.ebudTx1Cur > EBUD_CHRG_DONE_MAX_CUR)
+            if(battCtrl.ebudTx1Cur > EBUD_CHRG_MAX_CUR)
+            {
+                Drv_Ebud_Tx1_Chrg_En(EBUD_CHRG_DISABLE);
+                
+                battCtrl.ebudTx1Stat = EBUD_CHRG_OVER_CUR;
+            }
+            else if(battCtrl.ebudTx1Cur > EBUD_CHRG_DONE_CUR && battCtrl.ebudTx1Cur <= EBUD_CHRG_MAX_CUR)
             {
                 battCtrl.ebudTx1Stat = EBUD_CHRG_PROCESS;
             }
-            else if(battCtrl.ebudTx1Cur > 0 && battCtrl.ebudTx1Cur <= EBUD_CHRG_DONE_MAX_CUR)
+            else if(battCtrl.ebudTx1Cur > 0 && battCtrl.ebudTx1Cur <= EBUD_CHRG_DONE_CUR)
             {
                 if(App_Hall_Get_State() == HALL_CLOSE)
                 {
@@ -285,7 +300,13 @@ void App_Ebud_Set_Tx1_Chrg_Stat(void )
         }
         case EBUD_CHRG_PROCESS:
         {
-            if(battCtrl.ebudTx1Cur > 0 && battCtrl.ebudTx1Cur <= EBUD_CHRG_DONE_MAX_CUR)
+            if(battCtrl.ebudTx1Cur > EBUD_CHRG_MAX_CUR)
+            {
+                Drv_Ebud_Tx1_Chrg_En(EBUD_CHRG_DISABLE);
+                
+                battCtrl.ebudTx1Stat = EBUD_CHRG_OVER_CUR;
+            }
+            else if(battCtrl.ebudTx1Cur > 0 && battCtrl.ebudTx1Cur <= EBUD_CHRG_DONE_CUR)
             {
                 if(App_Hall_Get_State() == HALL_CLOSE)
                 {
@@ -310,6 +331,16 @@ void App_Ebud_Set_Tx1_Chrg_Stat(void )
             }
             break;
         }
+        case EBUD_CHRG_OVER_CUR:
+        {
+            if(battCtrl.ebudTx1Cur < 550)
+            {
+                Drv_Ebud_Tx1_Chrg_En(EBUD_CHRG_ENABLE);
+                
+                battCtrl.ebudTx1Stat = EBUD_CHRG_PROCESS;
+            }
+            break;
+        }
         default: break;
     }
 }
@@ -320,11 +351,17 @@ void App_Ebud_Set_Tx2_Chrg_Stat(void )
     {
         case EBUD_CHRG_NONE:
         {
-            if(battCtrl.ebudTx2Cur > EBUD_CHRG_DONE_MAX_CUR)
+            if(battCtrl.ebudTx2Cur > EBUD_CHRG_MAX_CUR)
+            {
+                Drv_Ebud_Tx2_Chrg_En(EBUD_CHRG_DISABLE);
+                
+                battCtrl.ebudTx2Stat = EBUD_CHRG_OVER_CUR;
+            }
+            else if(battCtrl.ebudTx2Cur > EBUD_CHRG_DONE_CUR && battCtrl.ebudTx2Cur <= EBUD_CHRG_MAX_CUR)
             {
                 battCtrl.ebudTx2Stat = EBUD_CHRG_PROCESS;
             }
-            else if(battCtrl.ebudTx2Cur > 0 && battCtrl.ebudTx2Cur <= EBUD_CHRG_DONE_MAX_CUR)
+            else if(battCtrl.ebudTx2Cur > 0 && battCtrl.ebudTx2Cur <= EBUD_CHRG_DONE_CUR)
             {
                 if(App_Hall_Get_State() == HALL_CLOSE)
                 {
@@ -339,7 +376,13 @@ void App_Ebud_Set_Tx2_Chrg_Stat(void )
         }
         case EBUD_CHRG_PROCESS:
         {
-            if(battCtrl.ebudTx2Cur > 0 && battCtrl.ebudTx2Cur <= EBUD_CHRG_DONE_MAX_CUR)
+            if(battCtrl.ebudTx2Cur > EBUD_CHRG_MAX_CUR)
+            {
+                Drv_Ebud_Tx2_Chrg_En(EBUD_CHRG_DISABLE);
+                
+                battCtrl.ebudTx2Stat = EBUD_CHRG_OVER_CUR;
+            }
+            else if(battCtrl.ebudTx2Cur > 0 && battCtrl.ebudTx2Cur <= EBUD_CHRG_DONE_CUR)
             {
                 if(App_Hall_Get_State() == HALL_CLOSE)
                 {
@@ -364,6 +407,16 @@ void App_Ebud_Set_Tx2_Chrg_Stat(void )
             }
             break;
         }
+        case EBUD_CHRG_OVER_CUR:
+        {
+            if(battCtrl.ebudTx2Cur < 550)
+            {
+                Drv_Ebud_Tx2_Chrg_En(EBUD_CHRG_ENABLE);
+                
+                battCtrl.ebudTx2Stat = EBUD_CHRG_PROCESS;
+            }
+            break;
+        }
         default: break;
     }
 }
@@ -374,11 +427,17 @@ void App_Ebud_Set_Rx_Chrg_Stat(void )
     {
         case EBUD_CHRG_NONE:
         {
-            if(battCtrl.ebudRxCur > EBUD_CHRG_DONE_MAX_CUR)
+            if(battCtrl.ebudRxCur > EBUD_CHRG_MAX_CUR)
+            {
+                Drv_Ebud_Rx_Chrg_En(EBUD_CHRG_DISABLE);
+                
+                battCtrl.ebudRxStat = EBUD_CHRG_OVER_CUR;
+            }
+            else if(battCtrl.ebudRxCur > EBUD_CHRG_DONE_CUR && battCtrl.ebudRxCur <= EBUD_CHRG_MAX_CUR)
             {
                 battCtrl.ebudRxStat = EBUD_CHRG_PROCESS;
             }
-            else if(battCtrl.ebudRxCur > 0 && battCtrl.ebudRxCur <= EBUD_CHRG_DONE_MAX_CUR)
+            else if(battCtrl.ebudRxCur > 0 && battCtrl.ebudRxCur <= EBUD_CHRG_DONE_CUR)
             {
                 if(App_Hall_Get_State() == HALL_CLOSE)
                 {
@@ -393,7 +452,13 @@ void App_Ebud_Set_Rx_Chrg_Stat(void )
         }
         case EBUD_CHRG_PROCESS:
         {
-            if(battCtrl.ebudRxCur > 0 && battCtrl.ebudRxCur <= EBUD_CHRG_DONE_MAX_CUR)
+            if(battCtrl.ebudRxCur > EBUD_CHRG_MAX_CUR)
+            {
+                Drv_Ebud_Rx_Chrg_En(EBUD_CHRG_DISABLE);
+                
+                battCtrl.ebudRxStat = EBUD_CHRG_OVER_CUR;
+            }
+            else if(battCtrl.ebudRxCur > 0 && battCtrl.ebudRxCur <= EBUD_CHRG_DONE_CUR)
             {
                 if(App_Hall_Get_State() == HALL_CLOSE)
                 {
@@ -415,6 +480,16 @@ void App_Ebud_Set_Rx_Chrg_Stat(void )
             if(battCtrl.ebudRxCur == 0)
             {
                 battCtrl.ebudRxStat = EBUD_CHRG_NONE;
+            }
+            break;
+        }
+        case EBUD_CHRG_OVER_CUR:
+        {
+            if(battCtrl.ebudRxCur < 550)
+            {
+                Drv_Ebud_Rx_Chrg_En(EBUD_CHRG_ENABLE);
+                
+                battCtrl.ebudRxStat = EBUD_CHRG_PROCESS;
             }
             break;
         }
@@ -469,7 +544,7 @@ batt_level_t App_Batt_Cal_Level(uint16_t battVol )
         {
             battCtrl.battLevel = BATT_LEVEL_11_20;
         }
-        else if(battVol > BATT_VOL_3 && battVol <= BATT_VOL_10)
+        else if(battVol > BATT_VOL_5 && battVol <= BATT_VOL_10)
         {
             battCtrl.battLevel = BATT_LEVEL_1_10;
         }
@@ -581,7 +656,7 @@ batt_level_t App_Batt_Cal_Level(uint16_t battVol )
             {
                 battCtrl.battLevel = BATT_LEVEL_11_20;
             }
-            else if(battVol < (BATT_VOL_3 - battErrVol))
+            else if(battVol < (BATT_VOL_5 - battErrVol))
             {
                 battCtrl.battLevel = BATT_LEVEL_0;
             }

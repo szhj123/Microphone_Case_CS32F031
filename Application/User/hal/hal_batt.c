@@ -21,12 +21,18 @@ static uint16_t Hal_Batt_Adc_Filter(uint16_t *buf, uint8_t num);
 
 void Hal_Batt_Init(void )
 {
+    __RCU_AHB_CLK_ENABLE(RCU_AHB_PERI_GPIOA);
+    
     __RCU_AHB_CLK_ENABLE(RCU_AHB_PERI_GPIOB);
 
     gpio_mode_set(GPIOB, GPIO_PIN_3, GPIO_MODE_OUT_PP(GPIO_SPEED_HIGH));
 
     __GPIO_PIN_RESET(GPIOB, GPIO_PIN_3);
 
+    gpio_mode_set(GPIOB, GPIO_PIN_8, GPIO_MODE_OUT_PP(GPIO_SPEED_HIGH));
+
+    gpio_mode_set(GPIOB, GPIO_PIN_7, GPIO_MODE_OUT_PP(GPIO_SPEED_HIGH));
+   
     Hal_Batt_Adc_Init();
 
     Hal_Batt_Adc_Get_SampleVal(ADC_CONV_CHANNEL_9);
@@ -104,6 +110,41 @@ void Hal_Batt_Adc_Det_Disable(void )
 {
     __GPIO_PIN_SET(GPIOB, GPIO_PIN_3);
 }
+
+
+void Hal_Ebud_Tx1_Chrg_On(void )
+{
+    __GPIO_PIN_SET(GPIOB, GPIO_PIN_8);
+}
+
+void Hal_Ebud_Tx1_Chrg_Off(void )
+{
+    __GPIO_PIN_RESET(GPIOB, GPIO_PIN_8);
+}
+
+void Hal_Ebud_Tx2_Chrg_On(void )
+{
+    __GPIO_PIN_SET(GPIOB, GPIO_PIN_7);
+}
+
+void Hal_Ebud_Tx2_Chrg_Off(void )
+{
+    __GPIO_PIN_RESET(GPIOB, GPIO_PIN_7);
+}
+
+void Hal_Ebud_Rx_Chrg_On(void )
+{
+    gpio_mode_set(GPIOB, GPIO_PIN_4, GPIO_MODE_OUT_PP(GPIO_SPEED_HIGH));
+
+    __GPIO_PIN_RESET(GPIOB, GPIO_PIN_4);
+}
+
+void Hal_Ebud_Rx_Chrg_Off(void )
+{
+    gpio_mode_set(GPIOB, GPIO_PIN_4, GPIO_MODE_IN_FLOAT);
+}
+
+
 
 static uint16_t Hal_Batt_Adc_Filter(uint16_t *buf, uint8_t num)
 {

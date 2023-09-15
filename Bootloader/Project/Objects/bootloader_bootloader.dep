@@ -1,7 +1,7 @@
 Dependencies for Project 'bootloader', Target 'bootloader': (DO NOT MODIFY !)
 CompilerVersion: 5060960::V5.06 update 7 (build 960)::.\ARMCC
 F (..\..\Device\Source\ARM\startup_cs32f031.S)(0x648ABDD3)(--cpu Cortex-M0 -g --apcs=interwork --pd "__MICROLIB SETA 1"-IC:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include--pd "__UVISION_VERSION SETA 536" --pd "CS32F031 SETA 1"--list .\listings\startup_cs32f031.lst --xref -o .\objects\startup_cs32f031.o --depend .\objects\startup_cs32f031.d)
-F (..\..\Device\Source\system_cs32f0xx.c)(0x62AFD534)(--c99 --gnu -c --cpu Cortex-M0 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\Device\HAL_Driver\inc -I ..\..\Device\Include -I ..\User-IC:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="536" -DCS32F031-o .\objects\system_cs32f0xx.o --omf_browse .\objects\system_cs32f0xx.crf --depend .\objects\system_cs32f0xx.d)
+F (..\..\Device\Source\system_cs32f0xx.c)(0x650035F8)(--c99 --gnu -c --cpu Cortex-M0 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\Device\HAL_Driver\inc -I ..\..\Device\Include -I ..\User-IC:\Keil_v5\Arm\Packs\Chipsea\CS32F03x_DFP\2.0.5\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="536" -DCS32F031-o .\objects\system_cs32f0xx.o --omf_browse .\objects\system_cs32f0xx.crf --depend .\objects\system_cs32f0xx.d)
 I (..\..\Device\Include\cs32f0xx.h)(0x648AA20E)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
 I (..\User\RTE_Components.h)(0x64560EC5)

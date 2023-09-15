@@ -230,7 +230,6 @@ void Hal_Com_Uart3_Init(void )
 
 void Hal_Com_Uart6_Init(void )
 {
-    nvic_config_t nvic_config_struct;
     usart_config_t usart_config_struct;
     // Clock Config
     __RCU_AHB_CLK_ENABLE(RCU_AHB_PERI_GPIOA);
@@ -254,16 +253,6 @@ void Hal_Com_Uart6_Init(void )
     usart_init(USART6, &usart_config_struct);
 
     USART6->CTR3 |= USART_CTR3_HDEN;
-
-    /* Enable the USART Interrupt */
-    nvic_config_struct.IRQn = IRQn_USART6_8;
-    nvic_config_struct.priority = 0;
-    nvic_config_struct.enable_flag = ENABLE;
-    nvic_init(&nvic_config_struct);
-
-    __USART_INTR_DISABLE(USART6, RXNE); // Enable the USART Receive interrupt
-
-    __USART_INTR_DISABLE(USART6, TXE);
     
     __USART_ENABLE(USART6); // Enable USART
 }
@@ -284,11 +273,11 @@ void Hal_Com_Tx1_Enable(void )
 
 void Hal_Com_Tx1_Disable(void )
 {
-    //__GPIO_PIN_RESET(TX1_SW_PORT, TX1_SW_PIN);
+    __GPIO_PIN_RESET(TX1_SW_PORT, TX1_SW_PIN);
 
     gpio_mf_config(TX1_PORT, TX1_PIN, GPIO_MF_SEL3);
     
-    gpio_mode_set(TX1_PORT, TX1_PIN, GPIO_MODE_IN_PU);
+    gpio_mode_set(TX1_PORT, TX1_PIN, GPIO_MODE_IN_FLOAT);
     
     __GPIO_PIN_RESET(TX1_PP_PORT, TX1_PP_PIN);
 
@@ -314,6 +303,8 @@ void Hal_Com_Tx1_Isr_Handler(void )
 {
     if (__USART_FLAG_STATUS_GET(USART2, TXE) == SET)
     {   
+        __USART_FLAG_CLEAR(USART2, USART_FLAG_TC);
+        
         if(tx1Length > 0)
         {
             __USART_DATA_SEND(USART2, *pTx1Buf);
@@ -371,7 +362,7 @@ void Hal_Com_Tx2_Disable(void )
 {
     gpio_mf_config(TX2_PORT, TX2_PIN, GPIO_MF_SEL1);
     
-    gpio_mode_set(TX2_PORT, TX2_PIN, GPIO_MODE_IN_PU);
+    gpio_mode_set(TX2_PORT, TX2_PIN, GPIO_MODE_IN_FLOAT);
     //__GPIO_PIN_RESET(TX2_SW_PORT, TX2_SW_PIN);
     
     __GPIO_PIN_RESET(TX2_PP_PORT, TX2_PP_PIN);
@@ -398,6 +389,8 @@ void Hal_Com_Tx2_Isr_Handler(void )
 {
     if (__USART_FLAG_STATUS_GET(USART8, TXE) == SET)
     {   
+        __USART_FLAG_CLEAR(USART8, USART_FLAG_TC);
+        
         if(tx2Length > 0)
         {
             __USART_DATA_SEND(USART8, *pTx2Buf);
@@ -453,7 +446,7 @@ void Hal_Com_Tx3_Disable(void )
 {
     gpio_mf_config(TX3_PORT, TX3_PIN, GPIO_MF_SEL7);
     
-    gpio_mode_set(TX3_PORT, TX3_PIN, GPIO_MODE_IN_PU);
+    gpio_mode_set(TX3_PORT, TX3_PIN, GPIO_MODE_ANALOG);
     //__GPIO_PIN_RESET(TX2_SW_PORT, TX2_SW_PIN);
     
     __GPIO_PIN_RESET(TX3_PP_PORT, TX3_PP_PIN);
@@ -482,6 +475,8 @@ void Hal_Com_Tx3_Isr_Handler(void )
 {
     if (__USART_FLAG_STATUS_GET(USART1, TXE) == SET)
     {   
+        __USART_FLAG_CLEAR(USART1, USART_FLAG_TC);
+        
         if(tx3Length > 0)
         {
             __USART_DATA_SEND(USART1, *pTx3Buf);

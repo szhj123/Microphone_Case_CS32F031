@@ -72,5 +72,41 @@ uint16_t Drv_Ebud_Get_Rx_Cur(void )
     return ebudCur;
 }
 
+void Drv_Ebud_Tx1_Chrg_En(uint8_t enable )
+{
+    if(enable)
+    {
+        Hal_Ebud_Tx1_Chrg_On();
+    }
+    else
+    {
+        Hal_Ebud_Tx1_Chrg_Off();
+    }
+}
+
+void Drv_Ebud_Tx2_Chrg_En(uint8_t enable )
+{
+    if(enable)
+    {
+        Hal_Ebud_Tx2_Chrg_On();
+    }
+    else
+    {
+        Hal_Ebud_Tx2_Chrg_Off();
+    }
+}
+
+void Drv_Ebud_Rx_Chrg_En(uint8_t enable )
+{
+    if(enable)
+    {
+        Hal_Ebud_Rx_Chrg_On();
+    }
+    else
+    {
+        Hal_Ebud_Rx_Chrg_Off();
+    }
+}
+
 
 

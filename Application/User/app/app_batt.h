@@ -17,7 +17,7 @@
 #define BATT_VOL_20                 3730
 #define BATT_VOL_15                 3700
 #define BATT_VOL_10                 3680
-#define BATT_VOL_5                  3450
+#define BATT_VOL_5                  3400
 #define BATT_VOL_3                  3200
 
 typedef enum _batt_level_t
@@ -45,7 +45,6 @@ typedef enum _batt_batt_dischrg_stat_t
 typedef enum _batt_chrg_stat_t
 {
     BATT_CHRG_INIT = 0,
-    BATT_CHRG_Get_True_Vol,
     BATT_CHRG_GET_VOL_ERR,
     BATT_CHRG_PROCESS,
     BATT_CHRG_DONE
@@ -55,7 +54,8 @@ typedef enum _ebud_charging_stat_t
 {
     EBUD_CHRG_NONE = 0,
     EBUD_CHRG_PROCESS,
-    EBUD_CHRG_DONE
+    EBUD_CHRG_DONE, 
+    EBUD_CHRG_OVER_CUR
 }ebud_charging_stat_t;
 
 typedef enum _ebud_chrg_off_reason_t
