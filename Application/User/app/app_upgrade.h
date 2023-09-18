@@ -19,8 +19,8 @@ typedef enum _upg_stat_t
     UPG_STAT_GET_FW_INFO,
     UPG_STAT_GET_FW_DATA,    
     UPG_STAT_GET_FW_CRC,
+    UPG_STAT_FORCE_CHARGE,
     UPG_STAT_EXIT,
-    UPG_STAT_ERR
 }upg_stat_t;
 
 typedef enum _sirk_stat_t
@@ -30,7 +30,8 @@ typedef enum _sirk_stat_t
     SIRK_STAT_COMPARE_DATA,
     SIRK_STAT_SET_DATA,
     SIRK_STAT_WAIT_SET_DATA_END,
-    SIRK_STAT_EXIT
+    SIRK_STAT_FORCE_CHARGE,
+    SIRK_STAT_EXIT, 
 }sirk_stat_t;
 
 typedef struct _upg_pata_t
@@ -65,6 +66,8 @@ typedef struct _sirk_para_t
     uint8_t     sirkRightResponse;
     uint8_t     sirkMiddleResponse;
     uint8_t     sirkRandomResponse;
+
+    uint8_t     reConnectCnt;
 
     uint16_t    delayCnt;
 }sirk_para_t;

@@ -129,26 +129,32 @@ static void App_Event_Handler(void *arg )
             {
                 if(hallState == HALL_OPEN)
                 {
-                    App_Led_Hall_Open(battLevel);
-                    
-                    App_Com_Tx_Cmd_Case_Open(DEVICE_TX1);
-                    
-                    App_Com_Tx_Cmd_Case_Open(DEVICE_TX2);
+                    if(battLevel > BATT_LEVEL_0)
+                    {
+                        App_Led_Hall_Open(battLevel);
+                        
+                        App_Com_Tx_Cmd_Case_Open(DEVICE_TX1);
+                        
+                        App_Com_Tx_Cmd_Case_Open(DEVICE_TX2);
 
-                    App_Com_Tx_Cmd_Case_Open(DEVICE_RX);
+                        App_Com_Tx_Cmd_Case_Open(DEVICE_RX);
+                    }
                 }
                 else
                 {
-                    App_Com_Tx_Cmd_Case_Close(DEVICE_TX1);
-                    
-                    App_Com_Tx_Cmd_Case_Close(DEVICE_TX2);
-                    
-                    App_Com_Tx_Cmd_Case_Close(DEVICE_RX);
-                    
-                    App_Led_Hall_Close();
-
-                    App_Sleep_Enable();
+                    if(battLevel > BATT_LEVEL_0)
+                    {
+                        App_Com_Tx_Cmd_Case_Close(DEVICE_TX1);
+                        
+                        App_Com_Tx_Cmd_Case_Close(DEVICE_TX2);
+                        
+                        App_Com_Tx_Cmd_Case_Close(DEVICE_RX);
+                        
+                        App_Led_Hall_Close();
+                    }
                 }
+                
+                App_Sleep_Enable();
             }
             break;
         }
@@ -228,17 +234,31 @@ void App_Sleep_Enable(void )
 {
     if(Drv_Chrg_Get_Usb_State() == USB_PLUG_OUT)
     {
-        if(App_Hall_Get_State() == HALL_CLOSE)
+        if(App_Batt_Get_Level() == BATT_LEVEL_0)
         {
-            if(App_Ebud_Get_All_Chrg_Stat() == EBUD_CHRG_NONE || App_Ebud_Get_All_Chrg_Stat() == EBUD_CHRG_DONE)
-            {   
-                if(sleepStat == SLEEP_OUT)
-                {
-                    sleepStat = SLEEP_IN;
-                    
-                    Drv_Timer_Delete(timerSleep);
+            if(sleepStat == SLEEP_OUT)
+            {
+                sleepStat = SLEEP_IN;
+                
+                Drv_Timer_Delete(timerSleep);
 
-                    timerSleep = Drv_Timer_Regist_Oneshot(App_Event_Send_Sleep, 500, NULL);
+                timerSleep = Drv_Timer_Regist_Oneshot(App_Event_Send_Sleep, 500, NULL);
+            }
+        }
+        else
+        {
+            if(App_Hall_Get_State() == HALL_CLOSE)
+            {
+                if(App_Ebud_Get_All_Chrg_Stat() == EBUD_CHRG_NONE || App_Ebud_Get_All_Chrg_Stat() == EBUD_CHRG_DONE)
+                {   
+                    if(sleepStat == SLEEP_OUT)
+                    {
+                        sleepStat = SLEEP_IN;
+                        
+                        Drv_Timer_Delete(timerSleep);
+
+                        timerSleep = Drv_Timer_Regist_Oneshot(App_Event_Send_Sleep, 500, NULL);
+                    }
                 }
             }
         }

@@ -303,6 +303,7 @@ void Hal_Com_Tx1_Isr_Handler(void )
 {
     if (__USART_FLAG_STATUS_GET(USART2, TXE) == SET)
     {   
+        __USART_FLAG_CLEAR(USART2, USART_FLAG_TXE);
         __USART_FLAG_CLEAR(USART2, USART_FLAG_TC);
         
         if(tx1Length > 0)
@@ -334,6 +335,8 @@ void Hal_Com_Tx1_Isr_Handler(void )
     if (__USART_FLAG_STATUS_GET(USART2, RXNE) == SET)
     {
         uint8_t recvVal  = 0;
+
+        __USART_FLAG_CLEAR(USART2, USART_FLAG_RXNE);
         
         recvVal = (uint8_t)__USART_DATA_RECV(USART2);
 
@@ -389,6 +392,7 @@ void Hal_Com_Tx2_Isr_Handler(void )
 {
     if (__USART_FLAG_STATUS_GET(USART8, TXE) == SET)
     {   
+        __USART_FLAG_CLEAR(USART8, USART_FLAG_TXE);
         __USART_FLAG_CLEAR(USART8, USART_FLAG_TC);
         
         if(tx2Length > 0)
@@ -419,6 +423,8 @@ void Hal_Com_Tx2_Isr_Handler(void )
     if (__USART_FLAG_STATUS_GET(USART8, RXNE) == SET)
     {
         uint8_t recvVal  = 0;
+        
+        __USART_FLAG_CLEAR(USART8, USART_FLAG_RXNE);
         
         recvVal = (uint8_t)__USART_DATA_RECV(USART8);
 
@@ -475,6 +481,7 @@ void Hal_Com_Tx3_Isr_Handler(void )
 {
     if (__USART_FLAG_STATUS_GET(USART1, TXE) == SET)
     {   
+        __USART_FLAG_CLEAR(USART1, USART_FLAG_TXE);
         __USART_FLAG_CLEAR(USART1, USART_FLAG_TC);
         
         if(tx3Length > 0)
@@ -505,6 +512,8 @@ void Hal_Com_Tx3_Isr_Handler(void )
     if (__USART_FLAG_STATUS_GET(USART1, RXNE) == SET)
     {
         uint8_t recvVal  = 0;
+        
+        __USART_FLAG_CLEAR(USART1, USART_FLAG_RXNE);
         
         recvVal = (uint8_t)__USART_DATA_RECV(USART1);
 

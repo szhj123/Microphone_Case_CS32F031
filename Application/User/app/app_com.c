@@ -74,10 +74,16 @@ static void App_ComTx_Handler(void *arg )
                 Drv_Com_Tx_Enable(comCtrl->comPort);
 
                 comCtrl->txCnt = 0;
+
+                comCtrl->txQueueIsEmpty = 0;
                 
                 comCtrl->delayCnt = 0;
 
                 comCtrl->comState = COM_STAT_TX;
+            }
+            else
+            {
+                comCtrl->txQueueIsEmpty = 1;
             }
             break;
         }
@@ -122,7 +128,7 @@ static void App_ComTx_Handler(void *arg )
             #if 1
             else
             {
-                if(++comCtrl->delayCnt >= 500)
+                if(++comCtrl->delayCnt >= 250)
                 {
                     comCtrl->delayCnt = 0;
 
@@ -132,6 +138,8 @@ static void App_ComTx_Handler(void *arg )
                     }
                     else
                     {
+                        Drv_Com_Tx_Disable(comCtrl->comPort);
+                        
                         comCtrl->comState = COM_STAT_ERR;
                     }
                 }
@@ -141,15 +149,16 @@ static void App_ComTx_Handler(void *arg )
         }
         case COM_STAT_ERR:
         {
-            Drv_Com_Tx_Disable(comCtrl->comPort);
-            
-            comCtrl->rxDoneFlag = 0;
+            if(++comCtrl->delayCnt > 250)
+            {
+                comCtrl->rxDoneFlag = 0;
 
-            comCtrl->delayCnt = 0;
+                comCtrl->delayCnt = 0;
 
-            comCtrl->txCnt = 0;
+                comCtrl->txCnt = 0;
 
-            comCtrl->comState = COM_STAT_INIT;
+                comCtrl->comState = COM_STAT_INIT;
+            }
             break;
         }
         default: break;
@@ -609,5 +618,25 @@ void App_Com_Tx_Cmd_Get_Fw_CRC(void )
     txBuf[10] = checkSum;
 
     Drv_Tx_Queue_Put(COM3, txBuf, sizeof(txBuf));
+}
+
+uint8_t App_Com_Get_Queue_Stat(uint8_t devType )
+{
+    uint8_t retVal = 0;
+    
+    if(devType == DEVICE_TX1)
+    {
+        retVal = com1Ctrl.txQueueIsEmpty;
+    }
+    else if(devType == DEVICE_TX2)
+    {
+        retVal = com2Ctrl.txQueueIsEmpty;
+    }
+    else if(devType == DEVICE_RX)
+    {
+        retVal = com3Ctrl.txQueueIsEmpty;
+    }
+
+    return retVal;
 }
 

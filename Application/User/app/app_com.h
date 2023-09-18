@@ -86,6 +86,7 @@ typedef struct _com_ctrl_block_t
     uint16_t    delayCnt;
     uint8_t     txCnt;
     uint8_t     rxDoneFlag;   
+    uint8_t     txQueueIsEmpty;
 }com_ctrl_block_t;
 
 void App_Com_Init(void );
@@ -111,6 +112,9 @@ void App_Com_Cmd_Fw_Ver_Response(uint8_t *buf, uint8_t length );
 void App_Com_Cmd_Fw_Size_Response(uint8_t *buf, uint8_t length );
 void App_Com_Cmd_Fw_Data_Response(uint8_t *buf, uint8_t length );
 void App_Com_Cmd_Fw_CRC_Response(uint8_t *buf, uint8_t length );
+
+uint8_t App_Com_Get_Queue_Stat(uint8_t devType );
+
 
 #endif 
 

@@ -77,13 +77,17 @@ static void App_Upg_Handler(void *arg )
                 {
                     if(++upgPara.reConnectCnt >= 3)
                     {
+                        Drv_Com_Tx_Disable(COM1);
+                        
+                        Drv_Com_Tx_Disable(COM2);
+
                         Drv_Com_Tx_Disable(COM3);
                         
                         upgPara.reConnectCnt = 0;
 
                         upgPara.delayCnt = 0;
                         
-                        upgPara.stat = UPG_STAT_ERR;
+                        upgPara.stat = UPG_STAT_FORCE_CHARGE;
 
                         return ;
                     }
@@ -225,6 +229,14 @@ static void App_Upg_Handler(void *arg )
             }
             break;
         }
+        case UPG_STAT_FORCE_CHARGE:
+        {
+            if(App_Hall_Get_State() == HALL_CLOSE)
+            {
+                upgPara.stat = UPG_STAT_EXIT;
+            }
+            break;
+        }
         case UPG_STAT_EXIT:
         {
             if(App_Hall_Get_State() == HALL_OPEN)
@@ -233,17 +245,7 @@ static void App_Upg_Handler(void *arg )
             }
             break;
         }
-        case UPG_STAT_ERR:
-        {
-            if(upgPara.delayCnt > 300)
-            {
-                if(App_Ebud_Get_Rx_Chrg_Stat() == EBUD_CHRG_NONE)
-                {
-                    upgPara.stat = UPG_STAT_GET_VER;
-                }
-            }
-            break;
-        }
+        
         default: break;
     }
 }
@@ -259,7 +261,7 @@ static void App_Risk_Handler(void *arg )
     {
         case SIRK_STAT_GET_DATA:
         {
-            if(App_Ebud_Get_Tx1_Chrg_Stat() != EBUD_CHRG_NONE && App_Ebud_Get_Tx2_Chrg_Stat() != EBUD_CHRG_NONE)
+            //if(App_Ebud_Get_Tx1_Chrg_Stat() != EBUD_CHRG_NONE && App_Ebud_Get_Tx2_Chrg_Stat() != EBUD_CHRG_NONE)
             {
                 sirkPara.sirkLeftResponse = 0;
                 sirkPara.sirkRightResponse = 0;
@@ -282,16 +284,31 @@ static void App_Risk_Handler(void *arg )
         case SIRK_STAT_WAIT_GET_DATA_END:
         {
             if(sirkPara.delayCnt > 250)
-            {
+            {                
+                sirkPara.delayCnt = 0;
+                
                 if(sirkPara.sirkLeftResponse & sirkPara.sirkRightResponse & sirkPara.sirkMiddleResponse & sirkPara.sirkRandomResponse)
                 {
-                    sirkPara.delayCnt = 0;
-
                     sirkPara.stat = SIRK_STAT_COMPARE_DATA;
                 }
                 else
                 {
-                    sirkPara.stat = SIRK_STAT_GET_DATA;
+                    if(++sirkPara.reConnectCnt >= 3)
+                    {
+                        sirkPara.reConnectCnt = 0;
+
+                        Drv_Com_Tx_Disable(COM1);
+                        
+                        Drv_Com_Tx_Disable(COM2);
+
+                        Drv_Com_Tx_Disable(COM3);
+
+                        sirkPara.stat = SIRK_STAT_FORCE_CHARGE;
+                    }
+                    else
+                    {
+                        sirkPara.stat = SIRK_STAT_GET_DATA;
+                    }
                 }
                 
             }
@@ -373,6 +390,14 @@ static void App_Risk_Handler(void *arg )
             }
             break;
         }
+        case SIRK_STAT_FORCE_CHARGE:
+        {
+            if(App_Hall_Get_State() == HALL_CLOSE)
+            {
+                sirkPara.stat = SIRK_STAT_EXIT;
+            }
+            break;
+        }
         case SIRK_STAT_EXIT:
         {
             if(App_Hall_Get_State() == HALL_OPEN)
@@ -383,6 +408,7 @@ static void App_Risk_Handler(void *arg )
             }
             break;
         }
+        
         default: break;
     }
 }

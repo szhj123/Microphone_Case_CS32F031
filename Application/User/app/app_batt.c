@@ -229,44 +229,80 @@ static void App_Batt_Chrg_Handler(void )
 
 static void App_Ebud_Chrg_Handler(void )
 {
-    static uint8_t ebudDetCnt;
+    static uint8_t ebudTx1DetCnt;
+    static uint8_t ebudTx2DetCnt;
+    static uint8_t ebudRxDetCnt;
     static uint32_t ebudTx1CurSum;
     static uint32_t ebudTx2CurSum;
     static uint32_t ebudRxCurSum;
 
-    if(ebudDetCnt < 100)
+    if(App_Com_Get_Queue_Stat(DEVICE_TX1))
     {
-        ebudTx1CurSum += Drv_Ebud_Get_Tx1_Cur();
+        if(ebudTx1DetCnt < 100)
+        {
+            ebudTx1CurSum += Drv_Ebud_Get_Tx1_Cur();
 
-        ebudTx2CurSum += Drv_Ebud_Get_Tx2_Cur();
-
-        ebudRxCurSum += Drv_Ebud_Get_Rx_Cur();
-
-        ebudDetCnt++;
-    }
-    else
-    {
-        battCtrl.ebudTx1Cur = ebudTx1CurSum / 100;
-        battCtrl.ebudTx2Cur = ebudTx2CurSum / 100;
-        battCtrl.ebudRxCur = ebudRxCurSum / 100;
-
-        DEBUG("ebud tx1 current:%d\n", battCtrl.ebudTx1Cur);
-        DEBUG("ebud tx2 current:%d\n", battCtrl.ebudTx2Cur);
-        DEBUG("ebud rx current:%d\n", battCtrl.ebudRxCur);
-
-        ebudTx1CurSum = 0;
-        ebudTx2CurSum = 0;
-        ebudRxCurSum = 0;
-        ebudDetCnt = 0;
-
-        App_Ebud_Set_Tx1_Chrg_Stat();
-        
-        App_Ebud_Set_Tx2_Chrg_Stat();
-
-        App_Ebud_Set_Rx_Chrg_Stat();
+            ebudTx1DetCnt++;
+        }
+        else
+        {
+            battCtrl.ebudTx1Cur = ebudTx1CurSum / ebudTx1DetCnt;
             
-        App_Sleep_Enable();
+            DEBUG("ebud tx1 current:%d\n", battCtrl.ebudTx1Cur);
+
+            ebudTx1CurSum = 0;
+            
+            ebudTx1DetCnt = 0;
+            
+            App_Ebud_Set_Tx1_Chrg_Stat();
+        }
     }
+
+    if(App_Com_Get_Queue_Stat(DEVICE_TX2))
+    {
+        if(ebudTx2DetCnt < 100)
+        {
+            ebudTx2CurSum += Drv_Ebud_Get_Tx2_Cur();
+
+            ebudTx2DetCnt++;
+        }
+        else
+        {
+            battCtrl.ebudTx2Cur = ebudTx2CurSum / ebudTx2DetCnt;
+            
+            DEBUG("ebud tx2 current:%d\n", battCtrl.ebudTx2Cur);
+
+            ebudTx2CurSum = 0;
+            
+            ebudTx2DetCnt = 0;
+            
+            App_Ebud_Set_Tx2_Chrg_Stat();
+        }
+    }
+
+    if(App_Com_Get_Queue_Stat(DEVICE_RX))
+    {
+        if(ebudRxDetCnt < 100)
+        {
+            ebudRxCurSum += Drv_Ebud_Get_Rx_Cur();
+
+            ebudRxDetCnt++;
+        }
+        else
+        {
+            battCtrl.ebudRxCur = ebudRxCurSum / ebudRxDetCnt;
+            
+            DEBUG("ebud rx current:%d\n", battCtrl.ebudRxCur);       
+            
+            ebudRxCurSum = 0;
+                    
+            ebudRxDetCnt = 0;
+            
+            App_Ebud_Set_Rx_Chrg_Stat();
+        }
+    }
+    
+    App_Sleep_Enable();
 }
 
 void App_Ebud_Set_Tx1_Chrg_Stat(void )

@@ -37,7 +37,7 @@ void Drv_Chrg_Cfg(void )
     Drv_Chrg_Write(0x00, 0x17);//input current limit: 2400mA
     Drv_Chrg_Write(0x01, 0x06);//sys_min: 3.2v
     Drv_Chrg_Write(0x02, 0xa8);//ichg: 0xa8,1020mA
-    Drv_Chrg_Write(0x03, 0x57);//iprechg:40mA, iterm: 60mA
+    Drv_Chrg_Write(0x03, 0xfa);//iprechg:240mA, iterm: 120mA
     Drv_Chrg_Write(0x04, 0x58);//chg vol limit: 4.208v, bat rechg: 100mV
     Drv_Chrg_Write(0x05, 0x8f);
     Drv_Chrg_Write(0x06, 0xe5);//ovp thresh: 6.5v, vindpm:4.4v
@@ -101,7 +101,7 @@ uint8_t Drv_Chrg_Get_Usb_State(void )
 {
     uint8_t regVal;
 
-    #if 0
+    #if 1
     if((vbus_stat_t)chrgCtrl.vbusStat != NO_INPUT)
     {
         regVal = USB_PLUG_IN;

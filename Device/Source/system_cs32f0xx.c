@@ -67,7 +67,7 @@
 #define ENABLE_FWDT_FIX_001   // Comments this macro the disbale FWDT unintention reset issue fix  
 
 
-uint32_t SystemCoreClock    = 48000000;
+uint32_t SystemCoreClock    = 24000000;
 static __I uint8_t AHBPrescTable[16] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 6, 7, 8, 9};
 
 
@@ -202,9 +202,10 @@ static void SetSysClock(void)
     /* PCLK = HCLK */
     RCU->CFG |= (uint32_t)RCU_CFG_PCLKPDIV_DIV1;
 
+    #if 1
     /* PLL configuration = HRC/2 * 12 = 48 MHz */
     RCU->CFG &= (uint32_t)((uint32_t)~(RCU_CFG_PLLSEL | RCU_CFG_PLLSEL_HRC_DIV2 | RCU_CFG_PLLMUF));
-    RCU->CFG |= (uint32_t)(RCU_CFG_PLLSEL_HRC_DIV2 | RCU_CFG_PLLMUF12);
+    RCU->CFG |= (uint32_t)(RCU_CFG_PLLSEL_HRC_DIV2 | RCU_CFG_PLLMUF6);
             
     /* Enable PLL */
     RCU->CTR |= RCU_CTR_PLLEN;
@@ -222,8 +223,8 @@ static void SetSysClock(void)
     while ((RCU->CFG & (uint32_t)RCU_CFG_SYSSS) != (uint32_t)RCU_CFG_SYSSS_PLL)
     {
     }
-
-}
+    #endif 
+}   
 
 /**
   * @}
